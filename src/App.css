@@ -87,7 +87,7 @@ a {
 }
 
 .GoogleLogo {
-  background-image: url(./google.png);
+  background-image: url(res/google.png);
   height: 30px;
   width: 30px;
   background-color: #fcfcfc;

@@ -1,48 +1,25 @@
-import logo from './logo.svg';
+import React from 'react';
+import  { Home }  from './views/Home';
+import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
 import './App.css';
-import ButtonWeb from './components/Button';
+import FileUpload from './Upload';
+import NavBar from './components/NavBar';
 
-function NavBar() {
+function Lander() {
   return (
-    <div className="App">
-      <div className="Elements">
-      <a href="https://youtube.com">Home</a>
-      <a>About</a>
-      <a>Examples</a>
-      <a>Contact</a>
-      </div>
-
-      <div className="Auth">
-        <a className="Login">Log in</a>
-        <a className="SignUp">
-          <p>Sign Up</p>
-          <div className="GoogleLogo"></div>
-        </a>
-      </div>
+    <div>
+      <NavBar />
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/Home" component={Home} />
+          <Route exact path="/">
+            <Redirect to="/Home" />
+          </Route>
+          <Route exact path="/About" component={FileUpload} />
+        </Switch>
+      </BrowserRouter>
     </div>
   );
 }
 
-function Upload() {
-  return(
-    <div className="Upload">
-      <div className="InfoBlurb">
-        <h1>Uberprints.</h1>
-        <p>A fast, easy to use, and reliable way for printing custom designs through printers near you!</p>
-        <a>Example prints</a>
-      </div>
-      <div className="UploadDesign"></div>
-    </div>
-  );
-}
-
-function Home() {
-  return(
-    <div className="body">
-      <NavBar/>
-      <Upload/>      
-    </div>
-  );
-}
-
-export default Home;
+export default Lander;
