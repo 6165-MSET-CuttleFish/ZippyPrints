@@ -4,7 +4,7 @@ import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
 import './App.css';
 import FileUpload from './Upload';
 import NavBar from './components/NavBar';
-import { firebaseConfig } from './firebaseConfig';
+import { firebaseConfig } from './api/firebaseConfig';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";

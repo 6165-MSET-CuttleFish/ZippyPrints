@@ -12,7 +12,7 @@
 /build
 
 # api keys
-firebaseConfig.js
+/src/api
 
 # misc
 .DS_Store
