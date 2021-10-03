@@ -1,9 +1,19 @@
 import React from "react"
-import axios from "axios";
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { firebaseConfig } from './api/firebaseConfig';
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Initialize Firebase
+initializeApp(firebaseConfig);
+
+const storage = getStorage();
 
 export default class FileUpload extends React.Component {
   state = {
-    
     // Initially, no file is selected
     selectedFile: null
   };
@@ -27,14 +37,30 @@ export default class FileUpload extends React.Component {
       this.state.selectedFile,
       this.state.selectedFile.name
       );
+    const storageRef = ref(storage, 'files/something');
       
       // Details of the uploaded file
       console.log(this.state.selectedFile);
-      
-      // Request made to the backend api
-      // Send formData object
-      axios.post("api/uploadfile", formData);
+      if (this.verifyFile()) {
+        // 'file' comes from the Blob or File API
+        // eslint-disable-next-line no-undef
+        uploadBytes(storageRef, this.state.selectedFile).then((snapshot) => {
+          console.log('Uploaded a file!');
+        });
+        // addDoc(collection(db, "files"), {
+        //   name: this.state.selectedFile.name,
+        //   size: this.state.selectedFile.size * 0.000001,
+        //   type: this.state.selectedFile.type,
+        //   date: new Date()
+        // });
+        
+      }
     };
+
+    verifyFile() {
+      // TODO: verify file is a valid CAD file
+      return true;
+    }
     
     // File content to be displayed after
     // file upload is complete
@@ -45,13 +71,8 @@ export default class FileUpload extends React.Component {
         return (
           <div>
           <h2>File Details:</h2>
-          
           <p>File Name: {this.state.selectedFile.name}</p>
-          
-          
           <p>File Type: {this.state.selectedFile.type}</p>
-          
-          
           <p>
           Last Modified:{" "}
           {this.state.selectedFile.lastModifiedDate.toDateString()}
@@ -63,7 +84,7 @@ export default class FileUpload extends React.Component {
           return (
             <div>
             <br />
-            <h4>Choose before Pressing the Upload button</h4>
+            <h4>Select a file before pressing 'Upload'</h4>
             </div>
             );
           }
@@ -73,15 +94,15 @@ export default class FileUpload extends React.Component {
           return (
             <div>
             <h1>
-            GeeksforGeeks
+            CAD File
             </h1>
             <h3>
-            File Upload using React!
+            Please upload a valid CAD file
             </h3>
             <div>
             <input type="file" onChange={this.onFileChange} />
             <button onClick={this.onFileUpload}>
-            Upload!
+            Upload
             </button>
             </div>
             {this.fileData()}
