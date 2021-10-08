@@ -28,15 +28,6 @@ export default class FileUpload extends React.Component {
   // On file upload (click the upload button)
   onFileUpload = () => {
     if (this.state.selectedFile == null) return;
-    // Create an object of formData
-    const formData = new FormData();
-    
-    // Update the formData object
-    formData.append(
-      "myFile",
-      this.state.selectedFile,
-      this.state.selectedFile.name
-      );
     const storageRef = ref(storage, 'files/something');
       
       // Details of the uploaded file
