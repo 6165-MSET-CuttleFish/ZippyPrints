@@ -99,7 +99,7 @@ export default class FileUpload extends React.Component {
             <h3>
             Please upload a valid CAD file
             </h3>
-            <div>
+            <div className="Auth">
             <input type="file" onChange={this.onFileChange} />
             <button onClick={this.onFileUpload}>
             Upload

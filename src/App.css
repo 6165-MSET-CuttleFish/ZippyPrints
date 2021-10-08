@@ -104,10 +104,10 @@ a {
   color: #001b2e;
 }
 
-.Upload {
+.StartScreen {
   width: 100vw;
   height: 600px;
-  background-color: red;
+  background-color: yellowgreen;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -116,13 +116,14 @@ a {
   padding: 20px 40px;
 }
 
-.Upload div {
+.StartScreen div {
   width: 45%;
   height: 100%;
 }
 
 .InfoBlurb {
   background-color: black;
+  padding-left: 15px;
 }
 
 .InfoBlurb h1 {
@@ -132,5 +133,83 @@ a {
 
 .InfoBlurb p {
   font-size: large;
-  
+  color: #fcfcfc;
+}
+
+.InfoBlurb a {
+  font-size: large;
+  color: #fcfcfc;
+}
+
+
+.SignUpForm {
+  padding-left: 15px;
+  border-style: dashed;
+  border-radius: 5%;
+}
+
+.SignUpForm h1 {
+  font-size: 100px;
+  color: #fcfcfc;
+}
+
+.SignUpForm form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.SignUpForm form input {
+  width: 300px;
+  height: 40px;
+  margin-bottom: 20px;
+  border-radius: 20%;
+  border-style: dotted;
+  border-color: black;
+  text-decoration-color: #fcfcfc;
+  font-size: x-large;
+}
+
+.InfoBlurb p {
+  font-size: large;
+  color: #fcfcfc;
+}
+
+.InfoBlurb a {
+  font-size: large;
+  color: #fcfcfc;
+}
+
+.Upload {
+  justify-self: flex-end;
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  text-align: left;
+  justify-content: flex-end;
+  margin-right: 30px;
+}
+
+.Upload button {
+  padding: 10px 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  transition-duration: 400ms;
+  cursor: pointer;
+  color: #fcfcfc;
+  align-self: center;
+  margin-left: 40px;
+  width: 120px;
+  height: 40px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #fcfcfc;
+}
+
+.FormField {
+  flex-direction: row;
+  align-items: stretch;
 }
