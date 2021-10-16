@@ -1,6 +1,6 @@
 import React from "react"
 import { getStorage, ref, uploadBytes } from "firebase/storage";
-import { firebaseConfig } from './api/firebaseConfig';
+import { firebaseConfig } from '../../api/firebaseConfig';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";

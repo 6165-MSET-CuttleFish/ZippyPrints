@@ -9,7 +9,7 @@ function NavBar() {
         </div>
 
         <div className="Auth">
-          <a href ="signup" className="Login">Get Started</a>
+          <a href ="Auth" className="Login">Get Started</a>
         </div>
       </div>
     );
