@@ -3,14 +3,12 @@ import { Grid} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+
 
     
-const useStyles = makeStyles(theme =>({
-    loginButtonFormat: {
-        margin: '100px'
-    }, 
-    button: {
+const useStyles = makeStyles(theme =>({ 
+    loginButton: {
         background: 'linear-gradient(45deg, #00ff00 30%, #9aff5c 90%)',
         border: 0,
         borderRadius: 3,
@@ -19,11 +17,21 @@ const useStyles = makeStyles(theme =>({
         width: 350,
         left: 250
       },
+      googleButton: {
+        background: 'linear-gradient(45deg, #00ff00 30%, #9aff5c 90%)',
+        border: 0,
+        borderRadius: 3,
+        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+        height: 48,
+        width: 350,
+        left: 250,
+        top: 5
+      },
       textbox: {
         left: 250
       },
       checkbox: {
-        padding: '8px'
+        paddingLeft: '5px'
       }
     
 }))
@@ -63,6 +71,31 @@ export default function LoginForm() {
     } = useForm(initalFValues, true, validate);
 
     
+    const provider = new GoogleAuthProvider();
+    provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    const auth = getAuth(); 
+
+    const handleGoogleLogin = () => {
+        signInWithPopup(auth, provider)
+        .then((result) => {
+          // This gives you a Google Access Token. You can use it to access the Google API.
+          const credential = GoogleAuthProvider.credentialFromResult(result);
+          const token = credential.accessToken;
+          // The signed-in user info.
+          const user = result.user;
+          // ...
+        }).catch((error) => {
+          // Handle Errors here.
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          // The email of the user's account used.
+          const email = error.email;
+          // The AuthCredential type that was used.
+          const credential = GoogleAuthProvider.credentialFromError(error);
+          // ...
+        });
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
         if(validate()) {
@@ -84,11 +117,11 @@ export default function LoginForm() {
             });
            
         }  
-        const auth = getAuth(); 
+       
         onAuthStateChanged(auth, (user) => {
             if (user) {
               const uid = user.uid;
-              // ...
+              //TODO: add successful login page that looks good
             } else {
               // User is signed out
               // ...
@@ -126,13 +159,23 @@ export default function LoginForm() {
 
                 />
                 <Controls.Button 
-                className = {classes.button}
+                className = {classes.loginButton}
                 variant = "contained"
                 color = "secondary"
                 size = "large"
                 text = "Login"
-                type="login"/>
+                type="login"
+                />
+                <Controls.Button 
+                className = {classes.googleButton}
+                variant = "contained"
+                color = "secondary"
+                size = "large"
+                text = "Google Login"
+                type="google login"
+                onClick ={handleGoogleLogin}/>
                 </Grid>
+                
 
             </Grid>
             </Form>
