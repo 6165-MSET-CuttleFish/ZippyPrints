@@ -14,7 +14,7 @@ function NavBar() {
         <a href="home">Home</a>
         <a href="about">About</a>
         <a href="examples">Examples</a>
-        <a href="contact">Contact</a>
+        <a href="discover">Find Printers</a>
         </div>
 
         <div className="Auth">

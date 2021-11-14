@@ -11,7 +11,9 @@ const useStyles = makeStyles(theme => ({
     dialogWrapper: {
         padding: '2px',
         position: 'absolute',
-        top: -100,
+        top: 0,
+        minHeight: '80vh',
+        maxHeight: '80vh',
     },
     root: {
         left: 100
@@ -25,7 +27,7 @@ export default function Popup(props) {
     const classes = useStyles();
     
     return(
-        <Dialog open = {openPopup} maxWidth="md" classes={{ paper: classes.dialogWrapper}}>
+        <Dialog open = {openPopup} classes={{ paper: classes.dialogWrapper}}>
             <DialogTitle classes = {classes.root}>
 
                 <div style = {{display: 'flex'}}>

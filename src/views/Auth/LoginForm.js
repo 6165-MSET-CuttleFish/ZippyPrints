@@ -4,7 +4,7 @@ import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-
+import GoogleIcon from '@mui/icons-material/Google';
 
     
 const useStyles = makeStyles(theme =>({ 
@@ -15,23 +15,30 @@ const useStyles = makeStyles(theme =>({
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
         height: 48,
         width: 350,
-        left: 250
+        left: 100
       },
       googleButton: {
-        background: 'linear-gradient(45deg, #00ff00 30%, #9aff5c 90%)',
+        //background: 'linear-gradient(45deg, #00ff00 30%, #9aff5c 90%)',
         border: 0,
         borderRadius: 3,
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
         height: 48,
         width: 350,
-        left: 250,
-        top: 5
+        left: 100,
+        top: 10,
+        icon: GoogleIcon
       },
       textbox: {
-        left: 250
+        left: 100,
+        width: 200,
+        length: 200,
+        size: 100,
       },
-      checkbox: {
-        paddingLeft: '5px'
+      signup: {
+          left: 100,
+          width: 350,
+          top: 300,
+          size: 200
       }
     
 }))
@@ -142,6 +149,8 @@ export default function LoginForm() {
                     onChange = {handleInputChange}
                     error={errors.email}
                     className={classes.textbox}
+                    fullWidth = {false}
+                    
                     />
                     <Controls.Input 
                     label = "Password"
@@ -151,13 +160,18 @@ export default function LoginForm() {
                     error={errors.password}
                     className={classes.textbox}
                     />
-                <Controls.Checkbox 
+                <Controls.Button
+                className = {classes.signup}                
+                variant = "text"
+                size = "small"
+                text = "Don't have an account? Sign up here!"/>
+                {/* <Controls.Checkbox 
                     className={classes.checkbox}
                     label="Remember Me"
                     checked="defaultUnchecked"
                     //onChange = {handleInputChange}
 
-                />
+                /> */}
                 <Controls.Button 
                 className = {classes.loginButton}
                 variant = "contained"
@@ -168,12 +182,13 @@ export default function LoginForm() {
                 />
                 <Controls.Button 
                 className = {classes.googleButton}
-                variant = "contained"
-                color = "secondary"
+                variant = "outlined"
+                color = "primary"
                 size = "large"
-                text = "Google Login"
+                text = "Login with Google"
                 type="google login"
-                onClick ={handleGoogleLogin}/>
+                onClick ={handleGoogleLogin}
+                />
                 </Grid>
                 
 
