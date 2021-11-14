@@ -213,3 +213,13 @@ a {
   flex-direction: row;
   align-items: stretch;
 }
+
+h1 {
+  position: absolute;
+  top: 7rem;
+  left: 1rem;
+  color:#281414;
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+}
