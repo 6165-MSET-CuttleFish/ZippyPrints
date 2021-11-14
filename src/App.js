@@ -5,6 +5,7 @@ import './App.css';
 import FileUpload from './views/Upload/Upload';
 import NavBar from './components/NavBar';
 import { Auth } from './views/Auth';
+import { Map } from './views/Discover'
 
 function Lander() {
   return (
@@ -18,6 +19,7 @@ function Lander() {
           </Route>
           <Route exact path="/About" component={FileUpload} />
           <Route exact path="/Auth" component={Auth} />
+          <Route exact path="/Discover" component={Map} />
         </Switch>
       </BrowserRouter>
     </div>
