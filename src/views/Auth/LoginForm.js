@@ -5,6 +5,9 @@ import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import GoogleIcon from '@mui/icons-material/Google';
+import Popup from "../../components/Popup";
+import RegisterForm from "./RegisterForm"
+
 
     
 const useStyles = makeStyles(theme =>({ 
@@ -29,7 +32,7 @@ const useStyles = makeStyles(theme =>({
         icon: GoogleIcon
       },
       textbox: {
-        left: 100,
+        left: 93,
         width: 200,
         length: 200,
         size: 100,
@@ -50,6 +53,8 @@ const initalFValues = {
 
 }
 export default function LoginForm() {
+    const [openPopup, setOpenPopup] = useState(false)
+
 
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
@@ -113,8 +118,11 @@ export default function LoginForm() {
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
-                window.alert("Welcome, " + userEmail)
+                window.alert("Welcome, " + user.Email)
                 resetForm();
+                setOpenPopup(false)
+
+                
                 // ...
             })
             .catch((error) => {
@@ -128,6 +136,7 @@ export default function LoginForm() {
         onAuthStateChanged(auth, (user) => {
             if (user) {
               const uid = user.uid;
+                
               //TODO: add successful login page that looks good
             } else {
               // User is signed out
@@ -150,21 +159,34 @@ export default function LoginForm() {
                     error={errors.email}
                     className={classes.textbox}
                     fullWidth = {false}
-                    
+                    style = {{width: '350px'}}
+                    required
                     />
                     <Controls.Input 
                     label = "Password"
                     name="password"
+                    type = "password"
                     value={values.password}
                     onChange = {handleInputChange}
                     error={errors.password}
                     className={classes.textbox}
+                    style = {{width: '350px'}}
+                    required
                     />
                 <Controls.Button
                 className = {classes.signup}                
                 variant = "text"
                 size = "small"
-                text = "Don't have an account? Sign up here!"/>
+                text = "Don't have an account? Sign up here!"
+                
+                onClick={() => setOpenPopup(true)}
+                />
+                <Popup 
+                    title = "Register"
+                    openPopup={openPopup}
+                    setOpenPopup={setOpenPopup}>
+                    <RegisterForm/>
+                </Popup>
                 {/* <Controls.Checkbox 
                     className={classes.checkbox}
                     label="Remember Me"
@@ -179,6 +201,7 @@ export default function LoginForm() {
                 size = "large"
                 text = "Login"
                 type="login"
+                onClick = {() => setOpenPopup(false)}
                 />
                 <Controls.Button 
                 className = {classes.googleButton}

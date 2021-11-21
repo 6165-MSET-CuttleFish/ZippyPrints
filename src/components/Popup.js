@@ -2,11 +2,7 @@ import * as React from 'react';
 import { Dialog, DialogTitle, DialogContent, Typography } from '@mui/material'
 import Controls from "./actions/Controls";
 import {makeStyles} from '@mui/styles'
-import Slide from '@mui/styled-engine';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
 const useStyles = makeStyles(theme => ({
     dialogWrapper: {
         padding: '2px',
