@@ -7,6 +7,7 @@ import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signInWithPopu
 import GoogleIcon from '@mui/icons-material/Google';
 import Popup from "../../components/Popup";
 import RegisterForm from "./RegisterForm"
+import NavBar from "../../components/NavBar"
 
 
     
@@ -53,7 +54,8 @@ const initalFValues = {
 
 }
 export default function LoginForm() {
-    const [openPopup, setOpenPopup] = useState(false)
+    const [openRegisterPopup, setOpenRegisterPopup] = useState(false)
+    const [openLoginPopup, setOpenLoginPopup] = useState(false)
 
 
     const validate=(fieldValues = values)=>{
@@ -118,10 +120,10 @@ export default function LoginForm() {
             .then((userCredential) => {
                 // Signed in 
                 const user = userCredential.user;
-                window.alert("Welcome, " + user.Email)
+                window.alert("Welcome, " + userEmail)
                 resetForm();
-                setOpenPopup(false)
-
+                setOpenLoginPopup(false)
+                
                 
                 // ...
             })
@@ -145,6 +147,10 @@ export default function LoginForm() {
           });
     }
     
+        const handleRegisterClick = () => {
+            setOpenRegisterPopup(true)
+            NavBar.closePopup();
+        }
 
     //TODO: functionalize remember me switch
     return (
@@ -179,14 +185,9 @@ export default function LoginForm() {
                 size = "small"
                 text = "Don't have an account? Sign up here!"
                 
-                onClick={() => setOpenPopup(true)}
+                onClick={handleRegisterClick}
                 />
-                <Popup 
-                    title = "Register"
-                    openPopup={openPopup}
-                    setOpenPopup={setOpenPopup}>
-                    <RegisterForm/>
-                </Popup>
+                
                 {/* <Controls.Checkbox 
                     className={classes.checkbox}
                     label="Remember Me"
@@ -201,7 +202,7 @@ export default function LoginForm() {
                 size = "large"
                 text = "Login"
                 type="login"
-                onClick = {() => setOpenPopup(false)}
+                onClick = {() => setOpenLoginPopup(false)}
                 />
                 <Controls.Button 
                 className = {classes.googleButton}
@@ -212,11 +213,25 @@ export default function LoginForm() {
                 type="google login"
                 onClick ={handleGoogleLogin}
                 />
+                <Popup 
+                    title = "Register"
+                    openPopup={openRegisterPopup}
+                    setOpenPopup={setOpenRegisterPopup}>
+                    <RegisterForm/>
+                </Popup>
+                <Popup 
+                    title = "Login"
+                    openPopup={openLoginPopup}
+                    setOpenPopup={setOpenLoginPopup}>
+                    <LoginForm/>
+                </Popup>
                 </Grid>
                 
 
             </Grid>
+            
             </Form>
+            
             
     )
 }

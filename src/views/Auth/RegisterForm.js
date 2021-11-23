@@ -3,7 +3,7 @@ import { Grid} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import GoogleIcon from '@mui/icons-material/Google';
 
     
@@ -41,7 +41,8 @@ const useStyles = makeStyles(theme =>({
           size: 200
       },
       checkbox: {
-          margin: 100
+          marginLeft: 1200,
+
       }
     
 }))

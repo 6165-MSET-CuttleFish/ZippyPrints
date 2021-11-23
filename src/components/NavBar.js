@@ -7,7 +7,7 @@ import LoginForm from '../views/Auth/LoginForm'
 
 function NavBar() {
   const [openPopup, setOpenPopup] = useState(false)
-
+  
     return (
       <div className="App">
         <div className="Elements">
