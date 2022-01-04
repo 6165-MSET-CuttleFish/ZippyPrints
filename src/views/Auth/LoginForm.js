@@ -8,6 +8,9 @@ import GoogleIcon from '@mui/icons-material/Google';
 import Popup from "../../components/Popup";
 import RegisterForm from "./RegisterForm"
 import NavBar from "../../components/NavBar"
+import {firebaseConfig} from '../../api/firebaseConfig'
+import { initializeApp } from 'firebase/app';
+import * as firebase from 'firebase/app';
 
 
     
@@ -54,6 +57,8 @@ const initalFValues = {
 
 }
 export default function LoginForm() {
+
+    firebase.initializeApp(firebaseConfig)
     const [openRegisterPopup, setOpenRegisterPopup] = useState(false)
     const [openLoginPopup, setOpenLoginPopup] = useState(false)
 
@@ -84,7 +89,6 @@ export default function LoginForm() {
         resetForm
     } = useForm(initalFValues, true, validate);
 
-    
     const provider = new GoogleAuthProvider();
     provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
     const auth = getAuth(); 
@@ -121,8 +125,6 @@ export default function LoginForm() {
                 // Signed in 
                 const user = userCredential.user;
                 window.alert("Welcome, " + userEmail)
-                resetForm();
-                setOpenLoginPopup(false)
                 
                 
                 // ...
@@ -149,7 +151,7 @@ export default function LoginForm() {
     
         const handleRegisterClick = () => {
             setOpenRegisterPopup(true)
-            NavBar.closePopup();
+            setOpenLoginPopup(false)
         }
 
     //TODO: functionalize remember me switch
@@ -202,7 +204,7 @@ export default function LoginForm() {
                 size = "large"
                 text = "Login"
                 type="login"
-                onClick = {() => setOpenLoginPopup(false)}
+                onClick = {handleSubmit}
                 />
                 <Controls.Button 
                 className = {classes.googleButton}

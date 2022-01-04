@@ -6,8 +6,10 @@ import LoginForm from '../views/Auth/LoginForm'
 
 
 function NavBar() {
-  const [openPopup, setOpenPopup] = useState(false)
-  
+  const [openLoginPopup, setOpenLoginPopup] = useState(false)
+  const handleLoginButton = () => {
+    setOpenLoginPopup(true)
+  }
     return (
       <div className="App">
         <div className="Elements">
@@ -18,7 +20,8 @@ function NavBar() {
         </div>
 
         <div className="Auth">
-          <a href ="Auth" className="Login">Get Started</a>
+          <a href ="Auth" className="Login">Login</a>
+          <a href ="Auth2" className="Register">Register</a>
         </div>
         <ThemeProvider theme = {color}>
         <Controls.Button
@@ -26,15 +29,15 @@ function NavBar() {
         variant = "contained"
         size = "large"
         color = "white"
-        onClick={() => setOpenPopup(true)}>
+        onClick = {handleLoginButton}>
         
       </Controls.Button>
       </ThemeProvider>
       <Popup 
         title = "Login"
-        openPopup={openPopup}
-        setOpenPopup={setOpenPopup}>
-          <LoginForm/>
+        openPopup={openLoginPopup}
+        setOpenPopup={setOpenLoginPopup}>
+        <LoginForm/>
       </Popup>
       </div>
     

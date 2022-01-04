@@ -6,6 +6,8 @@ import FileUpload from './views/Upload/Upload';
 import NavBar from './components/NavBar';
 import { Auth } from './views/Auth';
 import { Map } from './views/Discover'
+import Dashboard from "./views/Auth/Dashboard"
+import Auth2 from "./views/Auth/Auth2"
 
 function Lander() {
   return (
@@ -20,6 +22,11 @@ function Lander() {
           <Route exact path="/About" component={FileUpload} />
           <Route exact path="/Auth" component={Auth} />
           <Route exact path="/Discover" component={Map} />
+          <Route exact path="/Dashboard" component={Dashboard} />
+          <Route exact path="/Auth2" component={Auth2} />
+
+
+
         </Switch>
       </BrowserRouter>
     </div>

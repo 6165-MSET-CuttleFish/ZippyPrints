@@ -3,8 +3,17 @@ import { Grid} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 import GoogleIcon from '@mui/icons-material/Google';
+import LoginForm from './LoginForm'
+import {firebaseConfig} from '../../api/firebaseConfig'
+import { initializeApp } from 'firebase/app';
+import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
+import Popup from "../../components/Popup";
+import RegisterSuccessForm from "./Redirect"
+import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import { getDatabase, ref, set } from "firebase/database";
+
 
     
 const useStyles = makeStyles(theme =>({ 
@@ -48,15 +57,19 @@ const useStyles = makeStyles(theme =>({
 }))
 const initalFValues = {
     id: 0,
-    fName:'',
-    lName:'',
-    address:'',
+    userName:'',
     email: '',
     password: '',
     printer: false
 
 }
+
 export default function RegisterForm() {
+
+    const app = initializeApp(firebaseConfig);
+
+    const [openPopup, setOpenPopup] = useState(false)
+
 
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
@@ -84,29 +97,30 @@ export default function RegisterForm() {
         resetForm
     } = useForm(initalFValues, true, validate);
 
-    const handlePrinterSelection = (e) => {
-        values.printer = true
-}
 
     const handleSubmit = (e) => {        
         e.preventDefault()
         if(validate()) {
            makeAccount();
+           setOpenPopup(true);
         }  
     }
+    
     const makeAccount = () => {
         var userEmail = values.email
         var userPassword = values.password
-        var isPrinter = values.printer
+        var userName = values.userName;
         const auth = getAuth();
-        createUserWithEmailAndPassword(auth, userEmail, userPassword)
+        createUserWithEmailAndPassword(auth, userEmail, userPassword, userName)
           .then((userCredential) => {
             // Signed in 
-            const user = userCredential.user;
-            user.displayName = values.fName
-            user.tenantId = values.address
-            window.alert("Welcome, " + user.displayName + " Printer: " + isPrinter + ", Your address is: " + user.tenantId)
-            // ...
+                  
+          const user = userCredential.user;
+          const db = getDatabase();
+          set(ref(db, 'users/' + user.uid), {
+            username: userName,
+            email: userEmail,
+          });
           })
           .catch((error) => {
             const errorCode = error.code;
@@ -114,8 +128,11 @@ export default function RegisterForm() {
             window.alert("Error: " + errorCode + ", " + errorMessage)
             // ..
           });
-       
+          
     }
+    
+    
+
     
 
     //TODO: functionalize remember me switch
@@ -124,31 +141,11 @@ export default function RegisterForm() {
             <Grid container>
                 <Grid item xs = {6}>
                     <Controls.Input
-                        label = "First Name"
-                        name="fName"
-                        value={values.fName}
+                        label = "Username"
+                        name="userName"
+                        value={values.userName}
                         onChange = {handleInputChange}
-                        error={errors.fName}
-                        className={classes.textbox}
-                        style = {{width: '350px'}}
-                        required
-                    />
-                    <Controls.Input 
-                        label = "Last Name"
-                        name="lName"
-                        value={values.lName}
-                        onChange = {handleInputChange}
-                        error={errors.lName}
-                        className={classes.textbox}
-                        style = {{width: '350px'}}
-                        required
-                    />
-                    <Controls.Input
-                        label = "Address"
-                        name="address"
-                        value={values.address}
-                        onChange = {handleInputChange}
-                        error={errors.address}
+                        error={errors.userName}
                         className={classes.textbox}
                         style = {{width: '350px'}}
                         required
@@ -175,13 +172,6 @@ export default function RegisterForm() {
                         style = {{width: '350px'}}
                         required
                     />
-                    <Controls.Checkbox
-                        className={classes.checkbox}
-                        name="printerCheck"
-                        label="I have a printer"
-                        values={values.printer}
-                        onChange = {handlePrinterSelection}
-                    />
                      <Controls.Button 
                         className = {classes.loginButton}
                         variant = "contained"
@@ -191,6 +181,12 @@ export default function RegisterForm() {
                         type="register"
                         onChange = {handleSubmit}
                     />
+                    <Popup 
+                        title = "Success!"
+                        openPopup={openPopup}
+                        setOpenPopup={setOpenPopup}>
+                        <RegisterSuccessForm/>
+                    </Popup>
                 
                 </Grid>
             </Grid>

@@ -1,5 +1,5 @@
 import React from 'react'
-import LoginForm from '../Auth/LoginForm'
+import RegisterForm from '../Auth/RegisterForm'
 import {Paper} from '@mui/material'
 import { makeStyles } from '@mui/styles'
 
@@ -12,18 +12,18 @@ const useStyles = makeStyles(theme => ({
       color: '#7393B3'
   }
 }))
-const Auth = props => {
+const Auth2 = props => {
   const classes = useStyles();
   return (
     <div>
       <Paper className = {classes.pageContent}>
-      <LoginForm />
+      <RegisterForm />
       </Paper>
      
     </div>
   )
 }
-export default Auth
+export default Auth2
   
  
   
