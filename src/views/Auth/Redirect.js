@@ -1,4 +1,4 @@
-import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 export default function RegisterSuccessForm() {
     return (

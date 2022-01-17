@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {GoogleMap, useLoadScript, Marker, InfoWindow} from '@react-google-maps/api';
 import LoginForm from '../Auth/LoginForm'
+import axios from 'axios'
 
 export default function Discover() {
 
@@ -10,8 +11,8 @@ export default function Discover() {
     height: '100vh'
   }
   const center = {
-    lat: 43,
-    lng: -79
+    lat: 37,
+    lng: -121
   }
   const options = {
     disableDefaultUI: true,
@@ -30,6 +31,7 @@ export default function Discover() {
       lat: event.latLng.lat(),
       lng: event.latLng.lng(),
       time: new Date(),
+
     },
   ]);
 }, []);
@@ -52,7 +54,7 @@ const onMapLoad = React.useCallback((map) => {
       🖨️ 
       </span>
     </h1>
-    <GoogleMap 
+    <GoogleMap
       mapContainerStyle = {mapContainerStyle} 
       zoom = {8} 
       center = {center}
@@ -60,7 +62,7 @@ const onMapLoad = React.useCallback((map) => {
       onClick={onMapClick}
       onLoad={onMapLoad}
       >
-        {markers.map(marker => (
+        {markers.map(marker => ( 
           <Marker 
           key={LoginForm.email} 
           position = {{lat: marker.lat, lng: marker.lng}}
@@ -84,9 +86,9 @@ const onMapLoad = React.useCallback((map) => {
           }}
         >
           <div>
-            <h2>Team Printer</h2>
-            <p>Team Info</p>
-            <p>Location</p>
+            <h2>Team Printer: </h2>
+            <p>Team Info: </p>
+            <p>Location: </p>
           </div>
         </InfoWindow>) : null}
     </GoogleMap>

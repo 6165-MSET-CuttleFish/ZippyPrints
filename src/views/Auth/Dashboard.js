@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import ReactDOM from 'react-dom'
 import { Grid} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import GoogleIcon from '@mui/icons-material/Google';
-import LoginForm from './LoginForm'
-import {firebaseConfig} from '../../api/firebaseConfig'
-import { initializeApp } from 'firebase/app';
-import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
-import Popup from "../../components/Popup";
-import RegisterSuccessForm from "./Redirect"
+import { getAuth } from "firebase/auth";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import {Paper} from '@mui/material'
 
+    const db = getDatabase();
+    const auth = getAuth();
+    const user = auth.currentUser;
+    
 const initalFValues = {
     id: 0,
     phone: '',
@@ -56,16 +52,33 @@ const useStyles = makeStyles(theme =>({
         
       }
 }))
-
-export default function Dashboard() {
+function getUsername() {
     const db = getDatabase();
     const auth = getAuth();
     const user = auth.currentUser;
-    var username;
+    var username = "";
+    if (user) {
+    onValue(ref(db, '/users/' + user.uid), (snapshot) => {
+        username = (snapshot.val() && snapshot.val().username);
+        // ...
+        console.log(username, user.uid)
+      });
+      console.log(username, user.uid)
+      return username;
+    }
+}
+      
+export default function Dashboard() {
+    const userEmail = user?.email;
+    const username = getUsername();
+    const userUID = user?.uid;
+    console.log(username)
     const classes = useStyles();
     const uploadData = () => {
         const db = getDatabase();
           set(ref(db, 'users/' + user.uid), {
+            username: username,
+            email: user.email,
             phone: values.phone,
             teamnumber: values.teamnumber,
             address1: values.address1,
@@ -118,51 +131,45 @@ export default function Dashboard() {
         handleInputChange,
         resetForm
     } = useForm(initalFValues, true, validate);
- 
 
-    if (user) {
-        onValue(ref(db, '/users/' + user.uid), (snapshot) => {
-            const username = (snapshot.val() && snapshot.val().username);
-          });
-    } else {
-     
-    }
+    
 
     return(
         <Form onSubmit={handleSubmit}>
             <Paper className={classes.root} variant="outlined" elevation={10}>
-            <div>Please fill out the following information to proceed</div>
+                <div>{userEmail} . . . {userUID}</div>
+            <div>Please fill out the following information to proceed, {username}</div>
             <Grid container>
             <Grid item xs = {6}>
-            <Controls.Input
-                        label = "Team Number"
-                        name="teamnumber"
-                        value={values.teamnumber}
-                        onChange = {handleInputChange}
-                        error={errors.teamnumber}
-                        className={classes.textbox}
-                        style = {{width: '350px'}}
-                        required
+                <Controls.Input
+                    label = "Team Number"
+                    name="teamnumber"
+                    value={values.teamnumber}
+                    onChange = {handleInputChange}
+                    error={errors.teamnumber}
+                    className={classes.textbox}
+                    style = {{width: '350px'}}
+                    required
                     />
-             <Controls.Input
-                        label = "Phone Number"
-                        name="phone"
-                        value={values.phone}
-                        onChange = {handleInputChange}
-                        error={errors.phone}
-                        className={classes.textbox}
-                        style = {{width: '350px'}}
-                        required
+                <Controls.Input
+                    label = "Phone Number"
+                    name="phone"
+                    value={values.phone}
+                    onChange = {handleInputChange}
+                    error={errors.phone}
+                    className={classes.textbox}
+                    style = {{width: '350px'}}
+                    required
                     />
-            <Controls.Input
-                        label = "Address 1"
-                        name="address1"
-                        value={values.address1}
-                        onChange = {handleInputChange}
-                        error={errors.address1}
-                        className={classes.textbox}
-                        style = {{width: '350px'}}
-                        required
+                <Controls.Input
+                    label = "Address 1"
+                    name="address1"
+                    value={values.address1}
+                    onChange = {handleInputChange}
+                    error={errors.address1}
+                    className={classes.textbox}
+                    style = {{width: '350px'}}
+                    required
                     />
                 <Controls.Input 
                     label = "Address 2"
