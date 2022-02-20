@@ -86,9 +86,9 @@ const onMapLoad = React.useCallback((map) => {
           }}
         >
           <div>
-            <h2>Team Printer: </h2>
-            <p>Team Info: </p>
-            <p>Location: </p>
+            <h2>Team Printer: 6165 </h2>
+            <p>Team Info: MSET Cuttlefish 6165 </p>
+            <p>Location: Saratoga, California</p>
           </div>
         </InfoWindow>) : null}
     </GoogleMap>

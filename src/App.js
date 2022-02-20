@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import  { Home }  from './views/Home';
-import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
+import { Route, Switch, Redirect, BrowserRouter  } from 'react-router-dom';
 import './App.css';
 import FileUpload from './views/Upload/Upload';
 import NavBar from './components/NavBar';
@@ -10,23 +10,23 @@ import Dashboard from "./views/Auth/Dashboard"
 import Auth2 from "./views/Auth/Auth2"
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
+class App extends React.Component {
+  state = {
+    // Initially, no file is selected
+    user: null
+  };
 
-function Lander() {
-  const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      // User is signed in, see docs for a list of available properties
-      // https://firebase.google.com/docs/reference/js/firebase.User
-      const uid = user.uid;
-      // ...
-    } else {
-      // User is signed out
-      // ...
-    }
+constructor(props){
+  super(props);
+  onAuthStateChanged(getAuth(), (user) => {
+    this.setState({ user: user });
   });
+  
+}
+
+render()  {  
   return (
     <div>
-      {auth.currentUser?.uid}
       <NavBar />
       <BrowserRouter>
         <Switch>
@@ -47,5 +47,5 @@ function Lander() {
     </div>
   );
 }
-
-export default Lander;
+}
+export default App

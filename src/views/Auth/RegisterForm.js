@@ -3,7 +3,7 @@ import { Grid} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
 import GoogleIcon from '@mui/icons-material/Google';
 import LoginForm from './LoginForm'
 import {firebaseConfig} from '../../api/firebaseConfig'
@@ -98,25 +98,34 @@ export default function RegisterForm() {
     } = useForm(initalFValues, true, validate);
 
 
-    const handleSubmit = (e) => {        
+    const handleSubmit = async (e) => {        
         e.preventDefault()
         if(validate()) {
-           makeAccount();
+           await makeAccount();
            setOpenPopup(true);
         }  
     }
     
-    const makeAccount = () => {
+    const makeAccount = async ()  => {
         var userEmail = values.email
         var userPassword = values.password
         var userName = values.userName;
         const auth = getAuth();
-        createUserWithEmailAndPassword(auth, userEmail, userPassword, userName)
-          .then((userCredential) => {
-            // Signed in 
-                  
+        await createUserWithEmailAndPassword(auth, userEmail, userPassword, userName)
+          .then(async (userCredential) => {
+            // Sgned in 
+        await signInWithEmailAndPassword(auth, userEmail, userPassword)
           const user = userCredential.user;
           const db = getDatabase();
+          updateProfile(auth.currentUser, {
+            displayName: userName
+          }).then(() => {
+            // Profile updated!
+            // ...
+          }).catch((error) => {
+            // An error occurred
+            // ...
+          });
           set(ref(db, 'users/' + user.uid), {
             username: userName,
             email: userEmail,

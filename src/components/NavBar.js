@@ -13,10 +13,9 @@ function NavBar() {
     return (
       <div className="App">
         <div className="Elements">
-        <a href="home">Home</a>
-        <a href="about">About</a>
-        <a href="examples">Examples</a>
-        <a href="discover">Find Printers</a>
+        <a href="home">Zippyprints</a>
+        <a href="about">Upload</a>
+        <a href="discover">Map</a>
         </div>
 
         <div className="Auth">

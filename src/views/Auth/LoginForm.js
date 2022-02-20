@@ -122,9 +122,10 @@ export default function LoginForm() {
             const auth = getAuth();
             signInWithEmailAndPassword(auth, userEmail, userPassword)
             .then((userCredential) => {
+                
                 // Signed in 
                 const user = userCredential.user;
-                window.alert("Welcome, " + userEmail)
+                window.alert("Welcome, ")
                 
                 
                 // ...

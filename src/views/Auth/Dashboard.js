@@ -7,9 +7,6 @@ import { getAuth } from "firebase/auth";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import {Paper} from '@mui/material'
 
-    const db = getDatabase();
-    const auth = getAuth();
-    const user = auth.currentUser;
     
 const initalFValues = {
     id: 0,
@@ -66,16 +63,30 @@ function getUsername() {
       console.log(username, user.uid)
       return username;
     }
+   
 }
       
 export default function Dashboard() {
-    const userEmail = user?.email;
-    const username = getUsername();
-    const userUID = user?.uid;
+    const [currentUser, setCurrentUser] = useState([]);
+    const [currentUsername, setCurrentUsername] = useState([]);
+    const user = getAuth()?.currentUser;
+    useEffect(() => {
+        async function fetchUser() {
+            const requestUser = await user;
+            setCurrentUser(requestUser)
+            return requestUser
+        }
+        fetchUser();
+    }, [user])
+    
+    const db = getDatabase();
+
+    const userEmail = currentUser?.email;
+    const username = currentUser?.displayName;
+    const userUID = currentUser?.uid;
     console.log(username)
     const classes = useStyles();
     const uploadData = () => {
-        const db = getDatabase();
           set(ref(db, 'users/' + user.uid), {
             username: username,
             email: user.email,
