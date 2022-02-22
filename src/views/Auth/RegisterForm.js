@@ -11,7 +11,7 @@ import { initializeApp } from 'firebase/app';
 import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
 import Popup from "../../components/Popup";
 import RegisterSuccessForm from "./Redirect"
-import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs, addDoc, setDoc, doc } from 'firebase/firestore/lite';
 import { getDatabase, ref, set } from "firebase/database";
 
 
@@ -115,10 +115,12 @@ export default function RegisterForm() {
           .then(async (userCredential) => {
             // Sgned in 
         await signInWithEmailAndPassword(auth, userEmail, userPassword)
-          const user = userCredential.user;
-          const db = getDatabase();
-          updateProfile(auth.currentUser, {
-            displayName: userName
+          const db = getFirestore();
+          const colRef = doc(db, "users", "" + auth.currentUser.uid)
+
+          await updateProfile(await auth.currentUser, {
+            displayName: userName,
+            
           }).then(() => {
             // Profile updated!
             // ...
@@ -126,10 +128,12 @@ export default function RegisterForm() {
             // An error occurred
             // ...
           });
-          set(ref(db, 'users/' + user.uid), {
+          await setDoc(colRef, {
             username: userName,
             email: userEmail,
-          });
+          })
+
+        
           })
           .catch((error) => {
             const errorCode = error.code;

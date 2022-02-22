@@ -3,16 +3,18 @@ import { Grid} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
-import { getAuth } from "firebase/auth";
+import { getAuth, updateProfile } from "firebase/auth";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import {Paper} from '@mui/material'
+import { getFirestore, collection, getDocs, addDoc, updateDoc, doc,  } from 'firebase/firestore/lite';
+
 
     
 const initalFValues = {
     id: 0,
     phone: '',
     teamnumber: '',
-    address1: '',
+    address: '',
     address2: '',
     city: '',
     country:'',
@@ -49,26 +51,10 @@ const useStyles = makeStyles(theme =>({
         
       }
 }))
-function getUsername() {
-    const db = getDatabase();
-    const auth = getAuth();
-    const user = auth.currentUser;
-    var username = "";
-    if (user) {
-    onValue(ref(db, '/users/' + user.uid), (snapshot) => {
-        username = (snapshot.val() && snapshot.val().username);
-        // ...
-        console.log(username, user.uid)
-      });
-      console.log(username, user.uid)
-      return username;
-    }
-   
-}
+
       
 export default function Dashboard() {
     const [currentUser, setCurrentUser] = useState([]);
-    const [currentUsername, setCurrentUsername] = useState([]);
     const user = getAuth()?.currentUser;
     useEffect(() => {
         async function fetchUser() {
@@ -78,33 +64,30 @@ export default function Dashboard() {
         }
         fetchUser();
     }, [user])
-    
-    const db = getDatabase();
-
     const userEmail = currentUser?.email;
     const username = currentUser?.displayName;
     const userUID = currentUser?.uid;
+    const db = getFirestore();
+    const colRef = doc(db, 'users', "" + currentUser?.uid)
+    
     console.log(username)
     const classes = useStyles();
-    const uploadData = () => {
-          set(ref(db, 'users/' + user.uid), {
+    const uploadData = async () => {
+          await updateDoc(colRef, {
             username: username,
             email: user.email,
-            phone: values.phone,
             teamnumber: values.teamnumber,
-            address1: values.address1,
-            address2: values.address2,
+            address: values.address,
             city: values.city,
-            country: values.country,
             state: values.state,
-            zipcode: values.zipcode,
-          });
+            zipcode: values.zipcode
+        })
     }
     
     const handleSubmit = (e) => {        
         e.preventDefault()
         if(validate()) {
-           uploadData()
+            uploadData();   
         }  
     }
 
@@ -115,7 +98,7 @@ export default function Dashboard() {
             temp.teamnumber = (/..../).test(fieldValues.teamnumber)?"":"Team Number is not valid."
         if ('phone' in fieldValues)
             temp.phone = (/..../).test(fieldValues.phone)?"":"Phone Number is not valid."
-        if ('address1' in fieldValues)
+        if ('address' in fieldValues)
             temp.address1 = (/..../).test(fieldValues.address1)?"":"Address is not valid."
         if ('city' in fieldValues)
             temp.city = (/..../).test(fieldValues.city)?"":"City is not valid."
@@ -143,7 +126,7 @@ export default function Dashboard() {
         resetForm
     } = useForm(initalFValues, true, validate);
 
-    
+
 
     return(
         <Form onSubmit={handleSubmit}>
@@ -173,11 +156,11 @@ export default function Dashboard() {
                     required
                     />
                 <Controls.Input
-                    label = "Address 1"
-                    name="address1"
-                    value={values.address1}
+                    label = "Address"
+                    name="address"
+                    value={values.address}
                     onChange = {handleInputChange}
-                    error={errors.address1}
+                    error={errors.address}
                     className={classes.textbox}
                     style = {{width: '350px'}}
                     required
