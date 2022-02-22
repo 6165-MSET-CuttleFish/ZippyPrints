@@ -6,10 +6,12 @@ import {makeStyles} from '@mui/styles'
 import { getAuth, updateProfile } from "firebase/auth";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import {Paper} from '@mui/material'
-import { getFirestore, collection, getDocs, addDoc, updateDoc, doc,  } from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs, addDoc, updateDoc, doc, getDoc, GeoPoint  } from 'firebase/firestore/lite';
+import axios from 'axios'
 
+const apiKey = "AIzaSyD66Pg0s20be-L1lod3A29C8uyehouZREE"
+const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
 
-    
 const initalFValues = {
     id: 0,
     phone: '',
@@ -72,24 +74,68 @@ export default function Dashboard() {
     
     console.log(username)
     const classes = useStyles();
+    const [geoLocationData, setGeoLocationData] = useState(null);
+
+    const getData = async () => {
+      const docSnap = await getDoc(colRef);
+      console.log((await docSnap).data())
+      const street = (await docSnap).data().address;
+      const city = (await docSnap).data().city;
+      const state = (await docSnap).data().state;
+      console.log(street, city, state)
+      const formattedAddress = street + ", " + city + ", " + state;
+
+    try {
+        const {data} = await getGeoLocation(formattedAddress);
+        await setGeoLocationData(data);
+        console.log(data);
+        await updateDoc(colRef, {
+            formattedAddress: data.results[0]?.formatted_address,
+            geoPoint: new GeoPoint(await (data.results[0]?.geometry?.location?.lat), await (data.results[0]?.geometry?.location?.lng))
+        })
+    }catch(error) {
+        console.log(error.message);
+    }
+
+    
+}
+const getGeoLocation = async (address) => {
+    try {
+        const data = await axios.get(baseUrl + `${address}&key=${apiKey}`);
+        return data;
+    } catch(error) {
+        throw error;
+    }
+  }
+
     const uploadData = async () => {
-          await updateDoc(colRef, {
+        await updateDoc(colRef, {
             username: username,
             email: user.email,
             teamnumber: values.teamnumber,
             address: values.address,
             city: values.city,
             state: values.state,
-            zipcode: values.zipcode
+            zipcode: values.zipcode,
+        })
+        await getData();
+    }
+    const secondUploadData = async () => {
+        await getData
+        await updateDoc(colRef, {
+            formattedAddress: geoLocationData?.results[0]?.formatted_address,
+            geoPoint: new GeoPoint(await (geoLocationData?.results[0]?.geometry?.location?.lat), await (geoLocationData?.results[0]?.geometry?.location?.lng))
         })
     }
+
     
-    const handleSubmit = (e) => {        
+    const handleSubmit = async(e) => {        
         e.preventDefault()
         if(validate()) {
-            uploadData();   
+            uploadData();  
         }  
     }
+
 
     
     const validate=(fieldValues = values)=>{

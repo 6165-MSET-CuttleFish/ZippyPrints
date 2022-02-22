@@ -42,7 +42,7 @@ function Discover() {
     }
 }
 
-const Interval = setInterval( ()=>{getData()},3600000); 
+const Interval = setInterval(()=> {getData()}, 3600000); 
 
 useEffect(() => {
   return() => {
@@ -54,7 +54,7 @@ const uploadData = async () => {
   getData();
   await updateDoc(colRef, {
     formattedAddress: geoLocationData?.results[0].formatted_address,
-    geoPoint: new GeoPoint(geoLocationData?.results[0].geometry.location.lat, geoLocationData?.results[0].geometry.location.lng)
+    geoPoint: new GeoPoint(geoLocationData?.results[0].geometry.location.lat || 0, geoLocationData?.results[0].geometry.location.lng || 0)
 })
 }
 uploadData()
