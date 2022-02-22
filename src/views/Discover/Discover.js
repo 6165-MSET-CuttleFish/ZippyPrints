@@ -6,71 +6,8 @@ import { getFirestore, collection, getDocs, addDoc, updateDoc, doc, getDoc, GeoP
 import { getAuth, updateProfile,  } from "firebase/auth";
 import { getDatabase, ref, set, onValue} from "firebase/database";
 
-const apiKey = "AIzaSyD66Pg0s20be-L1lod3A29C8uyehouZREE"
-const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
 
 function Discover() {
-
-    const [currentUser, setCurrentUser] = useState([]);
-    const user = getAuth()?.currentUser;
-    useEffect(() => {
-        async function fetchUser() {
-            const requestUser = await user;
-            setCurrentUser(requestUser)
-            return requestUser
-        }
-        fetchUser();
-    }, [user])
-    const db =  getFirestore();
-    const colRef = doc(db, 'users', "" + currentUser?.uid)
-    const [geoLocationData, setGeoLocationData] = useState(null);
-
-    const getData = async () => {
-      const docSnap = await getDoc(colRef);
-      console.log((await docSnap).data())
-      const street = (await docSnap).data().address;
-      const city = (await docSnap).data().city;
-      const state = (await docSnap).data().state;
-      console.log(street, city, state)
-      const formattedAddress = street + ", " + city + ", " + state;
-      try {
-        const {data} = await getGeoLocation(formattedAddress);
-        setGeoLocationData(data);
-        console.log(data);
-    }catch(error) {
-        console.log(error.message);
-    }
-}
-
-const Interval = setInterval(()=> {getData()}, 3600000); 
-
-useEffect(() => {
-  return() => {
-      clearInterval(Interval); 
-  }
-}, [Interval]);
-
-const uploadData = async () => {
-  getData();
-  await updateDoc(colRef, {
-    formattedAddress: geoLocationData?.results[0].formatted_address,
-    geoPoint: new GeoPoint(geoLocationData?.results[0].geometry.location.lat || 0, geoLocationData?.results[0].geometry.location.lng || 0)
-})
-}
-uploadData()
-
- 
-  const getGeoLocation = async (address) => {
-  try {
-      const data = await axios.get(baseUrl + `${address}&key=${apiKey}`);
-      return data;
-  } catch(error) {
-      throw error;
-  }
-}
-
-
- 
 
 
   const libraries = ["places"];
