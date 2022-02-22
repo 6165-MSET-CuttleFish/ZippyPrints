@@ -13,7 +13,6 @@ import { initializeApp } from 'firebase/app';
 import * as firebase from 'firebase/app';
 
 
-    
 const useStyles = makeStyles(theme =>({ 
     loginButton: {
         background: 'linear-gradient(45deg, #00ff00 30%, #9aff5c 90%)',
