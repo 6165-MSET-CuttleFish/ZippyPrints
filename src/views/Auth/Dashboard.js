@@ -6,7 +6,7 @@ import {makeStyles} from '@mui/styles'
 import { getAuth, updateProfile } from "firebase/auth";
 import { getDatabase, ref, set, onValue } from "firebase/database";
 import {Paper} from '@mui/material'
-import { getFirestore, collection, getDocs, addDoc, updateDoc, doc, getDoc, GeoPoint  } from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs, addDoc, setDoc, updateDoc, doc, getDoc, GeoPoint, query, where,  } from 'firebase/firestore/lite';
 import axios from 'axios'
 
 const apiKey = "AIzaSyD66Pg0s20be-L1lod3A29C8uyehouZREE"
@@ -57,6 +57,7 @@ const useStyles = makeStyles(theme =>({
       
 export default function Dashboard() {
     const [currentUser, setCurrentUser] = useState([]);
+    
     const user = getAuth()?.currentUser;
     useEffect(() => {
         async function fetchUser() {
@@ -71,7 +72,8 @@ export default function Dashboard() {
     const userUID = currentUser?.uid;
     const db = getFirestore();
     const colRef = doc(db, 'users', "" + currentUser?.uid)
-    
+    const markerColRef = doc(db, 'markers', "" + currentUser?.uid)
+
     console.log(username)
     const classes = useStyles();
     const [geoLocationData, setGeoLocationData] = useState(null);
@@ -93,6 +95,13 @@ export default function Dashboard() {
             formattedAddress: data.results[0]?.formatted_address,
             geoPoint: new GeoPoint(await (data.results[0]?.geometry?.location?.lat), await (data.results[0]?.geometry?.location?.lng))
         })
+        await setDoc(markerColRef, {
+            lat: await (data.results[0]?.geometry?.location?.lat),
+            lng: await (data.results[0]?.geometry?.location?.lng),
+            formattedAddress: data.results[0]?.formatted_address,
+            teamnumber: values.teamnumber
+          })
+
     }catch(error) {
         console.log(error.message);
     }
@@ -120,20 +129,14 @@ const getGeoLocation = async (address) => {
         })
         await getData();
     }
-    const secondUploadData = async () => {
-        await getData
-        await updateDoc(colRef, {
-            formattedAddress: geoLocationData?.results[0]?.formatted_address,
-            geoPoint: new GeoPoint(await (geoLocationData?.results[0]?.geometry?.location?.lat), await (geoLocationData?.results[0]?.geometry?.location?.lng))
-        })
-    }
-
+    
     
     const handleSubmit = async(e) => {        
         e.preventDefault()
         if(validate()) {
             uploadData();  
         }  
+        
     }
 
 
