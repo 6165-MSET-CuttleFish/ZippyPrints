@@ -19,9 +19,7 @@ function NavBar() {
   // }
   // onLogin()
 
-  const handleLoginButton = () => {
-    setOpenLoginPopup(true)
-  }
+
     return (
       <div className="App">
         <div className="Elements">
@@ -34,35 +32,12 @@ function NavBar() {
           <a href ="Auth" className="Login">{loginButtonName}</a>
           <a href ="Auth2" className="Register">Register</a>
         </div>
-        <ThemeProvider theme = {color}>
-        <Controls.Button
-        text = "Login"
-        variant = "contained"
-        size = "large"
-        color = "white"
-        onClick = {handleLoginButton}>
-        
-      </Controls.Button>
-      </ThemeProvider>
-      <Popup 
-        title = "Login"
-        openPopup={openLoginPopup}
-        setOpenPopup={setOpenLoginPopup}>
-        <LoginForm/>
-      </Popup>
+       
+      
       </div>
     
     );
   }
-  const color = createTheme({
-    palette: {
-      white: {
-        main: '#FFFFFF',
-      },
-      red: {
-        main: ''
-      },
-    },
-  });
+  
   
 export default NavBar;

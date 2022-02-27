@@ -3,12 +3,12 @@ import {GoogleMap, useLoadScript, Marker, InfoWindow} from '@react-google-maps/a
 import axios from 'axios'
 import { getFirestore, collection, getDocs, addDoc, updateDoc, doc, getDoc, GeoPoint, query } from 'firebase/firestore/lite';
 import { getAuth, updateProfile,  } from "firebase/auth";
-import { getDatabase, ref, set, onValue} from "firebase/database";
+import { getDatabase, set, onValue} from "firebase/database";
 import { getMarkerData} from '../../components/actions/Location'
 import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
 import {Typography} from '@mui/material'
-
+import { getStorage, ref, getBlob, getDownloadURL } from "firebase/storage";
 
 
 function Discover() {
@@ -17,10 +17,8 @@ function Discover() {
 
   const [currentUser, setCurrentUser] = useState([]);
   const [markers, setMarkers] = useState([]);
-  const [location, setLocation] = useState([]);
-  const [team, setTeam] = useState([]);
   const [selected, setSelected] = useState(null);
-
+  const storage = getStorage();
   
   
   const classes = useStyles();
@@ -42,26 +40,33 @@ function Discover() {
         try {
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
-              setMarkers((current) => [...current, 
-                {
-                  lat: doc.data()?.lat,
-                  lng: doc.data()?.lng,
-                  team: doc.data()?.teamnumber,
-                  location: doc.data()?.formattedAddress
-                },
-              ]);
-              setTeam(doc.data()?.teamnumber)
-              setLocation(doc.data()?.formattedAddress)
+              const pathReference = ref(storage, "files/" + doc.data().uid + ".STL");
+              getDownloadURL(pathReference).then((response) =>{
+                setMarkers((current) => [...current, 
+                  {
+                    lat: doc.data()?.lat,
+                    lng: doc.data()?.lng,
+                    team: doc.data()?.teamnumber,
+                    location: doc.data()?.formattedAddress,
+                    uid: doc.data()?.uid
+                  },
+                ]);
+              }).catch((err) => {
+                console.log(err)
+              })
+              
+            
         });
               
           
         } catch (error){
+          window.alert(error)
             console.log(error)
     
         }
     }
       getMarkerData()
-    }, [])
+    }, [storage])
 
   
 
@@ -77,7 +82,7 @@ function Discover() {
     height: '100vh'
   }
   const [center, setCenter]= useState({
-    lat: 36.7783, lng: -119.4179
+    lat: 36.7783, lng: -96.4179
 })
 
 const onSelect = (marker) => {
@@ -104,6 +109,19 @@ const onMapLoad = (map) => {
   mapRef.current = map;
 
 }
+const handleClick = async(e) => {
+  e.preventDefault();
+  const pathReference = ref(storage, "files/" + selected.uid + ".STL");
+  getDownloadURL(pathReference)
+  .then((url) => {
+    window.open(url, '_blank');
+  })
+  .catch((error) => {
+    console.log(error)
+    
+  })
+}
+
 
   if (loadError) return "Error loading map";
   if (!isLoaded) return "Loading map...";
@@ -120,7 +138,7 @@ const onMapLoad = (map) => {
     </h1>
     <GoogleMap
       mapContainerStyle = {mapContainerStyle} 
-      zoom = {4} 
+      zoom = {5} 
       center = {center}
       options={options}
       onLoad={onMapLoad}
@@ -154,7 +172,7 @@ const onMapLoad = (map) => {
         >
           <div>
            <Typography gutterBottom variant="h5">
-            {selected.team}'s Printer
+            {selected.team}'s Request
            </Typography>
            <Typography  variant="body2" component = "h2">
             Location: {selected.location}
@@ -165,9 +183,9 @@ const onMapLoad = (map) => {
                 variant = "contained"
                 color = "secondary"
                 size = "large"
-                text = "See Request"
+                text = "Download Request"
                 type="request"
-                //onClick = {}
+                onClick = {handleClick}
                 />
                 <div></div>
           </div>
@@ -185,7 +203,7 @@ const useStyles = makeStyles(theme =>({
       borderRadius: 3,
       boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
       height: 48,
-      width: 200,
+      width: 220,
       left: 10,
       bottom: 5
     }

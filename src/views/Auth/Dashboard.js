@@ -99,7 +99,8 @@ export default function Dashboard() {
             lat: await (data.results[0]?.geometry?.location?.lat),
             lng: await (data.results[0]?.geometry?.location?.lng),
             formattedAddress: data.results[0]?.formatted_address,
-            teamnumber: values.teamnumber
+            teamnumber: values.teamnumber,
+            uid: currentUser.uid
           })
 
     }catch(error) {
