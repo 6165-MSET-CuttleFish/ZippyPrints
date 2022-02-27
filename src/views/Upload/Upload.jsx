@@ -23,8 +23,8 @@ export default class FileUpload extends React.Component {
   }
   componentDidMount() {
     (async() => {
-      const hi = await getAuth()?.currentUser?.uid
-      this.state.user = hi;
+      const useruid = await getAuth()?.currentUser?.uid
+      this.state.user = useruid;
     })();
   }
   componentDidUpdate() {
@@ -85,10 +85,8 @@ export default class FileUpload extends React.Component {
           <p>File Name: {this.state.selectedFile.name}</p>
           <p>File Type: {this.state.selectedFile.type}</p>
           <p>
-            Last Modified:{" "}
-            {this.state.selectedFile.lastModifiedDate.toDateString()}
-            User:{" "} {this.state.user}
           </p>
+          <div>User:{" "} {this.state.user}</div>
 
         </div>
       );
@@ -105,12 +103,17 @@ export default class FileUpload extends React.Component {
   render() {
     return (
       <div>
-        <h1>
+        <div>
+          <h2>
           CAD File
-        </h1>
-        <h3>
-          Please upload a valid CAD file
-        </h3>
+          </h2>
+          </div>
+        <div>
+          <h3>
+          Please upload a valid CAD file (We only support .STL for now)
+          </h3>
+        </div>
+        <div></div>
         <div className="Auth">
           <input type="file" onChange={this.onFileChange} />
           <button onClick={this.onFileUpload}>
