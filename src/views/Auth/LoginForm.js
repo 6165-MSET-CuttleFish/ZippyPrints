@@ -1,19 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import { Grid} from '@mui/material'
-import {useForm, Form} from '../../components/useForm'
+import React, { useState } from 'react'
+import { useForm, Form } from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
-import {makeStyles} from '@mui/styles'
+import { makeStyles } from '@mui/styles'
 import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import GoogleIcon from '@mui/icons-material/Google';
-import Popup from "../../components/Popup";
-import RegisterForm from "./RegisterForm"
-import NavBar from "../../components/NavBar"
-import {firebaseConfig} from '../../api/firebaseConfig'
-import { initializeApp } from 'firebase/app';
+import { firebaseConfig } from '../../api/firebaseConfig'
 import * as firebase from 'firebase/app';
+import { Typography, Snackbar, SnackbarContent, Link, Paper, Container, CssBaseline,
+         Progress, Alert, Item, Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
-
-const useStyles = makeStyles(theme =>({ 
+const useStyles = makeStyles(t =>({ 
     loginButton: {
         background: 'linear-gradient(45deg, #00ff00 30%, #9aff5c 90%)',
         border: 0,
@@ -21,10 +18,10 @@ const useStyles = makeStyles(theme =>({
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
         height: 48,
         width: 350,
-        left: 100
+        left: 100,
+
       },
       googleButton: {
-        //background: 'linear-gradient(45deg, #00ff00 30%, #9aff5c 90%)',
         border: 0,
         borderRadius: 3,
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
@@ -48,6 +45,7 @@ const useStyles = makeStyles(theme =>({
       }
     
 }))
+
 const initalFValues = {
     id: 0,
     email: '',
@@ -58,9 +56,6 @@ const initalFValues = {
 export default function LoginForm() {
 
     firebase.initializeApp(firebaseConfig)
-    const [openRegisterPopup, setOpenRegisterPopup] = useState(false)
-    const [openLoginPopup, setOpenLoginPopup] = useState(false)
-
 
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
@@ -110,6 +105,7 @@ export default function LoginForm() {
           // The AuthCredential type that was used.
           const credential = GoogleAuthProvider.credentialFromError(error);
           // ...
+          window.alert(errorCode + ": " + errorMessage)
         });
     }
 
@@ -123,7 +119,6 @@ export default function LoginForm() {
             .then((userCredential) => {
                 
                 // Signed in 
-                const user = userCredential.user;
                 window.alert("Welcome, ")
                 
                 
@@ -137,29 +132,33 @@ export default function LoginForm() {
            
         }  
        
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-              const uid = user.uid;
-                
-              //TODO: add successful login page that looks good
-            } else {
-              // User is signed out
-              // ...
-            }
-          });
     }
-    
-        const handleRegisterClick = () => {
-            setOpenRegisterPopup(true)
-            setOpenLoginPopup(false)
-        }
-
     //TODO: functionalize remember me switch
+    const theme = createTheme();
     return (
+        <div>
+<ThemeProvider theme={theme}>
+        <Box
+          sx={{
+            marginTop: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        > 
+        <Avatar sx={{ m: 1, bgcolor: '#00ff00' }}>
+            <LockOutlinedIcon />
+        </Avatar>
+        <h4>Sign in</h4>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{
+            marginTop: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginLeft: 3,
+          }}>
             <Form onSubmit={handleSubmit}>
-            <Grid container>
-                <Grid item xs = {6}>
-                    <Controls.Input
+                <Controls.Input
                     label = "Email"
                     name="email"
                     value={values.email}
@@ -169,71 +168,46 @@ export default function LoginForm() {
                     fullWidth = {false}
                     style = {{width: '350px'}}
                     required
-                    />
-                    <Controls.Input 
+                />
+                <Controls.Input 
                     label = "Password"
                     name="password"
-                    type = "password"
                     value={values.password}
                     onChange = {handleInputChange}
                     error={errors.password}
                     className={classes.textbox}
                     style = {{width: '350px'}}
                     required
-                    />
-                <Controls.Button
-                className = {classes.signup}                
-                variant = "text"
-                size = "small"
-                text = "Don't have an account? Sign up here!"
-                
-                onClick={handleRegisterClick}
-                />
-                
-                {/* <Controls.Checkbox 
-                    className={classes.checkbox}
-                    label="Remember Me"
-                    checked="defaultUnchecked"
-                    //onChange = {handleInputChange}
-
-                /> */}
-                <Controls.Button 
-                className = {classes.loginButton}
-                variant = "contained"
-                color = "secondary"
-                size = "large"
-                text = "Login"
-                type="login"
-                onClick = {handleSubmit}
                 />
                 <Controls.Button 
-                className = {classes.googleButton}
-                variant = "outlined"
-                color = "primary"
-                size = "large"
-                text = "Login with Google"
-                type="google login"
-                onClick ={handleGoogleLogin}
+                    className = {classes.loginButton}
+                    variant = "contained"
+                    color = "secondary"
+                    size = "large"
+                    text = "Login"
+                    onClick = {handleSubmit}
                 />
-                <Popup 
-                    title = "Register"
-                    openPopup={openRegisterPopup}
-                    setOpenPopup={setOpenRegisterPopup}>
-                    <RegisterForm/>
-                </Popup>
-                <Popup 
-                    title = "Login"
-                    openPopup={openLoginPopup}
-                    setOpenPopup={setOpenLoginPopup}>
-                    <LoginForm/>
-                </Popup>
-                </Grid>
-                
-
-            </Grid>
-            
-            </Form>
-            
-            
+                <Controls.Button 
+                    className = {classes.googleButton}
+                    variant = "outlined"
+                    color = "primary"
+                    size = "large"
+                    text = "Login with Google"
+                    onClick ={handleGoogleLogin}
+                />
+                <Link href="register" variant="body2" sx={{
+                    marginTop: 4,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    marginRight: 3
+                }}>
+                    {"Don't have an account? Sign Up"}
+                </Link>
+                </Form>
+                </Box>
+            </Box>
+    </ThemeProvider>   
+    </div>     
     )
 }

@@ -106,7 +106,7 @@ a {
 
 .StartScreen {
   width: 100vw;
-  height: 600px;
+  height: 655px;
   background-color: yellowgreen;
   display: flex;
   flex-direction: row;
@@ -217,9 +217,24 @@ a {
 h1 {
   position: absolute;
   top: 7rem;
-  left: 1rem;
+  left: 3rem;
   color:#281414;
   z-index: 10;
   margin: 0;
   padding: 0;
+}
+h2 {
+  position: absolute;
+  top: 7rem;
+  left: 0.5rem;
+  color:#281414;
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+}
+h5 {
+  position: relative;
+  color:#281414;
+  font-weight: normal;
 }

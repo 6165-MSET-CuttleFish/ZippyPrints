@@ -8,8 +8,6 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 function NavBar() {
 
-  const [openLoginPopup, setOpenLoginPopup] = useState(false)
-   const [loginButtonName, setLoginButtonName] = useState(["Log In"])
 
   // //changes button when user is logged in
   // const onLogin = async () => {
@@ -29,8 +27,8 @@ function NavBar() {
         </div>
 
         <div className="Auth">
-          <a href ="Auth" className="Login">{loginButtonName}</a>
-          <a href ="Auth2" className="Register">Register</a>
+          <a href ="Login" className="Login">Login</a>
+          <a href ="Register" className="Login">Register</a>
         </div>
        
       

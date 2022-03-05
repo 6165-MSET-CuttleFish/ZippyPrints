@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Grid} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
-import {makeStyles} from '@mui/styles'
+import { makeStyles } from '@mui/styles'
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
 import GoogleIcon from '@mui/icons-material/Google';
 import LoginForm from './LoginForm'
@@ -13,10 +13,13 @@ import Popup from "../../components/Popup";
 import RegisterSuccessForm from "./Redirect"
 import { getFirestore, collection, getDocs, addDoc, setDoc, doc } from 'firebase/firestore/lite';
 import { getDatabase, ref, set } from "firebase/database";
+import { Typography, Snackbar, SnackbarContent, Link, Paper, Container, CssBaseline,
+    Progress, Alert, Item, Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 
     
-const useStyles = makeStyles(theme =>({ 
+const useStyles = makeStyles(e =>({ 
     loginButton: {
         background: 'linear-gradient(45deg, #00ff00 30%, #9aff5c 90%)',
         border: 0,
@@ -148,8 +151,28 @@ export default function RegisterForm() {
 
     
 
-    //TODO: functionalize remember me switch
+    const theme = createTheme();
     return (
+        <ThemeProvider theme={theme}>
+        <Box
+          sx={{
+            marginTop: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        > 
+        <Avatar sx={{ m: 1, bgcolor: '#00ff00' }}>
+            <LockOutlinedIcon />
+        </Avatar>
+        <h4>Sign up</h4>
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{
+            marginTop: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginLeft: 3,
+          }}>
             <Form onSubmit={handleSubmit}>
             <Grid container>
                 <Grid item xs = {6}>
@@ -204,6 +227,10 @@ export default function RegisterForm() {
                 </Grid>
             </Grid>
             </Form>
+            
+          </Box>
+          </Box>
+          </ThemeProvider>
             
     )
 }

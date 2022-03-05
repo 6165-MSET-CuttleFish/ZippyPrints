@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {GoogleMap, useLoadScript, Marker, InfoWindow} from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import axios from 'axios'
 import { getFirestore, collection, getDocs, addDoc, updateDoc, doc, getDoc, GeoPoint, query } from 'firebase/firestore/lite';
 import { getAuth, updateProfile,  } from "firebase/auth";
@@ -7,8 +7,8 @@ import { getDatabase, set, onValue} from "firebase/database";
 import { getMarkerData} from '../../components/actions/Location'
 import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
-import {Typography} from '@mui/material'
-import { getStorage, ref, getBlob, getDownloadURL } from "firebase/storage";
+import { Typography, Box } from '@mui/material'
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 
 function Discover() {
@@ -129,13 +129,12 @@ const handleClick = async(e) => {
   return (
     //TODO: replace with actual logo
   <div>
-    
-    <h1>
-      Zippyprints {" "}
+    <h2>
+    Zippyprints {" "}
       <span role ="img" aria-label="logo">
       🖨️ 
       </span>
-    </h1>
+    </h2>
     <GoogleMap
       mapContainerStyle = {mapContainerStyle} 
       zoom = {5} 
@@ -170,26 +169,29 @@ const handleClick = async(e) => {
             setSelected(null) 
           }}
         >
-          <div>
-           <Typography gutterBottom variant="h5">
+          <Box sx={{marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            m:1}}>
+
+            <h3>
             {selected.team}'s Request
-           </Typography>
-           <Typography  variant="body2" component = "h2">
-            Location: {selected.location}
-           </Typography>
-           <div> .</div>
-            <Controls.Button 
+           </h3>
+
+           <h5>
+           Location: {selected.location}
+           </h5>
+
+           <Controls.Button 
                 className = {classes.requestButton}
                 variant = "contained"
                 color = "secondary"
                 size = "large"
                 text = "Download Request"
-                type="request"
                 onClick = {handleClick}
-                />
-                <div></div>
-          </div>
-          
+                />  
+          </Box>
         </InfoWindow>) : null}
     </GoogleMap>
   </div>
@@ -198,14 +200,12 @@ const handleClick = async(e) => {
 }
 const useStyles = makeStyles(theme =>({ 
   requestButton: {
-      background: 'linear-gradient(45deg, #00ff00 30%, #9aff5c 90%)',
+    background: 'linear-gradient(45deg, #00ff00 100%, #9aff5c 90%)',
       border: 0,
       borderRadius: 3,
       boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
       height: 48,
       width: 220,
-      left: 10,
-      bottom: 5
     }
   
 }))

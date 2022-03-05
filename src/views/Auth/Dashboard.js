@@ -8,6 +8,8 @@ import { getDatabase, ref, set, onValue } from "firebase/database";
 import {Paper} from '@mui/material'
 import { getFirestore, collection, getDocs, addDoc, setDoc, updateDoc, doc, getDoc, GeoPoint, query, where,  } from 'firebase/firestore/lite';
 import axios from 'axios'
+import { Typography, Snackbar, SnackbarContent, Link,
+         Progress, Alert, Item, Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 
 const apiKey = "AIzaSyD66Pg0s20be-L1lod3A29C8uyehouZREE"
 const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
@@ -39,15 +41,15 @@ const useStyles = makeStyles(theme =>({
         height: 900,
         
       },
-      loginButton: {
-        background: 'linear-gradient(45deg, #00ff00 30%, #9aff5c 90%)',
+      submitButton: {
+        background: 'linear-gradient(45deg, #00ff00 100%, #9aff5c 90%)',
         border: 0,
         borderRadius: 3,
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
         height: 48,
         width: 350,
-        left: 58,
-        top: 50
+        left: 240,
+        top: 31
       },
       header: {
         
@@ -57,7 +59,6 @@ const useStyles = makeStyles(theme =>({
       
 export default function Dashboard() {
     const [currentUser, setCurrentUser] = useState([]);
-    
     const user = getAuth()?.currentUser;
     useEffect(() => {
         async function fetchUser() {
@@ -67,9 +68,10 @@ export default function Dashboard() {
         }
         fetchUser();
     }, [user])
+
     const userEmail = currentUser?.email;
-    const username = currentUser?.displayName;
     const userUID = currentUser?.uid;
+    const username = currentUser?.displayName
     const db = getFirestore();
     const colRef = doc(db, 'users', "" + currentUser?.uid)
     const markerColRef = doc(db, 'markers', "" + currentUser?.uid)
@@ -177,14 +179,42 @@ const getGeoLocation = async (address) => {
     } = useForm(initalFValues, true, validate);
 
 
+    const theme = createTheme();
 
     return(
-        <Form onSubmit={handleSubmit}>
-            <Paper className={classes.root} variant="outlined" elevation={10}>
-                <div>{userEmail} . . . {userUID}</div>
-            <div>Please fill out the following information to proceed, {username}</div>
-            <Grid container>
-            <Grid item xs = {6}>
+        <ThemeProvider theme={theme}>
+        <Box
+          sx={{
+            marginTop: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+        <h3> Edit Your Profile </h3>
+           <Avatar sx={{ m: 0, bgcolor: '#00ff00', fontSize: 2 }}>
+
+          </Avatar>
+
+          </Box>
+          <Paper sx={{
+            marginTop: 2,
+            marginLeft: 15,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            height: 450,
+            width: 1200,
+            }}
+            variant="outlined">
+          <Box component="form" noValidate sx={{ marginTop: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            marginLeft: 23
+            }}>
+                
+            <Form onSubmit={handleSubmit}>
                 <Controls.Input
                     label = "Team Number"
                     name="teamnumber"
@@ -206,7 +236,7 @@ const getGeoLocation = async (address) => {
                     required
                     />
                 <Controls.Input
-                    label = "Address"
+                    label = "Street"
                     name="address"
                     value={values.address}
                     onChange = {handleInputChange}
@@ -216,7 +246,7 @@ const getGeoLocation = async (address) => {
                     required
                     />
                 <Controls.Input 
-                    label = "Address 2"
+                    label = "Street 2"
                     name="address2"
                     value={values.address2}
                     onChange = {handleInputChange}
@@ -265,17 +295,17 @@ const getGeoLocation = async (address) => {
                     required
                     />
                 <Controls.Button 
-                    className = {classes.loginButton}
+                    className = {classes.submitButton}
                     variant = "contained"
                     color = "secondary"
                     size = "large"
                     text = "Submit"
                     onClick = {handleSubmit}
                 />
-            </Grid>
-            </Grid>
-            </Paper>
             </Form>
+          </Box>
+          </Paper>
+          </ThemeProvider>
         )
 }
 
