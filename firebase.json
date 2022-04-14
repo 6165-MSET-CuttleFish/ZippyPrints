@@ -1,0 +1,19 @@
+{
+  "functions": {
+    "source": "functions"
+  },
+  "hosting": {
+    "public": "build",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  },
+  "emulators": {
+    "hosting": {
+      "port": 8000,
+      "host": "localhost"
+    }
+  }
+}

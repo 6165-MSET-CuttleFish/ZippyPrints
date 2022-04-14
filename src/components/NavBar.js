@@ -1,24 +1,32 @@
-import React, {useState, useEffect} from 'react'
-import Controls from "../components/actions/Controls";
-import Popup from "./Popup";
-import { createTheme, ThemeProvider } from '@mui/material';
-import LoginForm from '../views/Auth/LoginForm'
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import React from 'react'
+import { getAuth } from "firebase/auth";
 
 
-function NavBar() {
+export default class NavBar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: ""
+    };
+  }
+  componentDidMount() {
+    (async() => {
+      const useruid = await getAuth()?.currentUser?.uid
+      this.setState({ user: await getAuth()?.currentUser?.uid });
+      this.state.user = useruid;
+    })();
+  }
+  componentDidUpdate() {
+    (async() => {
+      this.state.user = await getAuth()?.currentUser?.uid;
+      this.setState({ user: await getAuth()?.currentUser?.uid });
+    })();
+  }
 
+ 
+render () {
+  return(
 
-  // //changes button when user is logged in
-  // const onLogin = async () => {
-  //   await onAuthStateChanged(getAuth(), (user) => {
-  //     setLoginButtonName( "Logged In, " + user?.displayName) 
-  //   });
-  // }
-  // onLogin()
-
-
-    return (
       <div className="App">
         <div className="Elements">
         <a href="home">Zippyprints</a>
@@ -27,15 +35,14 @@ function NavBar() {
         </div>
 
         <div className="Auth">
-          <a href ="Login" className="Login">Login</a>
-          <a href ="Register" className="Login">Register</a>
+          {this.state.user? ( <a href ="Login" className="Login">Login</a>) : null}
+          {this.state.user? (<a href ="Register" className="Login">Register</a>): null}
+          {!this.state.user? (<a href ="Profile" className="Login">Edit Profile</a>) : null}
+          {!this.state.user? (<a href ="Logout" className="Login">Log out</a>): null}
         </div>
-       
-      
       </div>
-    
-    );
+      );
   }
+}
+
   
-  
-export default NavBar;

@@ -4,12 +4,10 @@ import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
 import { getAuth, updateProfile } from "firebase/auth";
-import { getDatabase, ref, set, onValue } from "firebase/database";
 import {Paper} from '@mui/material'
-import { getFirestore, collection, getDocs, addDoc, setDoc, updateDoc, doc, getDoc, GeoPoint, query, where,  } from 'firebase/firestore/lite';
+import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint } from 'firebase/firestore/lite';
 import axios from 'axios'
-import { Typography, Snackbar, SnackbarContent, Link,
-         Progress, Alert, Item, Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
+import { Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 
 const apiKey = "AIzaSyD66Pg0s20be-L1lod3A29C8uyehouZREE"
 const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="

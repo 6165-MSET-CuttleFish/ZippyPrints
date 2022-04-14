@@ -170,7 +170,7 @@ class FileUpload extends React.Component {
           </Avatar>
           
           <Box component="form" noValidate sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
-                <h4> Upload your file below: </h4>
+                <h4> Upload your file below: {this.state.user}</h4>
                 
                 <input type="file" onChange={this.onFileChange}/>
                 <div>{this.fileData()}</div>

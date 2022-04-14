@@ -68,7 +68,7 @@ const initalFValues = {
 }
 
 export default function RegisterForm() {
-
+    
     const app = initializeApp(firebaseConfig);
 
     const [openPopup, setOpenPopup] = useState(false)
@@ -117,6 +117,7 @@ export default function RegisterForm() {
         await createUserWithEmailAndPassword(auth, userEmail, userPassword, userName)
           .then(async (userCredential) => {
             // Sgned in 
+        this.props.handleSuccessfulAuth(userCredential.user)
         await signInWithEmailAndPassword(auth, userEmail, userPassword)
           const db = getFirestore();
           const colRef = doc(db, "users", "" + auth.currentUser.uid)

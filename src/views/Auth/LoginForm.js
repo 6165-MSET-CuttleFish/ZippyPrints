@@ -119,7 +119,7 @@ export default function LoginForm() {
             .then((userCredential) => {
                 
                 // Signed in 
-                window.alert("Welcome, ")
+                window.alert("Welcome")
                 
                 
                 // ...
