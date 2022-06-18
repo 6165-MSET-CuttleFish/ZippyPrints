@@ -3,11 +3,14 @@ import { Grid} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
-import { getAuth, updateProfile } from "firebase/auth";
+import { getAuth, updateProfile, onAuthStateChanged } from "firebase/auth";
 import {Paper} from '@mui/material'
 import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint } from 'firebase/firestore/lite';
 import axios from 'axios'
+import { useHistory } from 'react-router-dom'
 import { Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
+import { query, collection, getDocs, where } from "firebase/firestore";
+import {app} from '../../api/firebaseConfig'
 
 const apiKey = "AIzaSyD66Pg0s20be-L1lod3A29C8uyehouZREE"
 const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
@@ -57,6 +60,8 @@ const useStyles = makeStyles(theme =>({
       
 export default function Dashboard() {
     const [currentUser, setCurrentUser] = useState([]);
+    const [currentUsername, setCurrentUsername] = useState([]);
+
     const user = getAuth()?.currentUser;
     useEffect(() => {
         async function fetchUser() {
@@ -67,14 +72,11 @@ export default function Dashboard() {
         fetchUser();
     }, [user])
 
-    const userEmail = currentUser?.email;
-    const userUID = currentUser?.uid;
     const username = currentUser?.displayName
     const db = getFirestore();
     const colRef = doc(db, 'users', "" + currentUser?.uid)
     const markerColRef = doc(db, 'markers', "" + currentUser?.uid)
 
-    console.log(username)
     const classes = useStyles();
     const [geoLocationData, setGeoLocationData] = useState(null);
 
@@ -109,6 +111,7 @@ export default function Dashboard() {
 
     
 }
+  
 const getGeoLocation = async (address) => {
     try {
         const data = await axios.get(baseUrl + `${address}&key=${apiKey}`);
@@ -117,7 +120,6 @@ const getGeoLocation = async (address) => {
         throw error;
     }
   }
-
     const uploadData = async () => {
         await updateDoc(colRef, {
             username: username,
@@ -130,7 +132,10 @@ const getGeoLocation = async (address) => {
         })
         await getData();
     }
-    
+    const getUsername = async () => {
+
+    }
+
     
     const handleSubmit = async(e) => {        
         e.preventDefault()
@@ -189,7 +194,7 @@ const getGeoLocation = async (address) => {
             alignItems: 'center',
           }}
         >
-        <h3> Edit Your Profile </h3>
+        <h3> Edit {username} Profile </h3>
            <Avatar sx={{ m: 0, bgcolor: '#00ff00', fontSize: 2 }}>
 
           </Avatar>

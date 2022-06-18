@@ -181,9 +181,7 @@ class FileUpload extends React.Component {
                     size = "large"
                     text = "Upload"
                     onClick = {this.onFileUpload}
-                  />
-                  
-                
+                  />   
           </Box>
          
         </Box>

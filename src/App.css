@@ -106,14 +106,14 @@ a {
 
 .StartScreen {
   width: 100vw;
-  height: 1600px;
+  height: 100vh;
   background-color: yellowgreen;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
   position: relative;
-  padding: 20px 40px;
+  padding: 50px 40px;
 }
 
 .StartScreen div {
@@ -129,16 +129,19 @@ a {
 .InfoBlurb h1 {
   font-size: 100px;
   color: #fcfcfc;
+  padding-left: 10px;
 }
 
 .InfoBlurb p {
   font-size: large;
   color: #fcfcfc;
+  padding-left: 10px;
 }
 
 .InfoBlurb a {
   font-size: large;
   color: #fcfcfc;
+  padding-left: 10px;
 }
 
 
@@ -190,7 +193,7 @@ a {
   margin-right: 30px;
 }
 
-.Upload button {
+.UploadButton {
   padding: 10px 20px;
   text-transform: uppercase;
   letter-spacing: 1px;

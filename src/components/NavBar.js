@@ -3,27 +3,17 @@ import { getAuth } from "firebase/auth";
 
 
 export default class NavBar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: ""
-    };
-  }
-  componentDidMount() {
-    (async() => {
-      const useruid = await getAuth()?.currentUser?.uid
-      this.setState({ user: await getAuth()?.currentUser?.uid });
-      this.state.user = useruid;
-    })();
-  }
-  componentDidUpdate() {
-    (async() => {
-      this.state.user = await getAuth()?.currentUser?.uid;
-      this.setState({ user: await getAuth()?.currentUser?.uid });
-    })();
-  }
+  Auth = () => {
 
- 
+      return (
+        <div className="Auth">
+         <a href ="Login" className="Login">Login</a>
+         <a href ="Register" className="Login">Register</a>
+      </div> 
+        
+      );
+   
+  }
 render () {
   return(
 
@@ -34,12 +24,7 @@ render () {
         <a href="discover">Map</a>
         </div>
 
-        <div className="Auth">
-          {this.state.user? ( <a href ="Login" className="Login">Login</a>) : null}
-          {this.state.user? (<a href ="Register" className="Login">Register</a>): null}
-          {!this.state.user? (<a href ="Profile" className="Login">Edit Profile</a>) : null}
-          {!this.state.user? (<a href ="Logout" className="Login">Log out</a>): null}
-        </div>
+          <div>{this.Auth()}</div>
       </div>
       );
   }
