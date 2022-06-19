@@ -10,9 +10,9 @@ import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 import { query, collection, getDocs, where } from "firebase/firestore";
-import {app} from '../../api/firebaseConfig'
+import { API_KEY } from '../../api/firebaseConfig'
 
-const apiKey = "AIzaSyD66Pg0s20be-L1lod3A29C8uyehouZREE"
+const apiKey = API_KEY
 const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
 
 const initalFValues = {

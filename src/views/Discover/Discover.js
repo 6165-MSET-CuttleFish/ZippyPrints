@@ -9,6 +9,7 @@ import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
 import { Typography, Box } from '@mui/material'
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { API_KEY } from "../../api/firebaseConfig"
 
 
 function Discover() {
@@ -98,7 +99,7 @@ const onSelect = (marker) => {
     zoomContrl: true,
   }
   const {isLoaded, loadError} = useLoadScript({
-      googleMapsApiKey: "AIzaSyD66Pg0s20be-L1lod3A29C8uyehouZREE",
+      googleMapsApiKey: API_KEY,
       libraries: libRef.current,
     });
   
