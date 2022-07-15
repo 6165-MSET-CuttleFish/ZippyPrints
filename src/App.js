@@ -1,6 +1,6 @@
 import React from 'react';
 import  { Home }  from './views/Home';
-import { Route, Switch, Redirect, BrowserRouter  } from 'react-router-dom';
+import { Route, Routes, Navigate, BrowserRouter  } from 'react-router-dom';
 import './App.css';
 import FileUpload from './views/Upload/Upload';
 import NavBar from './components/NavBar';
@@ -18,18 +18,16 @@ render()  {
       <div>
         <NavBar />
         <BrowserRouter>
-          <Switch>
-            <Route exact path="/Home" component={Home} />
-            <Route exact path="/">
-              <Redirect to="/Home" />
-            </Route>
-            <Route exact path="/About" component={FileUpload} />
-            <Route exact path="/Login" component={Auth} />
-            <Route exact path="/Discover" component={Map} />
-            <Route exact path="/Profile" component={Dashboard} />
-            <Route exact path="/Register" component={Auth2} />
-            <Route exact path="/Logout" component={loggingOut} />
-          </Switch>
+          <Routes>
+            <Route exact path="/Home" element={Home} />
+            <Route exact path="/" element = {Home} />
+            <Route exact path="/About" element={FileUpload} />
+            <Route exact path="/Login" element={Auth} />
+            <Route exact path="/Discover" element={Map} />
+            <Route exact path="/Profile" element={Dashboard} />
+            <Route exact path="/Register" element={Auth2} />
+            <Route exact path="/Logout" element={loggingOut} />
+          </Routes>
         </BrowserRouter>
       </div>
     );

@@ -1,5 +1,5 @@
 import { getAuth, signOut } from "firebase/auth";
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 export default function loggingOut() {
 
@@ -10,7 +10,7 @@ signOut(auth).then(() => {
 });
 return (
   <div>
-      <Redirect to="/Home" />
+      <Navigate to="/Home" />
   </div>
 );
 }
