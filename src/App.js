@@ -19,14 +19,14 @@ render()  {
         <NavBar />
         <BrowserRouter>
           <Routes>
-            <Route exact path="/Home" element={Home} />
-            <Route exact path="/" element = {Home} />
-            <Route exact path="/About" element={FileUpload} />
-            <Route exact path="/Login" element={Auth} />
-            <Route exact path="/Discover" element={Map} />
-            <Route exact path="/Profile" element={Dashboard} />
-            <Route exact path="/Register" element={Auth2} />
-            <Route exact path="/Logout" element={loggingOut} />
+            <Route exact path="/Home" element={<Home />} />
+            <Route exact path="/" element = {<Home />} />
+            <Route exact path="/Upload" element={<FileUpload />} />
+            <Route exact path="/Login" element={<Auth />} />
+            <Route exact path="/Discover" element={<Map />} />
+            <Route exact path="/Profile" element={<Dashboard />} />
+            <Route exact path="/Register" element={<Auth2 />} />
+            <Route exact path="/Logout" element={<loggingOut />} />
           </Routes>
         </BrowserRouter>
       </div>

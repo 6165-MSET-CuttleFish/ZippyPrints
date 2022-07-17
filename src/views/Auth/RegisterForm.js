@@ -3,12 +3,12 @@ import { Grid} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import { makeStyles } from '@mui/styles'
-import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
 import GoogleIcon from '@mui/icons-material/Google';
 import LoginForm from './LoginForm'
 import {firebaseConfig} from '../../api/firebaseConfig'
 import { initializeApp } from 'firebase/app';
-import { Route, Switch, Redirect, BrowserRouter } from 'react-router-dom';
+import { Route, Switch, Redirect, BrowserRouter, useNavigate } from 'react-router-dom';
 import Popup from "../../components/Popup";
 import RegisterSuccessForm from "./Redirect"
 import { getFirestore, collection, getDocs, addDoc, setDoc, doc } from 'firebase/firestore/lite';
@@ -100,21 +100,20 @@ export default function RegisterForm() {
         resetForm
     } = useForm(initalFValues, true, validate);
 
-
     const handleSubmit = async (e) => {        
-        e.preventDefault()
         if(validate()) {
            await makeAccount();
-           setOpenPopup(true);
+           
         }  
     }
     
+    let navigate = useNavigate();
     const makeAccount = async ()  => {
         var userEmail = values.email
         var userPassword = values.password
         var userName = values.userName;
         const auth = getAuth();
-        await createUserWithEmailAndPassword(auth, userEmail, userPassword, userName)
+        await app.createUserWithEmailAndPassword(auth, userEmail, userPassword)
           .then(async (userCredential) => {
             // Sgned in 
         this.props.handleSuccessfulAuth(userCredential.user)
@@ -136,8 +135,7 @@ export default function RegisterForm() {
             username: userName,
             email: userEmail,
           })
-
-        
+          navigate("/profile");
           })
           .catch((error) => {
             const errorCode = error.code;
@@ -167,7 +165,9 @@ export default function RegisterForm() {
             <LockOutlinedIcon />
         </Avatar>
         <h4>Sign up</h4>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{
+        <Box component="form" 
+            onSubmit={handleSubmit} 
+            noValidate sx={{
             marginTop: 2,
             display: 'flex',
             flexDirection: 'column',
