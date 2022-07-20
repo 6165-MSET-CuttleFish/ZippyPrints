@@ -1,16 +1,16 @@
 import { getAuth, signOut } from "firebase/auth";
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-export default function loggingOut() {
-
-const auth = getAuth();
-signOut(auth).then(() => {
-}).catch((error) => {
-  window.alert(error)
-});
-return (
-  <div>
-      <Navigate to="/Home" />
-  </div>
-);
+export default function Logout() {
+  let navigate = useNavigate();
+  const auth = getAuth();
+  signOut(auth).then(() => {
+    navigate('../', { replace: true })
+    // Sign-out successful.
+  }).catch((error) => {
+    // An error happened.
+  });
+  return (
+    <div>Logging out...</div>
+  );
 }

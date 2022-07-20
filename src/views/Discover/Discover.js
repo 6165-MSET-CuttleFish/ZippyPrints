@@ -42,6 +42,7 @@ function Discover() {
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
               const pathReference = ref(storage, "files/" + doc.data().uid + ".STL");
+              
               getDownloadURL(pathReference).then((response) =>{
                 setMarkers((current) => [...current, 
                   {

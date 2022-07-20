@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Grid} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
-import { getAuth, updateProfile, onAuthStateChanged } from "firebase/auth";
+import { getAuth, updateProfile, onAuthStateChanged, currentUser } from "firebase/auth";
 import {Paper} from '@mui/material'
 import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint } from 'firebase/firestore/lite';
 import axios from 'axios'
@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom'
 import { Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 import { query, collection, getDocs, where } from "firebase/firestore";
 import { API_KEY } from '../../api/firebaseConfig'
+import { AuthContext } from "./Auth";
 
 const apiKey = API_KEY
 const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
@@ -59,18 +60,10 @@ const useStyles = makeStyles(theme =>({
 
       
 export default function Dashboard() {
-    const [currentUser, setCurrentUser] = useState([]);
+    const {currentUser} = useContext(AuthContext);
     const [currentUsername, setCurrentUsername] = useState([]);
 
-    const user = getAuth()?.currentUser;
-    useEffect(() => {
-        async function fetchUser() {
-            const requestUser = await user;
-            setCurrentUser(requestUser)
-            return requestUser
-        }
-        fetchUser();
-    }, [user])
+    
 
     const username = currentUser?.displayName
     const db = getFirestore();
@@ -123,7 +116,7 @@ const getGeoLocation = async (address) => {
     const uploadData = async () => {
         await updateDoc(colRef, {
             username: username,
-            email: user.email,
+            email: currentUser.email,
             teamnumber: values.teamnumber,
             address: values.address,
             city: values.city,
@@ -194,7 +187,7 @@ const getGeoLocation = async (address) => {
             alignItems: 'center',
           }}
         >
-        <h3> Edit {username} Profile </h3>
+        <h3> Edit {currentUser.displayName}'s Profile </h3>
            <Avatar sx={{ m: 0, bgcolor: '#00ff00', fontSize: 2 }}>
 
           </Avatar>

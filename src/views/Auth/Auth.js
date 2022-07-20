@@ -1,33 +1,29 @@
-import React from 'react'
-import LoginForm from '../Auth/LoginForm'
-import {Paper} from '@mui/material'
-import { makeStyles } from '@mui/styles'
+import React, { useEffect, useState } from "react";
+import { getAuth, onAuthStateChanged } from 'firebase/auth'
+export const AuthContext = React.createContext();
 
-const useStyles = makeStyles(theme => ({
-  pageContent:{
-      margin: 40,
-      padding: 24,
-      height: 500,
-      width: 600,
-      color: '#7393B3'
+export const AuthProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState(null);
+  const [pending, setPending] = useState(true);
+  const auth = getAuth();
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user)
+      setPending(false)
+    });
+  }, [auth]);
+
+  if(pending){
+    return <>Loading...</>
   }
-}))
-const Auth = props => {
-  const classes = useStyles();
+
   return (
-    <div>
-      <Paper className = {classes.pageContent}>
-      <LoginForm />
-      </Paper>
-     
-    </div>
-  )
-}
-export default Auth
-  
- 
-  
-
-
-
-  
+    <AuthContext.Provider
+      value={{
+        currentUser
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
