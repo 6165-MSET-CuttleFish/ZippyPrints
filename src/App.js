@@ -1,6 +1,6 @@
 import React from 'react';
 import  { Home }  from './views/Home';
-import { Route, Routes, Navigate, BrowserRouter  } from 'react-router-dom';
+import { Route, Routes, BrowserRouter  } from 'react-router-dom';
 import './App.css';
 import FileUpload from './views/Upload/Upload';
 import NavBar from './components/NavBar';

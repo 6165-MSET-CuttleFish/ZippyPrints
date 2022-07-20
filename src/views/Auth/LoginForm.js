@@ -9,6 +9,7 @@ import * as firebase from 'firebase/app';
 import { Typography, Snackbar, SnackbarContent, Link, Paper, Container, CssBaseline,
          Progress, Alert, Item, Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles(t =>({ 
     loginButton: {
@@ -56,7 +57,7 @@ const initalFValues = {
 export default function LoginForm() {
 
     firebase.initializeApp(firebaseConfig)
-
+    let navigate = useNavigate();
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
         if ('email' in fieldValues)
@@ -117,7 +118,7 @@ export default function LoginForm() {
             const auth = getAuth();
             signInWithEmailAndPassword(auth, userEmail, userPassword)
             .then((userCredential) => {
-                
+                navigate('../Profile', { replace: true })
                 // Signed in 
                 window.alert("Welcome")
                 
@@ -172,6 +173,7 @@ export default function LoginForm() {
                 <Controls.Input 
                     label = "Password"
                     name="password"
+                    type = "password"
                     value={values.password}
                     onChange = {handleInputChange}
                     error={errors.password}

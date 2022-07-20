@@ -68,11 +68,7 @@ const initalFValues = {
 }
 
 export default function RegisterForm() {
-    
-    const app = initializeApp(firebaseConfig);
-
-    const [openPopup, setOpenPopup] = useState(false)
-
+    const navigate = useNavigate();
 
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
@@ -100,24 +96,22 @@ export default function RegisterForm() {
         resetForm
     } = useForm(initalFValues, true, validate);
 
-    const handleSubmit = async (e) => {        
+    const handleSubmit = async(e) => {    
+        e.preventDefault();    
         if(validate()) {
-           await makeAccount();
-           
+          await makeAccount();
+          navigate('../Profile', { replace: true })
         }  
     }
     
-    let navigate = useNavigate();
     const makeAccount = async ()  => {
-        var userEmail = values.email
-        var userPassword = values.password
-        var userName = values.userName;
+        const userEmail = values.email
+        const userPassword = values.password
+        const userName = values.userName;
         const auth = getAuth();
-        await app.createUserWithEmailAndPassword(auth, userEmail, userPassword)
+        await createUserWithEmailAndPassword(auth, userEmail, userPassword)
           .then(async (userCredential) => {
             // Sgned in 
-        this.props.handleSuccessfulAuth(userCredential.user)
-        await signInWithEmailAndPassword(auth, userEmail, userPassword)
           const db = getFirestore();
           const colRef = doc(db, "users", "" + auth.currentUser.uid)
 
@@ -128,14 +122,16 @@ export default function RegisterForm() {
             // Profile updated!
             // ...
           }).catch((error) => {
-            // An error occurred
-            // ...
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            window.alert("Error: " + errorCode + ", " + errorMessage)
           });
           await setDoc(colRef, {
             username: userName,
             email: userEmail,
           })
-          navigate("/profile");
+
+        
           })
           .catch((error) => {
             const errorCode = error.code;
@@ -209,21 +205,15 @@ export default function RegisterForm() {
                         style = {{width: '350px'}}
                         required
                     />
-                     <Controls.Button 
-                        className = {classes.loginButton}
-                        variant = "contained"
-                        color = "secondary"
-                        size = "large"
-                        text = "Register"
-                        type="register"
-                        onChange = {handleSubmit}
-                    />
-                    <Popup 
-                        title = "Success!"
-                        openPopup={openPopup}
-                        setOpenPopup={setOpenPopup}>
-                        <RegisterSuccessForm/>
-                    </Popup>
+                      <Controls.Button 
+                    className = {classes.loginButton}
+                    variant = "contained"
+                    color = "secondary"
+                    size = "large"
+                    text = "Login"
+                    onClick = {handleSubmit}
+                />
+                    
                 
                 </Grid>
             </Grid>
