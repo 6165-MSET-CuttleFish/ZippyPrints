@@ -10,6 +10,7 @@ import { Grid, Typography, Snackbar, SnackbarContent, Link,
   import FileUploadIcon from '@mui/icons-material/FileUpload';
   import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
+import { AuthContext } from "../../views/Auth/Auth";
 
 
 // TODO: Add SDKs for Firebase products that you want to use
@@ -36,27 +37,29 @@ const styles = theme => ({
 })
 
 class FileUpload extends React.Component {
+  static contextType = AuthContext;
+
   constructor(props) {
     super(props);
     this.state = {
       selectedFile: null,
-      user: getAuth().currentUser,
+      fileType: null,
+      user: {},
       noFileError: false,
       invalidFileError: false,
       success: false,
     };
   }
+
   componentDidMount() {
     (async() => {
-      const useruid = await getAuth()?.currentUser?.uid
-      this.state.user = useruid;
+      if (this.state.user.uid == null) {
+        const {currentUser} = this.context;
+        this.setState({user: currentUser});
+      }
     })();
   }
-  componentDidUpdate() {
-    (async() => {
-      this.state.user = await getAuth()?.currentUser?.uid;
-    })();
-  }
+  
 
   // On file select (from the pop up)
   onFileChange = event => {
@@ -71,7 +74,7 @@ class FileUpload extends React.Component {
     if (this.state.selectedFile == null || this.state.selectedFile.name == null) {
       this.setState({noFileError: true});
     } else {
-    const storageRef = ref(storage, "files/" + this.state.user + "." + this.state.selectedFile.name.split('.')[1]);
+    const storageRef = ref(storage, "files/" + this.state.user.uid + "." + this.state.selectedFile.name.split('.')[1]);
     console.log(this.state.user)
 
     // Details of the uploaded file
@@ -106,7 +109,6 @@ class FileUpload extends React.Component {
   // File content to be displayed after
   // file upload is complete
   fileData = () => {
-
     if (this.state.selectedFile) {
       const theme = createTheme();
       return (
@@ -122,8 +124,7 @@ class FileUpload extends React.Component {
         >
           <h2>File Details:</h2>
           <p>File Name: {this.state.selectedFile.name}</p>
-          <p>File Type: {this.state.selectedFile.type}</p>
-          <div>User:{" "} {this.state.user}</div>
+          <p>File Type: {this.state.selectedFile.name.split('.')[1]}</p>
         </Box>
        </ThemeProvider>
        </div>
@@ -170,7 +171,7 @@ class FileUpload extends React.Component {
           </Avatar>
           
           <Box component="form" noValidate sx={{ mt: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', }}>
-                <h4> Upload your file below: {this.state.user}</h4>
+                <h4> Upload your file below: {this.state.user.displayName}</h4>
                 
                 <input type="file" onChange={this.onFileChange}/>
                 <div>{this.fileData()}</div>

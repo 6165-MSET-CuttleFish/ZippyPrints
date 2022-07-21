@@ -61,10 +61,6 @@ const useStyles = makeStyles(theme =>({
       
 export default function Dashboard() {
     const {currentUser} = useContext(AuthContext);
-    const [currentUsername, setCurrentUsername] = useState([]);
-
-    
-
     const username = currentUser?.displayName
     const db = getFirestore();
     const colRef = doc(db, 'users', "" + currentUser?.uid)

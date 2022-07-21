@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import axios from 'axios'
 import { getFirestore, collection, getDocs, addDoc, updateDoc, doc, getDoc, GeoPoint, query } from 'firebase/firestore/lite';
@@ -10,28 +10,15 @@ import {makeStyles} from '@mui/styles'
 import { Typography, Box } from '@mui/material'
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { API_KEY } from "../../api/firebaseConfig"
-
-
+import {AuthContext} from "../../views/Auth/Auth"
+ 
 function Discover() {
-
-  
-
-  const [currentUser, setCurrentUser] = useState([]);
+  const {currentUser} = useContext(AuthContext);
   const [markers, setMarkers] = useState([]);
   const [selected, setSelected] = useState(null);
   const storage = getStorage();
-  
-  
   const classes = useStyles();
-    const user = getAuth()?.currentUser;
-    useEffect(() => {
-        async function fetchUser() {
-            const requestUser = await user;
-            setCurrentUser(requestUser)
-            return requestUser
-        }
-        fetchUser();
-    }, [user])
+
     
     useEffect(() => {
       const getMarkerData = async () => {
@@ -42,7 +29,7 @@ function Discover() {
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
               const pathReference = ref(storage, "files/" + doc.data().uid + ".STL");
-              
+
               getDownloadURL(pathReference).then((response) =>{
                 setMarkers((current) => [...current, 
                   {
@@ -69,13 +56,6 @@ function Discover() {
     }
       getMarkerData()
     }, [storage])
-
-  
-
-
-
-
-   
 
   const libraries = ['places'];
   let libRef = React.useRef(libraries)
