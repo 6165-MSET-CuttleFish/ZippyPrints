@@ -16,7 +16,7 @@ import { getDatabase, ref, set } from "firebase/database";
 import { Typography, Snackbar, SnackbarContent, Link, Paper, Container, CssBaseline,
     Progress, Alert, Item, Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-
+import '../Auth/Register.css'
 
     
 const useStyles = makeStyles(e =>({ 
@@ -53,8 +53,10 @@ const useStyles = makeStyles(e =>({
           size: 200
       },
       checkbox: {
-          marginLeft: 1200,
-
+        display: 'flex',
+        flex: 3,
+        alignItem: 'center',
+        marginLeft: '50px'
       }
     
 }))
@@ -103,11 +105,14 @@ export default function RegisterForm() {
           navigate('../Profile', { replace: true })
         }  
     }
+
     
+    console.log(values.printer)
     const makeAccount = async ()  => {
         const userEmail = values.email
         const userPassword = values.password
         const userName = values.userName;
+        const printer = values.printer;
         const auth = getAuth();
         await createUserWithEmailAndPassword(auth, userEmail, userPassword)
           .then(async (userCredential) => {
@@ -129,6 +134,7 @@ export default function RegisterForm() {
           await setDoc(colRef, {
             username: userName,
             email: userEmail,
+            printer: printer,
           })
 
         
@@ -163,7 +169,8 @@ export default function RegisterForm() {
         <h4>Sign up</h4>
         <Box component="form" 
             onSubmit={handleSubmit} 
-            noValidate sx={{
+            noValidate 
+            sx={{
             marginTop: 2,
             display: 'flex',
             flexDirection: 'column',
@@ -205,14 +212,20 @@ export default function RegisterForm() {
                         style = {{width: '350px'}}
                         required
                     />
-                      <Controls.Button 
+                    <Controls.Checkbox
+                        name="printer"
+                        label="Are you a printer?"
+                        values={values.printer}
+                        onChange={handleInputChange}
+                    />
+                    <Controls.Button 
                     className = {classes.loginButton}
                     variant = "contained"
                     color = "secondary"
                     size = "large"
                     text = "Login"
                     onClick = {handleSubmit}
-                />
+                    />
                     
                 
                 </Grid>

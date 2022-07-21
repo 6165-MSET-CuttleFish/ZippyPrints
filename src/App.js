@@ -2,6 +2,7 @@ import React from 'react';
 import  { Home }  from './views/Home';
 import { Route, Routes, BrowserRouter  } from 'react-router-dom';
 import './App.css';
+import './views/Auth/Register.css'
 import FileUpload from './views/Upload/Upload';
 import NavBar from './components/NavBar';
 import LoginExport from './views/Auth/LoginExport';
