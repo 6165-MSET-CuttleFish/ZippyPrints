@@ -11,7 +11,8 @@ import { Grid, Typography, Snackbar, SnackbarContent, Link,
   import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import { AuthContext } from "../../views/Auth/Auth";
-
+import { useNavigation } from 'react'
+import {View, Button, Text} from 'react' 
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -35,6 +36,7 @@ const styles = theme => ({
       top: 10
     },
 })
+
 
 class FileUpload extends React.Component {
   static contextType = AuthContext;
@@ -153,6 +155,9 @@ class FileUpload extends React.Component {
   render() {
     const theme = createTheme();
     const { classes } = this.props
+    if (this.state.user?.uid == null) {
+        //TODO: redirect user to 404 page
+    }
     return (
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
@@ -211,4 +216,5 @@ class FileUpload extends React.Component {
     );
   }
 }
+
 export default withStyles(styles, { withTheme: true })(FileUpload);

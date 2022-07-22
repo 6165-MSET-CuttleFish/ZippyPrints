@@ -25,7 +25,7 @@
     "react-firebase-hooks": "^5.0.3",
     "react-ionicons": "^4.2.0",
     "react-native-ionicons": "^4.6.5",
-    "react-redux": "^7.2.5",
+    "react-redux": "^7.2.8",
     "react-router-dom": "^6.3.0",
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.2",

@@ -164,13 +164,15 @@ const handleClick = async(e) => {
            <h5>
            Location: {selected.location}
            </h5>
-
+            <Controls.Input 
+              label = ""
+            />
            <Controls.Button 
                 className = {classes.requestButton}
                 variant = "contained"
                 color = "secondary"
                 size = "large"
-                text = "Download Request"
+                text = "Submit Request"
                 onClick = {handleClick}
                 />  
           </Box>

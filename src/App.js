@@ -11,6 +11,7 @@ import Dashboard from "./views/Auth/Dashboard"
 import RegisterExport from "./views/Auth/RegisterExport"
 import Logout from "./views/Auth/Logout"
 import { AuthProvider } from './views/Auth/Auth'
+import AuthenticationError from './views/404/AuthenticationError'
 
 class App extends React.Component {
  
@@ -30,6 +31,7 @@ render()  {
             <Route exact path="/Profile" element={<Dashboard />} />
             <Route exact path="/Register" element={<RegisterExport />} />
             <Route exact path="/Logout" element={<Logout />} />
+            <Route exact path="/AuthError" element={<AuthenticationError />} />
           </Routes>
         </BrowserRouter>
       </div>
