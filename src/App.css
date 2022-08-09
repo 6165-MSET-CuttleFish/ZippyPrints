@@ -105,6 +105,7 @@ a {
 }
 
 .StartScreen {
+  margin: 0;
   width: 100vw;
   height: 100vh;
   background-color: yellowgreen;
@@ -114,6 +115,7 @@ a {
   align-items: center;
   position: relative;
   padding: 50px 40px;
+  overflow-x: hidden;
 }
 
 .StartScreen div {
@@ -130,6 +132,7 @@ a {
   font-size: 100px;
   color: #fcfcfc;
   padding-left: 10px;
+  
 }
 
 .InfoBlurb p {
