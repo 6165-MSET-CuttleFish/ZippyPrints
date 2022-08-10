@@ -37,7 +37,7 @@ function Discover() {
                     lng: doc.data()?.lng,
                     team: doc.data()?.teamnumber,
                     location: doc.data()?.formattedAddress,
-                    uid: doc.data()?.uid
+                    uid: doc.data()?.uid,
                   },
                 ]);
               }).catch((err) => {
@@ -91,18 +91,11 @@ const onMapLoad = (map) => {
   mapRef.current = map;
 
 }
-const handleClick = async(e) => {
-  e.preventDefault();
-  const pathReference = ref(storage, "files/" + selected.uid + ".STL");
-  getDownloadURL(pathReference)
-  .then((url) => {
-    window.open(url, '_blank');
-  })
-  .catch((error) => {
-    console.log(error)
-    
-  })
-}
+const db = getFirestore();
+
+const handleClick = () => {
+
+  }
 
 
   if (loadError) return "Error loading map";

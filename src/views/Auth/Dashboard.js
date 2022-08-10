@@ -91,7 +91,8 @@ export default function Dashboard() {
             lng: await (data.results[0]?.geometry?.location?.lng),
             formattedAddress: data.results[0]?.formatted_address,
             teamnumber: values.teamnumber,
-            uid: currentUser.uid
+            uid: currentUser.uid,
+            email: currentUser.email
           })
 
     }catch(error) {
@@ -112,7 +113,7 @@ const getGeoLocation = async (address) => {
     const uploadData = async () => {
         await updateDoc(colRef, {
             username: username,
-            email: currentUser.email,
+            email: currentUser?.email,
             teamnumber: values.teamnumber,
             address: values.address,
             city: values.city,
