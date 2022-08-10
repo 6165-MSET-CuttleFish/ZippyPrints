@@ -47,12 +47,13 @@ function Discover() {
               const pathReference = ref(storage, "files/" + doc.data().uid + ".STL");
 
               getDownloadURL(pathReference).then((response) =>{
-                setMarkers((current) => [...current, 
+                setMarkers((current) => [...current,
                   {
                     lat: doc.data()?.lat,
                     lng: doc.data()?.lng,
                     team: doc.data()?.teamnumber,
                     location: doc.data()?.formattedAddress,
+                    email:doc.data()?.email,
                     uid: doc.data()?.uid
                   },
                 ]);
@@ -82,18 +83,7 @@ function Discover() {
   const [center, setCenter]= useState({
     lat: 36.7783, lng: -96.4179
 })
-       const getData = async () => {
-        try {
-         const docRef = await addDoc(collection(db, "email"), {
-to:values.requester_email,
-message:{subject:'New ZippyPrints Request',text:values.requester_email}
-         });
-        }catch(error) {
-            console.log(error.message);
-        }
 
-
-    }
 const onSelect = (marker) => {
     setSelected(marker)
     setCenter({
@@ -101,7 +91,20 @@ const onSelect = (marker) => {
       lng: marker.lng
   })
 }
+       const getData = async () => {
+        try {
+         const docRef = await addDoc(collection(db, "email"), {
+to:selected.email,
+message:{subject:'New ZippyPrints Request',
+text:values.requester_email
+}
+         });
+        }catch(error) {
+            console.log(error.message);
+        }
 
+
+    }
   const options = {
     disableDefaultUI: true,
     zoomContrl: true,
@@ -302,7 +305,8 @@ setOpenRegisterPopup(true)
             anchor: new window.google.maps.Point(15, 15)
           }}
           onClick={() => {
-            onSelect(marker)}}
+            onSelect(marker)
+            }}
           />
         ))}
         
