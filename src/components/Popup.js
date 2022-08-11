@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Dialog, DialogTitle, DialogContent, Typography } from '@mui/material'
 import Controls from "./actions/Controls";
 import {makeStyles} from '@mui/styles'
+import TextField from '@mui/material/TextField';
+import DialogContentText from '@mui/material/DialogContentText';
 
 const useStyles = makeStyles(theme => ({
     dialogWrapper: {
@@ -23,20 +25,21 @@ export default function Popup(props) {
     const classes = useStyles();
     
     return(
-        <Dialog open = {openPopup} classes={{ paper: classes.dialogWrapper}}>
-            <DialogTitle classes = {classes.root}>
-
-                <div style = {{display: 'flex'}}>
-                    <Typography variant="h6" component="div" style={{flexGrow: 12}}>
-                        {title}
-                    </Typography>
-           
-            <Controls.ActionButton 
-            onClick={() => {setOpenPopup(false)}}>
-            </Controls.ActionButton>
-            </div>
-            </DialogTitle>
+        <Dialog open = {openPopup} classes={{ paper: classes.dialogWrapper}}onClose={() => {setOpenPopup(false)}}>
             <DialogContent dividers>
+            <div style = {{display: 'flex'}}>
+           <DialogContentText>
+
+                                <Typography variant="h6" component="div" style={{flexGrow: 12}}>
+                                    {title}
+                                </Typography>
+           </DialogContentText>
+
+                        <Controls.ActionButton
+                        onClick={() => {setOpenPopup(false)}}>
+                        </Controls.ActionButton>
+ </div>
+
                 {children}
             </DialogContent>
         </Dialog>
