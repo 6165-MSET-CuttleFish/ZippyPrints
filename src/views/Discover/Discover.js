@@ -13,6 +13,7 @@ import { API_KEY } from "../../api/firebaseConfig"
 import {AuthContext} from "../../views/Auth/Auth"
 import Popup from "../../components/Popup";
 import {useForm, Form} from '../../components/useForm'
+import { v4 as uuidv4 } from 'uuid';
 const initalFValues = {
     id: 0,
     requester_email: '',
@@ -96,7 +97,20 @@ const onSelect = (marker) => {
          const docRef = await addDoc(collection(db, "email"), {
 to:selected.email,
 message:{subject:'New ZippyPrints Request',
-text:values.requester_email
+text:'Hello ZippyPrinter, we have a new request from Team '+ values.teamnumber+ '\n\n'+
+'Requester\'s email: ' + values.requester_email+ '\n'+
+
+'Filament Info: '+values.filament +'\n'+
+ 'Supports Info: ' + values.supports +'\n'+
+  'Infill Percentage + Info: ' + values.infill+'\n'+
+
+  'Requested Time Frame: '+  values.time_frame +'\n'+
+    'Additional Information: '  +  values.addt_info+'\n\n'+
+     'Link to Requested CAD: ' + values.cad_link +'\n\n'+
+        'Please contact the requester through their email for further communications'+'\n\n'+
+        'Thanks for your continued support of ZippyPrints!'+'\n'+
+        'To stop receiving requests, go to your account page and disable your printer.'+'\n\n'+
+        'Reference ID: #'+uuidv4(),
 }
          });
         }catch(error) {
@@ -172,6 +186,7 @@ setOpenRegisterPopup(true)
 }
     const handleSubmit = async(e) => {
     getData();
+    setOpenRegisterPopup(false)
     }
 
 
