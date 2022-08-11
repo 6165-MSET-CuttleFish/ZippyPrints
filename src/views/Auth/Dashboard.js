@@ -110,18 +110,18 @@ const getGeoLocation = async (address) => {
         throw error;
     }
   }
-    const uploadData = async () => {
-        await updateDoc(colRef, {
-            username: username,
-            email: currentUser?.email,
-            teamnumber: values.teamnumber,
-            address: values.address,
-            city: values.city,
-            state: values.state,
-            zipcode: values.zipcode,
-        })
-        await getData();
-    }
+   const uploadData = async () => {
+           await updateDoc(colRef, {
+               username: username,
+               email: currentUser?.email,
+               teamnumber: values.teamnumber,
+               address: values.address,
+               city: values.city,
+               state: values.state,
+               zipcode: values.zipcode,
+           })
+           await getData();
+       }
     const getUsername = async () => {
 
     }
