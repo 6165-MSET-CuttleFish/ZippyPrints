@@ -97,22 +97,22 @@ const onSelect = (marker) => {
          const docRef = await addDoc(collection(db, "email"), {
 to:selected.email,
 message:{subject:'New ZippyPrints Request',
-text:'Hello ZippyPrinter, we have a new request from Team '+ values.teamnumber+ '\n\n'+
-'Requester\'s email: ' + values.requester_email+ '\n'+
+      text:'Hello ZippyPrinter, we have a new request from Team '+ values.teamnumber+ '\n\n'+
+                'Requester\'s email: ' + values.requester_email+ '\n'+
 
-'Filament Info: '+values.filament +'\n'+
- 'Supports Info: ' + values.supports +'\n'+
-  'Infill Percentage + Info: ' + values.infill+'\n'+
+                'Filament Info: '+values.filament +'\n'+
+                 'Supports Info: ' + values.supports +'\n'+
+                  'Infill Percentage + Info: ' + values.infill+'\n'+
 
-  'Requested Time Frame: '+  values.time_frame +'\n'+
-    'Additional Information: '  +  values.addt_info+'\n\n'+
-     'Link to Requested CAD: ' + values.cad_link +'\n\n'+
-        'Please contact the requester through their email for further communications'+'\n\n'+
-        'Thanks for your continued support of ZippyPrints!'+'\n'+
-        'To stop receiving requests, go to your account page and disable your printer.'+'\n\n'+
-        'Reference ID: '+uuidv4(),
+                  'Requested Time Frame: '+  values.time_frame +'\n'+
+                    'Additional Information: '  +  values.addt_info+'\n\n'+
+                     'Link to Requested CAD: ' + values.cad_link +'\n\n'+
+                        'Please contact the requester through their email for further communications'+'\n\n'+
+                        'Thanks for your continued support of ZippyPrints!'+'\n'+
+                        'To stop receiving requests, go to your account page and disable your printer.'+'\n\n'
+                        +'Reference ID: '+uuidv4()
 }
-         });
+ });
         }catch(error) {
             console.log(error.message);
         }
@@ -145,11 +145,11 @@ const onMapLoad = (map) => {
             if ('requester_email' in fieldValues)
                 temp.requester_email = (/./).test(fieldValues.requester_email)?"":"Email is required."
             if ('cad_link' in fieldValues)
-                temp.cad_link1 = (/./).test(fieldValues.cad_link1)?"":"Cad Link is required."
+                temp.cad_link = (/./).test(fieldValues.cad_link)?"":"Cad Link is required."
             if ('supports' in fieldValues)
                 temp.supports = (/./).test(fieldValues.supports)?"":"Support info is required."
             if ('filament' in fieldValues)
-                temp.filament = (/./).test(fieldValues.addt_info)?"":"Filament info is required."
+                temp.filament = (/./).test(fieldValues.filament)?"":"Filament info is required."
             if ('time_frame' in fieldValues)
                 temp.time_frame = (/./).test(fieldValues.time_frame)?"":"Time frame is required."
             if ('infill' in fieldValues)
@@ -187,7 +187,7 @@ setOpenRegisterPopup(true)
     const handleSubmit = async(e) => {
     getData();
     setOpenRegisterPopup(false)
-    values = initalFValues;
+    setValues(initalFValues);
     }
 
 
@@ -206,7 +206,21 @@ setOpenRegisterPopup(true)
       </span>
     </h2>
       <Popup
-                        title = "Register"
+                        title = <Typography
+                             variant="h6" component="div" style={{flexGrow: 12
+                             ,
+                             paddingRight: 148,
+
+                             paddingLeft: 3 ,
+
+
+                             }}
+
+
+
+
+
+                        >Request a Print</Typography>
                         children =    <Form onSubmit={handleSubmit}>
                                                      <Controls.Input
                                                          label = "Team Number"
@@ -373,9 +387,12 @@ const useStyles = makeStyles(theme =>({
       width: 220,
     },
     submitButton:{
-    right: -8,
+    right: -3,
     top: 7,
     width:350,
+    },
+    textbox:{
+    right:5
     }
   
 }))

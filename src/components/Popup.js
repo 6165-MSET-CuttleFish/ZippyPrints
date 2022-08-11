@@ -10,12 +10,12 @@ const useStyles = makeStyles(theme => ({
         padding: '2px',
         position: 'absolute',
         top: 0,
-        minHeight: '80vh',
+        minHeight: '0vh',
         maxHeight: '80vh',
+       width: 405
     },
     root: {
-        left: 100
-    }
+        left: 100    }
 }))
 
 
@@ -27,7 +27,19 @@ export default function Popup(props) {
     return(
         <Dialog open = {openPopup} classes={{ paper: classes.dialogWrapper}}onClose={() => {setOpenPopup(false)}}>
             <DialogContent dividers>
-            <div style = {{display: 'flex'}}>
+            <div style = {
+            {display: 'flex'}
+
+
+
+
+
+
+            }
+
+
+
+            >
            <DialogContentText>
 
                                 <Typography variant="h6" component="div" style={{flexGrow: 12}}>
@@ -41,6 +53,20 @@ export default function Popup(props) {
  </div>
 
                 {children}
+                  <div style = {
+                            {display: 'flex',paddingBottom:15}
+
+
+
+
+
+
+                            }
+
+
+
+                            >
+                            </div  >
             </DialogContent>
         </Dialog>
     )
