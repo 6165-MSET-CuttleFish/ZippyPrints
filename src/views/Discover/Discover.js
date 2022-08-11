@@ -54,7 +54,7 @@ function Discover() {
                     lng: doc.data()?.lng,
                     team: doc.data()?.teamnumber,
                     location: doc.data()?.formattedAddress,
-                    email:doc.data()?.email,
+                    email: doc.data()?.email,
                     uid: doc.data()?.uid
                   },
                 ]);
@@ -135,7 +135,8 @@ const onMapLoad = (map) => {
   mapRef.current = map;
 
 }
-  const uploadData = async () => {
+
+const uploadData = async () => {
         await getData();
     }
       const validate=(fieldValues = values)=>{
@@ -188,7 +189,6 @@ setOpenRegisterPopup(true)
     getData();
     setOpenRegisterPopup(false)
     }
-
 
 
   if (loadError) return "Error loading map";

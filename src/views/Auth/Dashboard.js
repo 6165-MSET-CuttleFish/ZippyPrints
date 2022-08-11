@@ -92,7 +92,7 @@ export default function Dashboard() {
             formattedAddress: data.results[0]?.formatted_address,
             teamnumber: values.teamnumber,
             uid: currentUser.uid,
-            email:currentUser.email
+            email: currentUser.email
           })
 
     }catch(error) {
