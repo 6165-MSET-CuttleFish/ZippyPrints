@@ -206,22 +206,8 @@ setOpenRegisterPopup(true)
       </span>
     </h2>
       <Popup
-                        title = <Typography
-                             variant="h6" component="div" style={{flexGrow: 12
-                             ,
-                             paddingRight: 148,
-
-                             paddingLeft: 3 ,
-
-
-                             }}
-
-
-
-
-
-                        >Request a Print</Typography>
-                        children =    <Form onSubmit={handleSubmit}>
+                        title = "Register"
+                        children =  {<Form onSubmit={handleSubmit}>
                                                      <Controls.Input
                                                          label = "Team Number"
                                                          name="teamnumber"
@@ -260,11 +246,11 @@ setOpenRegisterPopup(true)
                                                          error={errors.filament}
                                                          className={classes.textbox}
                                                          style = {{width: '350px'}}
-                                                                                                                  required
+                                                         required
                                                          />
                                                      <Controls.Input
                                                          label = "Infill Percentage"
-                                                         name="infill"
+                                                         name="infill" 
                                                          value={values.infill}
                                                          onChange = {handleInputChange}
                                                          error={errors.infill}
@@ -309,7 +295,7 @@ setOpenRegisterPopup(true)
                                                          text = "Submit"
                                                          onClick = {handleSubmit}
                                                      />
-                                                 </Form>
+                                                 </Form>}
                         openPopup={openRegisterPopup}
                         setOpenPopup={setOpenRegisterPopup}>
                     </Popup>
