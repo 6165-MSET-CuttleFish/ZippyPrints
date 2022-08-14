@@ -45,9 +45,6 @@ function Discover() {
         try {
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
-              const pathReference = ref(storage, "files/" + doc.data().uid + ".STL");
-
-              getDownloadURL(pathReference).then((response) =>{
                 setMarkers((current) => [...current,
                   {
                     lat: doc.data()?.lat,
@@ -58,11 +55,6 @@ function Discover() {
                     uid: doc.data()?.uid
                   },
                 ]);
-              }).catch((err) => {
-                console.log(err)
-              })
-
-
         });
 
 
@@ -94,25 +86,24 @@ const onSelect = (marker) => {
 }
        const getData = async () => {
         try {
-         const docRef = await addDoc(collection(db, "email"), {
-to:selected.email,
-message:{subject:'New ZippyPrints Request',
-      text:'Hello ZippyPrinter, we have a new request from Team '+ values.teamnumber+ '\n\n'+
-                'Requester\'s email: ' + values.requester_email+ '\n'+
-
-                'Filament Info: '+values.filament +'\n'+
-                 'Supports Info: ' + values.supports +'\n'+
-                  'Infill Percentage + Info: ' + values.infill+'\n'+
-
-                  'Requested Time Frame: '+  values.time_frame +'\n'+
-                    'Additional Information: '  +  values.addt_info+'\n\n'+
-                     'Link to Requested CAD: ' + values.cad_link +'\n\n'+
-                        'Please contact the requester through their email for further communications'+'\n\n'+
-                        'Thanks for your continued support of ZippyPrints!'+'\n'+
-                        'To stop receiving requests, go to your account page and disable your printer.'+'\n\n'
-                        +'Reference ID: '+uuidv4()
+         await addDoc(collection(db, "email"), {
+          to:selected.email,
+          message:{subject: 'New ZippyPrints Request #' + uuidv4().split("-")[1],
+          text:
+            'Hello ' + currentUser.displayName + ', we have a new request from Team '+ values.teamnumber+ '\n\n'+
+            'Requester\'s email: ' + values.requester_email+ '\n'+
+            'Filament Info: '+values.filament +'\n'+
+            'Supports Info: ' + values.supports +'\n'+
+            'Infill Percentage + Info: ' + values.infill+'\n'+
+            'Requested Time Frame: '+  values.time_frame +'\n'+
+            'Additional Information: '  +  values.addt_info+'\n\n'+
+            'Link to Requested CAD: ' + values.cad_link +'\n\n'+
+            'Please contact the requester through their email for further communications'+'\n\n'+
+            'Thanks for your continued support of ZippyPrints! \n'+
+            'To stop receiving requests, go to your account page and disable your printer.'+'\n\n' 
 }
  });
+        values.id++;
         }catch(error) {
             console.log(error.message);
         }
@@ -173,15 +164,6 @@ const onMapLoad = (map) => {
         } = useForm(initalFValues, true, validate);
 
 const handleClick = async(e) => {
-/*  const db = getFirestore();
- const docRef = doc(db, "users", "" + currentUser.uid)
-const docSnap = await getDoc(docRef);
-if (docSnap.exists()) {
-  console.log("Document data:", docSnap.data());
-} else {
-  // doc.data() will be undefined in this case
-  console.log("No such document!");
-}*/
 setOpenRegisterPopup(true)
 }
     const handleSubmit = async(e) => {
@@ -343,7 +325,7 @@ setOpenRegisterPopup(true)
             <h3>
             {selected.team}
            </h3>
-           
+
            <h5>
            Location: {selected.location}
            </h5>
