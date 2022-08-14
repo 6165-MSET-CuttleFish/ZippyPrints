@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
         top: 0,
         minHeight: '0vh',
         maxHeight: '80vh',
-       width: 405
+        width: 405,
     },
     root: {
         left: 100    }
@@ -27,46 +27,19 @@ export default function Popup(props) {
     return(
         <Dialog open = {openPopup} classes={{ paper: classes.dialogWrapper}}onClose={() => {setOpenPopup(false)}}>
             <DialogContent dividers>
-            <div style = {
-            {display: 'flex'}
-
-
-
-
-
-
-            }
-
-
-
-            >
+            <div style = {{display: 'flex'}}  >
            <DialogContentText>
-
-                                <Typography variant="h6" component="div" style={{flexGrow: 12}}>
-                                    {title}
-                                </Typography>
+               <Typography variant="h6" component="div" style={{flexGrow: 12}}>
+                   {title}
+                </Typography>
            </DialogContentText>
-
-                        <Controls.ActionButton
-                        onClick={() => {setOpenPopup(false)}}>
-                        </Controls.ActionButton>
- </div>
-
-                {children}
-                  <div style = {
-                            {display: 'flex',paddingBottom:15}
-
-
-
-
-
-
-                            }
-
-
-
-                            >
-                            </div  >
+           <Controls.ActionButton
+           onClick={() => {setOpenPopup(false)}}>
+           </Controls.ActionButton>
+           </div>
+           {children}
+           <div style = {{display: 'flex',paddingBottom:15}}>
+            </div >
             </DialogContent>
         </Dialog>
     )

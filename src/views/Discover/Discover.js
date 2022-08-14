@@ -206,106 +206,106 @@ setOpenRegisterPopup(true)
       </span>
     </h2>
       <Popup
-                        title = "Register"
-                        children =  {<Form onSubmit={handleSubmit}>
-                                                     <Controls.Input
-                                                         label = "Team Number"
-                                                         name="teamnumber"
-                                                         value={values.teamnumber}
-                                                         onChange = {handleInputChange}
-                                                         error={errors.teamnumber}
-                                                         className={classes.textbox}
-                                                         style = {{width: '350px'}}
-                                                         required
-                                                         />
-                                                     <Controls.Input
-                                                         label = "Your Email"
-                                                         name="requester_email"
-                                                         value={values.requester_email}
-                                                         onChange = {handleInputChange}
-                                                         error={errors.requester_email}
-                                                         className={classes.textbox}
-                                                         style = {{width: '350px'}}
-                                                         required
-                                                         />
-                                                     <Controls.Input
-                                                         label = "Link to Your CAD (Onshape, GrabCad, etc)"
-                                                         name="cad_link"
-                                                         value={values.cad_link}
-                                                         onChange = {handleInputChange}
-                                                         error={errors.cad_link}
-                                                         className={classes.textbox}
-                                                         style = {{width: '350px'}}
-                                                         required
-                                                         />
-                                                     <Controls.Input
-                                                         label = "Filament Type (PLA, TPU, etc)"
-                                                         name="filament"
-                                                         value={values.filament}
-                                                         onChange = {handleInputChange}
-                                                         error={errors.filament}
-                                                         className={classes.textbox}
-                                                         style = {{width: '350px'}}
-                                                         required
-                                                         />
-                                                     <Controls.Input
-                                                         label = "Infill Percentage"
-                                                         name="infill" 
-                                                         value={values.infill}
-                                                         onChange = {handleInputChange}
-                                                         error={errors.infill}
-                                                         className={classes.textbox}
-                                                         style = {{width: '350px'}}
-                                                         required
-                                                         />
-                                                     <Controls.Input
-                                                         label = "Does it Require Support? (if so, what type?)"
-                                                         name="supports"
-                                                         value={values.supports}
-                                                         onChange = {handleInputChange}
-                                                         error={errors.supports}
-                                                         className={classes.textbox}
-                                                         style = {{width: '350px'}}
-                                                         required
-                                                         />
-                                                     <Controls.Input
-                                                         label = "When do you need this by?"
-                                                         name="time_frame"
-                                                         value={values.time_frame}
-                                                         onChange = {handleInputChange}
-                                                         error={errors.time_frame}
-                                                         className={classes.textbox}
-                                                         style = {{width: '350px'}}
-                                                         required
-                                                         />
-                                                     <Controls.Input
-                                                         label = "Addt Info (Orientation, Color, etc)"
-                                                         name="addt_info"
-                                                         value={values.addt_info}
-                                                         onChange = {handleInputChange}
-                                                         error={errors.addt_info}
-                                                         className={classes.textbox}
-                                                         style = {{width: '350px'}}
-                                                         />
-                                                     <Controls.Button
-                                                         className = {classes.submitButton}
-                                                         variant = "contained"
-                                                         color = "secondary"
-                                                         size = "large"
-                                                         text = "Submit"
-                                                         onClick = {handleSubmit}
-                                                     />
-                                                 </Form>}
-                        openPopup={openRegisterPopup}
-                        setOpenPopup={setOpenRegisterPopup}>
-                    </Popup>
+        title = "Register"
+        children =  {<Form onSubmit={handleSubmit}>
+          <Controls.Input
+            label = "Team Number"
+            name="teamnumber"
+            value={values.teamnumber}
+            onChange = {handleInputChange}
+            error={errors.teamnumber}
+            className={classes.textbox}
+            style = {{width: '350px'}}
+            required
+          />
+          <Controls.Input
+            label = "Your Email"
+            name="requester_email"
+            value={values.requester_email}
+            onChange = {handleInputChange}
+            error={errors.requester_email}
+            className={classes.textbox}
+            style = {{width: '350px'}}
+            required
+          />
+          <Controls.Input
+            label = "Link to Your CAD (Onshape, GrabCad, etc)"
+            name="cad_link"
+            value={values.cad_link}
+            onChange = {handleInputChange}
+            error={errors.cad_link}
+            className={classes.textbox}
+            style = {{width: '350px'}}
+            required
+          />
+          <Controls.Input
+            label = "Filament Type (PLA, TPU, etc)"
+            name="filament"
+            value={values.filament}
+            onChange = {handleInputChange}
+            error={errors.filament}
+            className={classes.textbox}
+            style = {{width: '350px'}}
+            required
+          />
+          <Controls.Input
+            label = "Infill Percentage"
+            name="infill" 
+            value={values.infill}
+            onChange = {handleInputChange}
+            error={errors.infill}
+            className={classes.textbox}
+            style = {{width: '350px'}}
+            required
+          />
+          <Controls.Input
+            label = "Does it Require Support? (if so, what type?)"
+            name="supports"
+            value={values.supports}
+            onChange = {handleInputChange}
+            error={errors.supports}
+            className={classes.textbox}
+            style = {{width: '350px'}}
+            required
+          />
+          <Controls.Input
+            label = "When do you need this by?"
+            name="time_frame"
+            value={values.time_frame}
+            onChange = {handleInputChange}
+            error={errors.time_frame}
+            className={classes.textbox}
+            style = {{width: '350px'}}
+            required
+          />
+          <Controls.Input
+            label = "Addt Info (Orientation, Color, etc)"
+            name="addt_info"
+            value={values.addt_info}
+            onChange = {handleInputChange}
+            error={errors.addt_info}
+            className={classes.textbox}
+            style = {{width: '350px'}}
+          />
+          <Controls.Button
+            className = {classes.submitButton}
+            variant = "contained"
+            color = "secondary"
+            size = "large"
+            text = "Submit"
+            onClick = {handleSubmit}
+          />
+        </Form>}
+        openPopup={openRegisterPopup}
+        setOpenPopup={setOpenRegisterPopup}>
+      </Popup>
+
     <GoogleMap
       mapContainerStyle = {mapContainerStyle}
       zoom = {5}
       center = {center}
       options={options}
       onLoad={onMapLoad}
-
       >
         {markers?.map((marker, i) => (
           <Marker
@@ -343,7 +343,7 @@ setOpenRegisterPopup(true)
             <h3>
             {selected.team}
            </h3>
-
+           
            <h5>
            Location: {selected.location}
            </h5>
