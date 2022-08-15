@@ -27,18 +27,20 @@ export default function Popup(props) {
     return(
         <Dialog open = {openPopup} classes={{ paper: classes.dialogWrapper}}onClose={() => {setOpenPopup(false)}}>
             <DialogContent dividers>
-            <div style = {{display: 'flex'}}  >
+            <div style = {{display: 'flex'}}>
            <DialogContentText>
                <Typography variant="h6" component="div" style={{flexGrow: 12}}>
                    {title}
                 </Typography>
            </DialogContentText>
+           <div style = {{display: 'flex', paddingLeft:213}}>
            <Controls.ActionButton
            onClick={() => {setOpenPopup(false)}}>
            </Controls.ActionButton>
            </div>
+           </div>
            {children}
-           <div style = {{display: 'flex',paddingBottom:15}}>
+           <div style = {{display: 'flex', paddingBottom:15}}>
             </div >
             </DialogContent>
         </Dialog>

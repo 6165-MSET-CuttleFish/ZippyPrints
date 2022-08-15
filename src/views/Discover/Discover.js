@@ -188,7 +188,7 @@ setOpenRegisterPopup(true)
       </span>
     </h2>
       <Popup
-        title = "Register"
+        title = "Request"
         children =  {<Form onSubmit={handleSubmit}>
           <Controls.Input
             label = "Team Number"
