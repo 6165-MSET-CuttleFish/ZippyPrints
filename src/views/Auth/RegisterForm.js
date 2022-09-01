@@ -53,6 +53,7 @@ const useStyles = makeStyles(e =>({
           size: 200
       },
       checkbox: {
+
         display: 'flex',
         flex: 3,
         alignItem: 'center',

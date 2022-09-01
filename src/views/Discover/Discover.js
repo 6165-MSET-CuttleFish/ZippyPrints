@@ -328,8 +328,8 @@ setOpenRegisterPopup(true)
 
            <h5>
            Location: {selected.location}
+           Printers: {selected.printers}
            </h5>
-            
            <Controls.Button 
                 className = {classes.requestButton}
                 variant = "contained"
