@@ -97,9 +97,9 @@ export default function Dashboard() {
             teamnumber: values.teamnumber,
             uid: currentUser.uid,
             email: currentUser.email,
-                               printers: currentUser.printers,
-                               filament:currentUser.filament,
-                               price:currentUser.price,
+            printers: values.printers,
+            filament: values.filament,
+            price: values.price,
           })
 
     }catch(error) {
@@ -119,17 +119,16 @@ const getGeoLocation = async (address) => {
   }
    const uploadData = async () => {
            await updateDoc(colRef, {
-               username: username,
-               email: currentUser?.email,
-               teamnumber: values.teamnumber,
-               address: values.address,
-               city: values.city,
-               state: values.state,
-               zipcode: values.zipcode,
-                   printers: values.printers,
-                   email:values.email,
-                   filament:values.filament,
-                   price:values.price,
+                username: username,
+                email: currentUser?.email,
+                teamnumber: values.teamnumber,
+                address: values.address,
+                city: values.city,
+                state: values.state,
+                zipcode: values.zipcode,
+                printers: values.printers,
+                filament:values.filament,
+                price:values.price,
            })
            await getData();
        }
@@ -164,14 +163,14 @@ const getGeoLocation = async (address) => {
             temp.state = (/..../).test(fieldValues.state)?"":"State is not valid."
         if ('zipcode' in fieldValues)
             temp.zipcode = (/..../).test(fieldValues.zipcode)?"":"Zip Code is not valid."
-                if ('printers' in fieldValues)
-                    temp.printers = (/../).test(fieldValues.printers)?"":"Printer is not valid."
-                if ('email' in fieldValues)
-                    temp.email = (/../).test(fieldValues.email)?"":"Email is not valid."
-                if ('filament' in fieldValues)
-                    temp.filament = (/../).test(fieldValues.filament)?"":"Filament is not valid."
-                if ('price' in fieldValues)
-                    temp.price = (/../).test(fieldValues.price)?"":"Price is not valid."
+        if ('printers' in fieldValues)
+            temp.printers = (/../).test(fieldValues.printers)?"":"Printer is not valid."
+        if ('email' in fieldValues)
+            temp.email = (/../).test(fieldValues.email)?"":"Email is not valid."
+        if ('filament' in fieldValues)
+            temp.filament = (/../).test(fieldValues.filament)?"":"Filament is not valid."
+        if ('price' in fieldValues)
+            temp.price = (/../).test(fieldValues.price)?"":"Price is not valid."
                 
         setErrors({
             ...temp
@@ -307,16 +306,6 @@ const getGeoLocation = async (address) => {
                     required
                     />
                 <Controls.Input
-                    label = "Email for Requests"
-                    name="email"
-                    value={values.email}
-                    onChange = {handleInputChange}
-                    error={errors.email}
-                    className={classes.textbox}
-                    style = {{width: '350px'}}
-                    required
-                    />
-                <Controls.Input
                     label = "Printers"
                     name="printers"
                     value={values.printers}
@@ -332,6 +321,16 @@ const getGeoLocation = async (address) => {
                     value={values.filament}
                     onChange = {handleInputChange}
                     error={errors.filament}
+                    className={classes.textbox}
+                    style = {{width: '350px'}}
+                    required
+                    />
+                    <Controls.Input
+                    label = "Email for Requests"
+                    name="email"
+                    value={values.email}
+                    onChange = {handleInputChange}
+                    error={errors.email}
                     className={classes.textbox}
                     style = {{width: '350px'}}
                     required
