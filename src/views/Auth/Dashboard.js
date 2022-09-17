@@ -26,6 +26,10 @@ const initalFValues = {
     country:'',
     state: '',
     zipcode:'',
+    printers:'',
+    email:'',
+    filament:'',
+    price:'',
 }
 
 const useStyles = makeStyles(theme =>({ 
@@ -92,7 +96,10 @@ export default function Dashboard() {
             formattedAddress: data.results[0]?.formatted_address,
             teamnumber: values.teamnumber,
             uid: currentUser.uid,
-            email: currentUser.email
+            email: currentUser.email,
+            printers: values.printers,
+            filament: values.filament,
+            price: values.price,
           })
 
     }catch(error) {
@@ -112,13 +119,16 @@ const getGeoLocation = async (address) => {
   }
    const uploadData = async () => {
            await updateDoc(colRef, {
-               username: username,
-               email: currentUser?.email,
-               teamnumber: values.teamnumber,
-               address: values.address,
-               city: values.city,
-               state: values.state,
-               zipcode: values.zipcode,
+                username: username,
+                email: currentUser?.email,
+                teamnumber: values.teamnumber,
+                address: values.address,
+                city: values.city,
+                state: values.state,
+                zipcode: values.zipcode,
+                printers: values.printers,
+                filament:values.filament,
+                price:values.price,
            })
            await getData();
        }
@@ -153,7 +163,15 @@ const getGeoLocation = async (address) => {
             temp.state = (/..../).test(fieldValues.state)?"":"State is not valid."
         if ('zipcode' in fieldValues)
             temp.zipcode = (/..../).test(fieldValues.zipcode)?"":"Zip Code is not valid."
-        
+        if ('printers' in fieldValues)
+            temp.printers = (/../).test(fieldValues.printers)?"":"Printer is not valid."
+        if ('email' in fieldValues)
+            temp.email = (/../).test(fieldValues.email)?"":"Email is not valid."
+        if ('filament' in fieldValues)
+            temp.filament = (/../).test(fieldValues.filament)?"":"Filament is not valid."
+        if ('price' in fieldValues)
+            temp.price = (/../).test(fieldValues.price)?"":"Price is not valid."
+                
         setErrors({
             ...temp
         })
@@ -192,12 +210,12 @@ const getGeoLocation = async (address) => {
           </Box>
           <Paper sx={{
             marginTop: 2,
-            marginLeft: 15,
+            marginLeft: 25,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
             height: 450,
-            width: 1200,
+            width: 1500,
             }}
             variant="outlined">
           <Box component="form" noValidate sx={{ marginTop: 2,
@@ -287,6 +305,47 @@ const getGeoLocation = async (address) => {
                     style = {{width: '350px'}}
                     required
                     />
+                <Controls.Input
+                    label = "Printers"
+                    name="printers"
+                    value={values.printers}
+                    onChange = {handleInputChange}
+                    error={errors.printers}
+                    className={classes.textbox}
+                    style = {{width: '350px'}}
+                    required
+                    />
+                <Controls.Input
+                    label = "Filaments Available"
+                    name="filament"
+                    value={values.filament}
+                    onChange = {handleInputChange}
+                    error={errors.filament}
+                    className={classes.textbox}
+                    style = {{width: '350px'}}
+                    required
+                    />
+                    <Controls.Input
+                    label = "Email for Requests"
+                    name="email"
+                    value={values.email}
+                    onChange = {handleInputChange}
+                    error={errors.email}
+                    className={classes.textbox}
+                    style = {{width: '350px'}}
+                    required
+                    />
+                <Controls.Input
+                    label = "Estimated Price ($/cm^3)"
+                    name="price"
+                    value={values.price}
+                    onChange = {handleInputChange}
+                    error={errors.price}
+                    className={classes.textbox}
+                    style = {{width: '350px'}}
+                    required
+                    />
+
                 <Controls.Button 
                     className = {classes.submitButton}
                     variant = "contained"
