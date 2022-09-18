@@ -34,12 +34,7 @@ const initalFValues = {
 
 const useStyles = makeStyles(theme =>({ 
       textbox: {
-        left: 50,
-        width: 200,
-        length: 200,
-        size: 100,
-        top: 20,
-        bottom: 20
+        
       },
       root: {
         margin: 50,
@@ -48,17 +43,16 @@ const useStyles = makeStyles(theme =>({
         
       },
       submitButton: {
+        display: 'flex',
+        alignSelf: 'center',
         background: 'linear-gradient(45deg, #00ff00 100%, #9aff5c 90%)',
-        border: 0,
-        borderRadius: 3,
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
         height: 48,
         width: 350,
-        left: 240,
-        top: 31
-      },
-      header: {
-        
+        position: 'absolute',
+        left: '32.5%',
+        top: '3.5%',
+        bottom: '3%'
       }
 }))
 
@@ -209,20 +203,27 @@ const getGeoLocation = async (address) => {
 
           </Box>
           <Paper sx={{
-            marginTop: 2,
-            marginLeft: 25,
+            position: 'absolute',
+            top: '30%',
+            bottom: '20%',
+            left: '10%',
+            right: '10%',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            height: 450,
-            width: 1500,
+            
             }}
             variant="outlined">
-          <Box component="form" noValidate sx={{ marginTop: 2,
+          <Box component="form" noValidate sx={{ 
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            marginLeft: 23
+            justifyContent: 'center',
+            position: 'relative',
+            top: '5%',
+            bottom: '5%',
+            left: '2.5%',
+            right: '2.5%',
             }}>
                 
             <Form onSubmit={handleSubmit}>
@@ -353,6 +354,7 @@ const getGeoLocation = async (address) => {
                     size = "large"
                     text = "Submit"
                     onClick = {handleSubmit}
+                    style = {{width: '350px'}}
                 />
             </Form>
           </Box>

@@ -30,18 +30,14 @@ function Discover() {
   const [markers, setMarkers] = useState([]);
   const [selected, setSelected] = useState(null);
   const storage = getStorage();
-   const db = getFirestore();
+  const db = getFirestore();
   const classes = useStyles();
-
-      const username = currentUser?.displayName
-    const [openPopup, setOpenPopup] = useState(false)
-    const [openRegisterPopup, setOpenRegisterPopup] = useState(false)
+  const [openRegisterPopup, setOpenRegisterPopup] = useState(false)
 
     useEffect(() => {
       const getMarkerData = async () => {
         const db = getFirestore();
         const q = query(collection(db, "markers"));
-
         try {
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
