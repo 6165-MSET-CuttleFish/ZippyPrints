@@ -1,0 +1,79 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color:rgba(3, 122, 3, 0.774);
+    background-image: url(images/lander1.jpg);
+    background-blend-mode: soft-light;
+    background-size: 100%;
+    background-position: center;
+
+
+}
+
+.StartScreen {  
+    width: auto;
+    height: 300px; 
+    margin: auto;
+    position: absolute;
+    top: 0px; bottom: 0px; right: 0px; left: 0px;
+}
+
+.title {
+  display: block;
+  text-align: center;
+  color: white;
+  font-size: 60pt;
+  font-family: 'Helvetica Neue';
+}
+
+.subtitle {
+  display: block;
+  margin-top: 15px;
+  text-align: center;
+  font-size: 14pt;
+  font-family:'Helvetica Neue'; 
+  color: white;
+}
+
+.block {
+  display: block;
+  margin: auto;
+  width: 500px;
+  height: 175px;
+  border: 10px solid #001b2e;
+  background-color:rgba(255, 255, 255, 0)
+}
+
+
+.button {
+  margin: 50px auto;
+  
+  transition-duration: 400ms;
+  cursor: pointer;
+  align-self: center;
+  width: 180px;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 5px solid #001b2e;
+  transition: background-color 500ms, color 500ms;
+} 
+
+.button:hover {
+  background-color: rgb(106, 73, 255);
+}
+
+.buttonText {
+  color: black;
+  letter-spacing: 1px;
+  font-weight: 600;
+}

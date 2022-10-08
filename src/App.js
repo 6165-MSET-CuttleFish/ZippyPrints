@@ -12,6 +12,8 @@ import RegisterExport from "./views/Auth/RegisterExport"
 import Logout from "./views/Auth/Logout"
 import { AuthProvider } from './views/Auth/Auth'
 import AuthenticationError from './views/404/AuthenticationError'
+import { Helmet } from 'react-helmet'
+
 
 class App extends React.Component {
  
@@ -20,6 +22,10 @@ render()  {
     return (
       <AuthProvider>
       <div>
+      <Helmet>
+        <title>ZippyPrints</title>
+        <meta name="description" content="A fast, easy to use, and reliable way for printing custom designs through printers near you!" />
+      </Helmet>
         <NavBar />
         <BrowserRouter>
           <Routes>

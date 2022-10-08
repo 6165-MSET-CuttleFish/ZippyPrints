@@ -106,21 +106,19 @@ a {
 
 .StartScreen {
   margin: 0;
-  width: 100vw;
-  height: 100vh;
+  min-height: 100vh;
+  max-width: 100vw;
   background-color: yellowgreen;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  position: relative;
   padding: 50px 40px;
-  overflow-x: hidden;
+  overflow-x:hidden;
+  overflow-y:hidden;
 }
 
 .StartScreen div {
-  width: 45%;
-  height: 100%;
+  margin: 0;
+  width: 45vw;
+  height: 75vh;
 }
 
 .InfoBlurb {
@@ -218,30 +216,5 @@ a {
 .FormField {
   flex-direction: row;
   align-items: stretch;
-}
-
-h1 {
-  position: absolute;
-  top: 7rem;
-  left: 3rem;
-  color:#281414;
-  z-index: 10;
-  margin: 0;
-  padding: 0;
-}
-h2 {
-  position: absolute;
-  top: 7rem;
-  left: 0.5rem;
-  color:#281414;
-  z-index: 10;
-  margin: 0;
-  padding: 0;
-  font-weight: bold;
-}
-h5 {
-  position: relative;
-  color:#281414;
-  font-weight: normal;
 }
 

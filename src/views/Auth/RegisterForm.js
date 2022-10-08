@@ -3,18 +3,11 @@ import { Grid} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import { makeStyles } from '@mui/styles'
-import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import GoogleIcon from '@mui/icons-material/Google';
-import LoginForm from './LoginForm'
-import {firebaseConfig} from '../../api/firebaseConfig'
-import { initializeApp } from 'firebase/app';
-import { Route, Switch, Redirect, BrowserRouter, useNavigate } from 'react-router-dom';
-import Popup from "../../components/Popup";
-import RegisterSuccessForm from "./Redirect"
-import { getFirestore, collection, getDocs, addDoc, setDoc, doc } from 'firebase/firestore/lite';
-import { getDatabase, ref, set } from "firebase/database";
-import { Typography, Snackbar, SnackbarContent, Link, Paper, Container, CssBaseline,
-    Progress, Alert, Item, Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
+import { useNavigate } from 'react-router-dom';
+import { getFirestore, setDoc, doc } from 'firebase/firestore/lite';
+import { Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import '../Auth/Register.css'
 
