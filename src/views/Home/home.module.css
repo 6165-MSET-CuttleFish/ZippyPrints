@@ -4,17 +4,11 @@
 }
 
 html, body {
-    height: 100%;
+    height: 200%;
 }
 
 body {
-    background-color:rgba(3, 122, 3, 0.774);
-    background-image: url(images/lander1.jpg);
-    background-blend-mode: soft-light;
-    background-size: 100%;
-    background-position: center;
-
-
+    background-color:#73fc77;
 }
 
 .StartScreen {  
@@ -28,7 +22,7 @@ body {
 .title {
   display: block;
   text-align: center;
-  color: white;
+  color: #17252A;
   font-size: 60pt;
   font-family: 'Helvetica Neue';
 }
@@ -39,7 +33,7 @@ body {
   text-align: center;
   font-size: 14pt;
   font-family:'Helvetica Neue'; 
-  color: white;
+  color: #001b2e;
 }
 
 .block {
@@ -52,9 +46,8 @@ body {
 }
 
 
-.button {
+.scrollButton {
   margin: 50px auto;
-  
   transition-duration: 400ms;
   cursor: pointer;
   align-self: center;
@@ -65,15 +58,108 @@ body {
   justify-content: center;
   align-items: center;
   border: 5px solid #001b2e;
+  background-color: #001b2e;
   transition: background-color 500ms, color 500ms;
 } 
 
-.button:hover {
-  background-color: rgb(106, 73, 255);
+.scrollButton:hover {
+  background-color: #73fc77;
+  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.44), 0 17px 50px 0 rgba(0,0,0,0.39);
+  color: #001b2e;  
+  transition: background-color 500ms, color 500ms;
+
 }
 
 .buttonText {
-  color: black;
+  color: #73fc77;
+  font-size: 12px;
+  padding: 10px 20px;
+  text-transform: uppercase;
   letter-spacing: 1px;
   font-weight: 600;
+  line-height: 6vh;
+  min-width: 12vw;
+  font-family: 'Helvetica Neue';
+  transition: color 500ms, color 500ms;
+}
+
+.buttonText:hover {
+  color: #001b2e;
+  transition: background-color 500ms, color 500ms;
+
+}
+
+.tutorialBackground {
+  display: block;
+  width: 100%;
+  height: 2500px;
+  margin-top: 50%;
+  position: absolute;
+  top: 0px; bottom: 0px; right: 0px; left: 0px;
+  background-color: #161616;  
+}
+
+.tutorialTitle {
+  display: block;
+  padding-top: 5%;
+  text-align: center;
+  color: #73fc77;
+  font-size: 60pt;
+  font-family: 'Helvetica Neue';
+}
+
+.tutorialSubtitle {
+  display: block;
+  padding-top: 0%; bottom: 0px; right: 0px; padding-left: 12%;
+  font-size: 24pt;
+  font-family:'Helvetica Neue'; 
+  color: #73fc77;
+}
+
+.redVertical {
+  top: 6.75%; bottom: 0px; right: 90%; margin-left: 0%;
+  width: 10px;
+  height: 400px;
+  color:turquoise;
+  background-color: turquoise;  
+  border-radius: 100px;
+  position: absolute;
+
+}
+
+.tutorialDescription {
+  display: block;
+  padding-top: 2px; bottom: 0px; right: 0px; padding-left: 12%;
+  font-size: 12pt;
+  font-family:'Helvetica Neue'; 
+  color: #5ac55d;
+}
+
+.teamTutorialSubtitle {
+  display: block;
+  text-align: right;
+  padding-top: 28.5%; bottom: 0px; padding-right: 12%; left: 0%;
+  font-size: 24pt;
+  font-family:'Helvetica Neue'; 
+  color: #73fc77;
+}
+
+.teamVertical {
+  top: 30%; bottom: 0px; right: 10%; margin-left: 0%;
+  width: 10px;
+  height: 400px;
+  color:turquoise;
+  background-color: turquoise;  
+  border-radius: 100px;
+  position: absolute;
+
+}
+
+.teamTutorialDescription {
+  display: block;
+  text-align: right;
+  padding-top: 0%; bottom: 0px; padding-right: 12%; padding-left: 0%;
+  font-size: 12pt;
+  font-family:'Helvetica Neue'; 
+  color: #5ac55d;
 }
