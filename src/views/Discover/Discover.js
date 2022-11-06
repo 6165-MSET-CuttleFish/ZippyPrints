@@ -178,13 +178,11 @@ setOpenRegisterPopup(true)
     //TODO: replace with actual logo
   <div>
     <h2>
-    Zippyprints {" "}
-      <span role ="img" aria-label="logo">
-      🖨️
-      </span>
+    
     </h2>
       <Popup
         title = "Request"
+        
         children =  {<Form onSubmit={handleSubmit}>
           <Controls.Input
             label = "Team Number"
@@ -268,8 +266,10 @@ setOpenRegisterPopup(true)
           <Controls.Button
             className = {classes.submitButton}
             variant = "contained"
-            color = "secondary"
             size = "large"
+            style={{
+              backgroundColor: "#001b2e",
+            }}
             text = "Submit"
             onClick = {handleSubmit}
           />

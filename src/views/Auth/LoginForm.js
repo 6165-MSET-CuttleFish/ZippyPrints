@@ -10,22 +10,19 @@ import { Typography, Snackbar, SnackbarContent, Link, Paper, Container, CssBasel
          Progress, Alert, Item, Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom';
+import styles from '../Auth/login.module.css'
 
-const useStyles = makeStyles(t =>({ 
+const useStyles = makeStyles(e =>({ 
     loginButton: {
-        background: 'linear-gradient(45deg, #00ff00 30%, #9aff5c 90%)',
         border: 0,
         borderRadius: 3,
-        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
         height: 48,
         width: 350,
         left: 100,
-
       },
       googleButton: {
         border: 0,
         borderRadius: 3,
-        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
         height: 48,
         width: 350,
         left: 100,
@@ -140,24 +137,13 @@ export default function LoginForm() {
         <div>
 <ThemeProvider theme={theme}>
         <Box
-          sx={{
-            marginTop: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
+          className={styles.topBox}
         > 
         <Avatar sx={{ m: 1, bgcolor: '#00ff00' }}>
             <LockOutlinedIcon />
         </Avatar>
         <h4>Sign in</h4>
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{
-            marginTop: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            marginLeft: 3,
-          }}>
+        <Box component="form" onSubmit={handleSubmit} noValidate className={styles.botBox}>
             <Form onSubmit={handleSubmit}>
                 <Controls.Input
                     label = "Email"
@@ -184,15 +170,20 @@ export default function LoginForm() {
                 <Controls.Button 
                     className = {classes.loginButton}
                     variant = "contained"
-                    color = "secondary"
                     size = "large"
+                    style={{
+                        backgroundColor: "#001b2e",
+                    }}
                     text = "Login"
                     onClick = {handleSubmit}
                 />
                 <Controls.Button 
                     className = {classes.googleButton}
                     variant = "outlined"
-                    color = "primary"
+                    style={{
+                        borderColor: "#001b2e",
+                        color: "#001b2e"
+                    }}
                     size = "large"
                     text = "Login with Google"
                     onClick ={handleGoogleLogin}
@@ -202,7 +193,8 @@ export default function LoginForm() {
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    marginRight: 3
+                    marginRight: 3,
+                    color: '#001b2e'
                 }}>
                     {"Don't have an account? Sign Up"}
                 </Link>

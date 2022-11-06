@@ -1,0 +1,24 @@
+.Paper {
+    width: 550px;
+    height: 550px; 
+    margin: auto;
+    position: relative;
+    top: 50px; bottom: 0px; right: 0px; left: 0px;
+}
+
+.topBox {
+    display: flex;
+    margin-top: auto;
+    padding-top: 2%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.botBox {
+    display: flex;
+    margin-top: 2%;
+    flex-direction: column;
+    align-items: center;
+}
+

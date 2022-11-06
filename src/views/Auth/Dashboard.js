@@ -12,6 +12,7 @@ import { Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 import { query, collection, getDocs, where } from "firebase/firestore";
 import { API_KEY } from '../../api/firebaseConfig'
 import { AuthContext } from "./Auth";
+import styles from '../Auth/dashboard.module.css'
 
 const apiKey = API_KEY
 const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
@@ -43,9 +44,8 @@ const useStyles = makeStyles(theme =>({
         
       },
       submitButton: {
-        display: 'flex',
+        display: 'block',
         alignSelf: 'center',
-        background: 'linear-gradient(45deg, #00ff00 100%, #9aff5c 90%)',
         boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
         height: 48,
         width: 350,
@@ -126,11 +126,6 @@ const getGeoLocation = async (address) => {
            })
            await getData();
        }
-    const getUsername = async () => {
-
-    }
-
-    
     const handleSubmit = async(e) => {        
         e.preventDefault()
         if(validate()) {
@@ -188,45 +183,25 @@ const getGeoLocation = async (address) => {
 
     return(
         <ThemeProvider theme={theme}>
-        <Box
-          sx={{
-            marginTop: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-        <h3> Edit {currentUser.displayName}'s Profile </h3>
-           <Avatar sx={{ m: 0, bgcolor: '#00ff00', fontSize: 2 }}>
+        <Box className={styles.topBox}>
+        <h3 className={styles.text}> Edit {currentUser.displayName}'s Profile </h3>
+           <Avatar sx={{ m: 0, bgcolor: '#e0c699', fontSize: 2, marginTop: 1}}>
 
           </Avatar>
 
-          </Box>
-          <Paper sx={{
-            position: 'absolute',
-            top: '30%',
-            bottom: '20%',
-            left: '10%',
-            right: '10%',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            
-            }}
-            variant="outlined">
-          <Box component="form" noValidate sx={{ 
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-            top: '5%',
-            bottom: '5%',
-            left: '2.5%',
-            right: '2.5%',
-            }}>
+        </Box>
+          <Paper 
+            className={styles.Paper} 
+            style={{
+                backgroundColor: "#EDD4B2",
+                square: "true"
+              }}            
+            variant="elevation5"
+            square={true}
+          >
+          <Box component="form" noValidate >
                 
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} className={styles.botBox}>
                 <Controls.Input
                     label = "Team Number"
                     name="teamnumber"
@@ -348,13 +323,19 @@ const getGeoLocation = async (address) => {
                     />
 
                 <Controls.Button 
-                    className = {classes.submitButton}
+                    className = {styles.button}
                     variant = "contained"
-                    color = "secondary"
+                    style={{
+                        backgroundColor: "#001b2e",
+                        width: '350px',
+                        color: '#e0c699',
+                        borderColor: '#e0c699',
+                        textTransform: 'uppercase',
+                        letterSpacing: '1px',
+                     }}
                     size = "large"
                     text = "Submit"
                     onClick = {handleSubmit}
-                    style = {{width: '350px'}}
                 />
             </Form>
           </Box>

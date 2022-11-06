@@ -1,0 +1,44 @@
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color:#2c3a54;
+}
+
+.Paper {
+    width: 550px;
+    height: 550px; 
+    margin: auto;
+    position: relative;
+    top: 50px; bottom: 0px; right: 0px; left: 0px;
+}
+
+.topBox {
+    display: flex;
+    margin-top: auto;
+    padding-top: 2%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.botBox {
+    display: flex;
+    margin-top: 2%;
+    flex-direction: column;
+    align-items: center;
+}
+
+.loginButton {
+    color: #73fc77;
+}
+/* loginButton: {
+    background: '#73fc77',
+    border: 0,
+    borderRadius: 3,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    height: 48,
+    width: 350,
+    left: 100
+  }, */

@@ -39,7 +39,7 @@ a {
   font-weight: 600;
   transition-duration: 400ms;
   cursor: pointer;
-  color: #fcfcfc;
+  color: #e0c699;
 }
 
 .Elements a:hover {
@@ -65,7 +65,7 @@ a {
   font-weight: 600;
   transition-duration: 400ms;
   cursor: pointer;
-  color: #fcfcfc;
+  color: #e0c699;
   align-self: center;
   margin-left: 40px;
   width: 120px;
@@ -74,11 +74,11 @@ a {
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  border: 2px solid #fcfcfc;
+  border: 2px solid #e0c699;
 }
 
 .Login:hover {
-  background-color: #fcfcfc;
+  background-color: #e0c699;
   color: #001b2e;
 }
 
@@ -96,7 +96,7 @@ a {
 }
 
 .SignUp {
-  background: #fcfcfc;
+  background: #e0c699;
   position: relative;
 }
 
@@ -128,7 +128,7 @@ a {
 
 .InfoBlurb h1 {
   font-size: xx-large;
-  color: #fcfcfc;
+  color: #e0c699;
   padding-left: 10px;
   
 }

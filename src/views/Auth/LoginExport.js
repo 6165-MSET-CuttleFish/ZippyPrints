@@ -2,6 +2,7 @@ import React from 'react'
 import LoginForm from './LoginForm'
 import {Paper} from '@mui/material'
 import { makeStyles } from '@mui/styles'
+import styles from '../Auth/login.module.css'
 
 const useStyles = makeStyles(theme => ({
   pageContent:{
@@ -17,7 +18,13 @@ const LoginExport = props => {
   const classes = useStyles();
   return (
     <div>
-      <Paper className = {classes.pageContent}>
+      <Paper className = {styles.Paper}
+       style={{
+        backgroundColor: "#EDD4B2",
+        square: "true"
+      }}            
+    variant="elevation5"
+    square={true}>
       <LoginForm />
       </Paper>
      
