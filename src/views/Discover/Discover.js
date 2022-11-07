@@ -14,6 +14,11 @@ import {AuthContext} from "../../views/Auth/Auth"
 import Popup from "../../components/Popup";
 import {useForm, Form} from '../../components/useForm'
 import { v4 as uuidv4 } from 'uuid';
+import styles from '../Discover/map.module.css'
+import {useNavigate} from "react-router-dom"
+import Snackbar from '@mui/material';
+
+
 const initalFValues = {
     id: 0,
     requester_email: '',
@@ -33,7 +38,10 @@ function Discover() {
   const db = getFirestore();
   const classes = useStyles();
   const [openRegisterPopup, setOpenRegisterPopup] = useState(false)
-
+  const navigate = useNavigate();
+  if (!currentUser) {
+    navigate("/Login")
+  }
     useEffect(() => {
       const getMarkerData = async () => {
         const db = getFirestore();
@@ -122,9 +130,7 @@ const onMapLoad = (map) => {
   mapRef.current = map;
 
 }
-  const uploadData = async () => {
-        await getData();
-    }
+
       const validate=(fieldValues = values)=>{
             let temp = {...errors}
             if ('teamnumber' in fieldValues)
@@ -159,13 +165,13 @@ const onMapLoad = (map) => {
             resetForm
         } = useForm(initalFValues, true, validate);
 
-const handleClick = async(e) => {
-setOpenRegisterPopup(true)
-}
+    const handleClick = async(e) => {
+      setOpenRegisterPopup(true)
+    }
     const handleSubmit = async(e) => {
-    getData();
-    setOpenRegisterPopup(false)
-    setValues(initalFValues);
+      getData();
+      setOpenRegisterPopup(false)
+      setValues(initalFValues);
     }
 
 
@@ -312,26 +318,19 @@ setOpenRegisterPopup(true)
             setSelected(null)
           }}
         >
-          <Box sx={{marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            m:1}}>
+          <Box className={styles.markerBox}>
 
-            <h3>
-            {selected.team}
-           </h3>
+            <p className={styles.teamText}>Team {selected.team}</p>
 
-           <h5>
-           Location: {selected.location}
-           Printers: {selected.printers}
-           </h5>
+           <p className={styles.locationText}> Location: {selected.location.split(",")[1]}, {selected.location.split(",")[2]}</p>
            <Controls.Button 
                 className = {classes.requestButton}
                 variant = "contained"
-                color = "secondary"
-                size = "large"
-                text = "Submit Request"
+                    size = "large"
+                    style={{
+                        backgroundColor: "#001b2e",
+                    }}
+                    text = "Submit Request"
                 onClick = {handleClick}
                 />  
           </Box>
@@ -343,7 +342,6 @@ setOpenRegisterPopup(true)
 }
 const useStyles = makeStyles(theme =>({ 
   requestButton: {
-    background: 'linear-gradient(45deg, #00ff00 100%, #9aff5c 90%)',
       border: 0,
       borderRadius: 3,
       boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',

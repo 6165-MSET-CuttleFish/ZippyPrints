@@ -31,7 +31,6 @@ render()  {
           <Routes>
             <Route exact path="/Home" element={<Home />} />
             <Route exact path="/" element = {<Home />} />
-            <Route exact path="/Upload" element={<FileUpload />} />
             <Route exact path="/Login" element={<LoginExport />} />
             <Route exact path="/Discover" element={<Map />} />
             <Route exact path="/Profile" element={<Dashboard />} />

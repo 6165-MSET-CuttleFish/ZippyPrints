@@ -13,7 +13,6 @@ render () {
       <div className="App">
         <div className="Elements">
         <a href="home">Zippyprints </a>
-        <a href="upload">Upload</a>
         <a href="discover">Map</a>
         </div>
         <div className="Auth">
@@ -26,18 +25,16 @@ render () {
     );
   } else {
     return (
-
       <div className="App">
         <div className="Elements">
-        <a href="home">Zippyprints</a>
-        <a href="upload">Upload</a>
-        <a href="discover">Map</a>
+          <a href="home">Zippyprints</a>
+          <a href="discover">Map</a>
         </div>
         <div className="Auth">
-       <a href ="Login" className="Login">Login</a>
-       <a href ="Register" className="Login">Register</a>
-    </div> 
-        </div>
+          <a href ="Login" className="Login">Login</a>
+          <a href ="Register" className="Login">Register</a>
+        </div> 
+      </div>
       
 
     );

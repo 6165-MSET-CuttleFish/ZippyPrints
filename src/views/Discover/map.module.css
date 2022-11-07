@@ -1,0 +1,34 @@
+.markerBox {
+    display: flex;
+    margin: auto 8px;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+    height: 110px;
+}
+
+.teamText {
+    color: black;
+    font-size: 16px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+    font-family: 'Helvetica Neue';
+}
+
+.locationText {
+    display: block;
+    font-size: 10pt;
+    font-family:'Helvetica Neue'; 
+    color: black;
+    text-align: right;
+}
+
+
+
+
+/* sx={{marginTop: 8,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    m:2}} */
