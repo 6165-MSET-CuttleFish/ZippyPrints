@@ -16,8 +16,7 @@ import {useForm, Form} from '../../components/useForm'
 import { v4 as uuidv4 } from 'uuid';
 import styles from '../Discover/map.module.css'
 import {useNavigate} from "react-router-dom"
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@material-ui/lab/Alert';
+import { RedirectCheck, RedirectCheckProvider } from './RedirectCheck';
 const initalFValues = {
     id: 0,
     requester_email: '',

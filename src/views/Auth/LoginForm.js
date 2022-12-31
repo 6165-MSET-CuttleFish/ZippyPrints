@@ -11,7 +11,7 @@ import { Typography, Snackbar, SnackbarContent, Link, Paper, Container, CssBasel
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom';
 import styles from '../Auth/login.module.css'
-import open, {setOpen} from '../Discover/Discover';
+import { RedirectCheck, RedirectCheckProvider } from './RedirectCheck';
 const useStyles = makeStyles(e =>({ 
     loginButton: {
         border: 0,
@@ -81,10 +81,16 @@ export default function LoginForm() {
         resetForm
     } = useForm(initalFValues, true, validate);
 
-    const handleClose = () => {
-        setOpen(false)
-        open = false
-    }
+    const{status} = useContext(RedirectCheck)
+    console.log("status:" + status)
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        else{
+            status = false;
+        }
+    };
     const provider = new GoogleAuthProvider();
     provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
     const auth = getAuth(); 
@@ -140,7 +146,7 @@ export default function LoginForm() {
     return (
         <div>
 <ThemeProvider theme={theme}>
-    <Snackbar className = {styles.SnackBar} anchorOrigin = {{vertical: "top", horizontal: "center"}} open={open} autoHideDuration={1} onClose={handleClose}>
+    <Snackbar className = {styles.SnackBar} anchorOrigin = {{vertical: "top", horizontal: "center"}} open={status} autoHideDuration={1} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
            Please login before trying to access the map!
         </Alert>
