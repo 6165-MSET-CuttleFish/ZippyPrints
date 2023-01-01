@@ -16,7 +16,7 @@ import {useForm, Form} from '../../components/useForm'
 import { v4 as uuidv4 } from 'uuid';
 import styles from '../Discover/map.module.css'
 import {useNavigate} from "react-router-dom"
-import { RedirectCheck, RedirectCheckProvider } from './RedirectCheck';
+import {Menu} from '../../components/actions/Menu/Menu'
 const initalFValues = {
     id: 0,
     requester_email: '',
@@ -292,6 +292,8 @@ const onMapLoad = (map) => {
         openPopup={openRegisterPopup}
         setOpenPopup={setOpenRegisterPopup}>
       </Popup>
+    <div className={styles.wrapper}>
+    <Menu/>
     <GoogleMap
       mapContainerStyle = {mapContainerStyle}
       zoom = {5}
@@ -344,6 +346,7 @@ const onMapLoad = (map) => {
           </Box>
         </InfoWindow>) : null}
     </GoogleMap>
+    </div>  
   </div>
   );
   
