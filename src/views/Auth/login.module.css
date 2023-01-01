@@ -3,7 +3,7 @@
     height: 550px; 
     margin: auto;
     position: relative;
-    top: 50px; bottom: 0px; right: 0px; left: 0px;
+    top: 100px; bottom: 0px; right: 0px; left: 0px;
 }
 
 .topBox {
@@ -21,4 +21,7 @@
     flex-direction: column;
     align-items: center;
 }
-
+.SnackBar {
+    padding-top: 100px; 
+}
+/* change to dynamic */

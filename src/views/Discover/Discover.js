@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext,  Component} from 'react';
 import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import axios from 'axios'
 import { getFirestore, collection, getDocs, addDoc, updateDoc, doc, getDoc, GeoPoint, query, setDoc } from 'firebase/firestore/lite';
-import { getAuth, updateProfile,  } from "firebase/auth";
+import { getAuth, updateCurrentUser, updateProfile,  } from "firebase/auth";
 import { getDatabase, set, onValue} from "firebase/database";
 import { getMarkerData} from '../../components/actions/Location'
 import Controls from '../../components/actions/Controls'
@@ -16,9 +16,7 @@ import {useForm, Form} from '../../components/useForm'
 import { v4 as uuidv4 } from 'uuid';
 import styles from '../Discover/map.module.css'
 import {useNavigate} from "react-router-dom"
-import Snackbar from '@mui/material';
-
-
+import {Menu} from '../../components/actions/Menu/Menu'
 const initalFValues = {
     id: 0,
     requester_email: '',
@@ -30,8 +28,15 @@ const initalFValues = {
     time_frame: '',
     infill:'',
 }
+let open = false;
+module.export = {open:open}
+
+export function setOpen(children){
+  open = children;
+}
 function Discover() {
   const {currentUser} = useContext(AuthContext);
+  // const {redirect} = useContext(redirectCheck);
   const [markers, setMarkers] = useState([]);
   const [selected, setSelected] = useState(null);
   const storage = getStorage();
@@ -39,8 +44,11 @@ function Discover() {
   const classes = useStyles();
   const [openRegisterPopup, setOpenRegisterPopup] = useState(false)
   const navigate = useNavigate();
+  
+  
   if (!currentUser) {
-    navigate("/Login")
+    navigate("/Login");
+    setOpen(true);
   }
     useEffect(() => {
       const getMarkerData = async () => {
@@ -63,8 +71,9 @@ function Discover() {
 
 
         } catch (error){
-          window.alert(error)
-            console.log(error)
+          // window.alert(error) //We want to use a snackbar instead of a popup so this is commmented out
+          console.log(error)
+          // console.log(redirect)
 
         }
     }
@@ -283,7 +292,8 @@ const onMapLoad = (map) => {
         openPopup={openRegisterPopup}
         setOpenPopup={setOpenRegisterPopup}>
       </Popup>
-
+    <div className={styles.wrapper}>
+    <Menu/>
     <GoogleMap
       mapContainerStyle = {mapContainerStyle}
       zoom = {5}
@@ -336,6 +346,7 @@ const onMapLoad = (map) => {
           </Box>
         </InfoWindow>) : null}
     </GoogleMap>
+    </div>  
   </div>
   );
   

@@ -13,8 +13,7 @@ import Logout from "./views/Auth/Logout"
 import { AuthProvider } from './views/Auth/Auth'
 import AuthenticationError from './views/404/AuthenticationError'
 import { Helmet } from 'react-helmet'
-
-
+import { RedirectCheckProvider } from './views/Auth/RedirectCheck';
 class App extends React.Component {
  
 
@@ -28,16 +27,18 @@ render()  {
       </Helmet>
         <NavBar />
         <BrowserRouter>
-          <Routes>
-            <Route exact path="/Home" element={<Home />} />
-            <Route exact path="/" element = {<Home />} />
-            <Route exact path="/Login" element={<LoginExport />} />
-            <Route exact path="/Discover" element={<Map />} />
-            <Route exact path="/Profile" element={<Dashboard />} />
-            <Route exact path="/Register" element={<RegisterExport />} />
-            <Route exact path="/Logout" element={<Logout />} />
-            <Route exact path="/AuthError" element={<AuthenticationError />} />
-          </Routes>
+          <RedirectCheckProvider>
+            <Routes>
+              <Route exact path="/Home" element={<Home />} />
+              <Route exact path="/" element = {<Home />} />
+              <Route exact path="/Login" element={<LoginExport />} />
+              <Route exact path="/Discover" element={<Map />} />
+              <Route exact path="/Profile" element={<Dashboard />} />
+              <Route exact path="/Register" element={<RegisterExport />} />
+              <Route exact path="/Logout" element={<Logout />} />
+              <Route exact path="/AuthError" element={<AuthenticationError />} />
+            </Routes>
+          </RedirectCheckProvider>
         </BrowserRouter>
       </div>
       </AuthProvider>
