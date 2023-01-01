@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createRef } from 'react';
-import { CircularProgress, Grid, Typography, InputLabel, MenuItem, FormControl, Select } from '@material-ui/core';
+import { CircularProgress, Grid, Typography, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 import useStyles from './styles';
 import Details from '../Details/Details';
 import { Autocomplete } from '@react-google-maps/api';
@@ -24,13 +24,13 @@ export const Menu = () => {
                     <InputBase className = {classes.search} sx = {{color: '##00FF00'}} placeholder = "Search..."/>
                 </div>
                 </Autocomplete>
-            <Typography variant = 'h4'> 
+            <Typography sx = {{marginTop:2, marginBottom: 2}} variant = 'h4'> 
                 Options Around You
             </Typography>
             <FormControl className = {classes.formControl}>
-                <InputLabel >What method are you looking for?</InputLabel>
+                <InputLabel sx = {{marginLeft: -1}}>What method are you looking for?</InputLabel>
                 <Box sx = {{marginTop:2.85}}>
-                <Select value = {type} sx = {{margin: 30}} onChange = {handleInputChange}>
+                <Select value = {type} sx = {{marginLeft: -13, marginTop: -1.5, width: 200}} onChange = {handleInputChange}>
                     <MenuItem value = '3D Printing'> 3D Printing </MenuItem>
                     <MenuItem value = 'Laser Cutting'> Laser Cutting </MenuItem>
                     <MenuItem value = 'CNC Work'> CNC Work </MenuItem>

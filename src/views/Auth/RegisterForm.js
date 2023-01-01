@@ -107,7 +107,40 @@ export default function RegisterForm() {
         const userName = values.userName;
         const printer = values.printer;
         const auth = getAuth();
-        await createUserWithEmailAndPassword(auth, userEmail, userPassword)
+        if (printer) {
+          await createUserWithEmailAndPassword(auth, userEmail, userPassword)
+          .then(async (userCredential) => {
+            // Sgned in 
+          const db = getFirestore();
+          const colRef = doc(db, "printers", "" + auth.currentUser.uid)
+
+          await updateProfile(await auth.currentUser, {
+            displayName: userName,
+            
+          }).then(() => {
+            // Profile updated!
+            // ...
+          }).catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            window.alert("Error: " + errorCode + ", " + errorMessage)
+          });
+          await setDoc(colRef, {
+            username: userName,
+            email: userEmail,
+            printer: printer,
+          })
+
+        
+          })
+          .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            window.alert("Error: " + errorCode + ", " + errorMessage)
+            // ..
+          });
+        } else {
+          await createUserWithEmailAndPassword(auth, userEmail, userPassword)
           .then(async (userCredential) => {
             // Sgned in 
           const db = getFirestore();
@@ -138,6 +171,8 @@ export default function RegisterForm() {
             window.alert("Error: " + errorCode + ", " + errorMessage)
             // ..
           });
+        }
+        
           
     }
     
