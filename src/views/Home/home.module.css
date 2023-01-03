@@ -2,70 +2,98 @@
     margin: 0;
     padding: 0;
 }
-
-html, body {
+.html {
+    background-color: #094FB7;
     height: 100%;
-    width: auto;
+    width: 100%;
     overflow-x: hidden;
 }
 
 body {
-    background-color:#2c3a54;
+    background-color:#094FB7;
     overflow-x: hidden;
-    width: auto;
+    width: 100%;
 }
 
 .StartScreen {  
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     width: auto;
-    height: 300px; 
+    height: 80vh;
     margin: auto;
     position: absolute;
     top: 0px; bottom: 0px; right: 0px; left: 0px;
-    
 }
 
+.intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-left: 250px;
+  padding-top: 150px;
+}
 .title {
-  display: block;
-  text-align: center;
-  color: #FFEECF;
-  font-size: 60pt;
-  font-family: 'Helvetica Neue';
+  color: #F0F5FF;
+  font-family: "Lexend Regular";
+  font-size: 6vw;
+  font-weight: 600;
+  letter-spacing: -1.3px;
+  line-height: 80px;
 }
 
-.subtitle {
-  display: block;
-  margin-top: 15px;
-  text-align: center;
-  font-size: 14pt;
-  font-family:'Helvetica Neue'; 
-  color: #FFEECF;
-}
-
-.block {
-  display: block;
-  margin: auto;
-  width: 520px;
-  height: 175px;
-  border: 10px solid #FFEECF;
-  background-color:rgba(255, 255, 255, 0)
-}
-
-
-.scrollButton {
-  margin: 50px auto;
-  transition-duration: 400ms;
-  cursor: pointer;
-  align-self: center;
-  width: 180px;
-  height: 50px;
+.subtitleContainer {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  align-items: flex-start;
+  margin-top: 5vh;
+  gap: 1vw;
+}
+.subtitle {
+  color: #F0F5FF;
+  font-family: "Lexend Regular";
+  font-size: 0.9vw;
+  font-weight: 100;
+  line-height: 20px;
+  width: 475px;
+}
+
+.line{
+  background-color: #F0F5FF;
+  height: 60px;
+  width: 3px;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  margin-top: 6vh;
+  gap: 1vw;
+}
+
+.userButton {
+  display: flex;
   align-items: center;
-  border: 5px solid #e0c699;
-  background-color: #2c3a54;
-  transition: background-color 500ms, color 500ms;
+  justify-content: center;
+  gap: 12px;
+  background-color: #F0F5FF;
+  border-radius: 7px;
+  padding: 0px 32px;
+  width: fit-content;
 } 
+
+.userText{
+  color: #094FB7;
+  font-family: "Lexend Regular";
+  font-size: 0.9vw;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 56px;
+  margin-top: -2px;
+  white-space: nowrap;
+  width: fit-content;
+}
 
 .scrollButton:hover {
   background-color: #e0c699;

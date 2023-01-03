@@ -2,9 +2,7 @@ import React from 'react';
 import  { Home }  from './views/Home';
 import { Route, Routes, BrowserRouter  } from 'react-router-dom';
 import './App.css';
-import './views/Auth/Register.css'
-import FileUpload from './views/Upload/Upload';
-import NavBar from './components/NavBar';
+import NavBar from './components/NavBar/NavBar';
 import LoginExport from './views/Auth/LoginExport';
 import { Map } from './views/Discover'
 import Dashboard from "./views/Auth/Dashboard"
@@ -14,13 +12,14 @@ import { AuthProvider } from './views/Auth/Auth'
 import AuthenticationError from './views/404/AuthenticationError'
 import { Helmet } from 'react-helmet'
 import { RedirectCheckProvider } from './views/Auth/RedirectCheck';
+import styles from './App.css'
 class App extends React.Component {
  
 
 render()  {  
     return (
+      <body className = {styles.body}>
       <AuthProvider>
-      <div>
       <Helmet>
         <title>ZippyPrints</title>
         <meta name="description" content="A fast, easy to use, and reliable way for printing custom designs through printers near you!" />
@@ -40,8 +39,8 @@ render()  {
             </Routes>
           </RedirectCheckProvider>
         </BrowserRouter>
-      </div>
       </AuthProvider>
+      </body>
     );
   }
 }

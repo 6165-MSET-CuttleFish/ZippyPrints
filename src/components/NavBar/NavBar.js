@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
-import { AuthContext } from "../views/Auth/Auth";
+import { AuthContext } from "../../views/Auth/Auth";
+import styles from '../NavBar/nav.module.css'
 
 
 export default class NavBar extends React.Component {
@@ -16,7 +17,7 @@ render () {
         <a href="discover">Map</a>
         </div>
         <div className="Auth">
-       <a href ="Logout" className="Login">Log out</a>
+       <a href ="Logout" className={"Login"}>Log out</a>
        <a href ="Profile" className="Login">Profile</a>
       </div>
 
@@ -31,8 +32,12 @@ render () {
           <a href="discover">Map</a>
         </div>
         <div className="Auth">
-          <a href ="Login" className="Login">Login</a>
-          <a href ="Register" className="Login">Register</a>
+          <a href ="Login" className={styles.loginButton}>
+            <div className={styles.loginText}>Login</div>
+          </a>
+          <a href ="Register" className={styles.registerButton}>
+            <div className={styles.registerText}>Register</div>
+          </a>
         </div> 
       </div>
       

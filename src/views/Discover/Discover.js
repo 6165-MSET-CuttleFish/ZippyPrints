@@ -64,7 +64,8 @@ function Discover() {
                     team: doc.data()?.teamnumber,
                     location: doc.data()?.formattedAddress,
                     email:doc.data()?.email,
-                    uid: doc.data()?.uid
+                    uid: doc.data()?.uid,
+                    username: doc.data()?.displayName
                   },
                 ]);
         });
