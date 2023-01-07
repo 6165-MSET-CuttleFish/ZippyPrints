@@ -16,3 +16,9 @@ code {
   src: local("Lexend-Regular"),
   url("./fonts/Lexend-Regular.ttf");
 }
+
+@font-face {
+  font-family: "Lexend Light";
+  src: local("Lexend-Light"),
+  url("./fonts/Lexend-Light.ttf");
+}

@@ -20,7 +20,7 @@ body {
     flex-direction: column;
     align-items: flex-start;
     width: auto;
-    height: 80vh;
+    height: 75vh;
     margin: auto;
     position: absolute;
     top: 0px; bottom: 0px; right: 0px; left: 0px;
@@ -30,32 +30,34 @@ body {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-left: 250px;
-  padding-top: 150px;
+  padding-left: 15%;
+  padding-top: 10%;
 }
+
+
 .title {
   color: #F0F5FF;
   font-family: "Lexend Regular";
-  font-size: 6vw;
+  font-size: clamp(50px, 6vw, 100px);
   font-weight: 600;
   letter-spacing: -1.3px;
-  line-height: 80px;
+  line-height: clamp(50px, 8vh, 200px);
 }
 
 .subtitleContainer {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  margin-top: 5vh;
+  margin-top: 3vw;
   gap: 1vw;
 }
-.subtitle {
+.subtitle { 
   color: #F0F5FF;
   font-family: "Lexend Regular";
-  font-size: 0.9vw;
+  font-size: clamp(10px, 0.9vw, 20px);
   font-weight: 100;
   line-height: 20px;
-  width: 475px;
+  width: clamp(275px, 32vw, 475px);
 }
 
 .line{
@@ -68,11 +70,11 @@ body {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  margin-top: 6vh;
+  margin-top: 3vw;
   gap: 1vw;
 }
 
-.userButton {
+/* .userButton {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -93,205 +95,175 @@ body {
   margin-top: -2px;
   white-space: nowrap;
   width: fit-content;
-}
+} */
 
-.scrollButton:hover {
-  background-color: #e0c699;
-  
-  box-shadow: 0 12px 16px 0 rgba(0,0,0,0.44), 0 17px 50px 0 rgba(0,0,0,0.39);
-  color: #001b2e;  
-  transition: background-color 500ms, color 500ms;
-
-}
-
-.buttonText {
-  color: #FFEECF;
-  font-size: 12px;
-  padding: 10px 20px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-weight: 600;
-  line-height: 6vh;
-  min-width: 12vw;
-  font-family: 'Helvetica Neue';
-  transition: color 500ms, color 500ms;
-}
-
-.buttonText:hover {
-  color: #001b2e;
-  transition: background-color 500ms, color 500ms;
-
-}
+/*FROM NOW ON: TUTORIAL*/
 
 .tutorialBackground {
   display: block;
-  width: 100%;
   height: 1700px;
-  margin-top: 50%;
+  margin-top: clamp(725px, 50%, 1000px);
   position: absolute;
   top: 0px; bottom: 0px; right: 0px; left: 0px;
-  background-color: #161616;  
+  background-color: #F0F5FF;  
+}
+
+.tutorialHeadingContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .tutorialTitle {
-  display: block;
-  padding-top: 5%;
+  color: #094FB7;
+  font-family:'Lexend Regular'; 
+  font-size: 4vw;
+  font-weight: 600;
+  letter-spacing: -0.84;
+  line-height: 60px;
   text-align: center;
-  color: #EDD4B2;
-  font-size: 60pt;
-  font-family: 'Helvetica Neue';
+  width: 1320px;
+  margin-top: 7vw;
 }
 
 .tutorialSubtitle {
-  display: block;
-  padding-top: 2.5%; padding-bottom: 2.5%; right: 0px; padding-left: 12%;
-  font-size: 24pt;
-  font-family:'Helvetica Neue'; 
-  color: #FFEECF;
-}
-
-.redVertical {
-  /* display: block!important;
-  margin-top: -13%; bottom: 0%; right: 0%; margin-left: -2%;
-  width: 10px;
-  height: 400px;
-  background-color: #FFEECF;  
-  border-radius: 100px;
-  position: relative;
-  white-space: nowrap; */
-  border-left-color: rgb(188, 11, 52);
-  border-left-style: solid;
-  border-left-width: 8px;
-  box-sizing: border-box;
-  color: rgb(255, 255, 255);
-  display: block;
-  font-family: Nunito;
-  font-size: 40px;
-  font-weight: 500;
-  height: 175px;
-  letter-spacing: 1px;
-  line-height: 48px;
-  margin-block-end: 0px;
-  margin-block-start: 0px;
-  margin-bottom: 0px;
-  margin-inline-end: 0px;
-  margin-inline-start: -25px;
-  margin-top: -170px;
-  padding-bottom: 0px;
-  padding-left: 32px;
-  padding-right: 0px;
-  padding-top: 0px;
-  text-align: left;
-  width: 1110px;
-}
-
-.tutorialDescription {
-  display: block;
-  padding-top: 0.25%; bottom: 0px; right: 0px; padding-left: 0%;
+  color: #094FB7;
+  font-family:'Lexend Regular'; 
   font-size: 12pt;
-  font-family:'Helvetica Neue'; 
-  color: #D2B48C;
-  position: relative;
-  margin: auto;
-}
-
-.teamTutorialSubtitle {
-  display: block;
-  padding-top: 10%; padding-bottom: 2.5%; padding-right: 12%; padding-left: 0%;
-  font-size: 24pt;
-  font-family:'Helvetica Neue'; 
-  color: #FFEECF;
-  text-align: right;
-
-}
-
-.teamVertical {
-  border-left-color: rgb(188, 11, 52);
-  border-left-style: solid;
-  border-left-width: 8px;
-  box-sizing: border-box;
-  color: rgb(255, 255, 255);
-  display: block;
-  font-family: Nunito;
-  font-size: 40px;
-  font-weight: 500;
-  height: 175px;
-  letter-spacing: 1px;
-  line-height: 48px;
-  margin-block-end: 24px;
-  margin-block-start: 0px;
-  margin-bottom: 24px;
-  margin-inline-end: 0px;
-  margin-inline-start: 0px;
-  margin-top: -170px;
-  margin-left: 101%;
-  padding-bottom: 0px;
-  padding-left: 32px;
-  padding-right: 0px;
-  padding-top: 0px;
-  width: 1110px
-
-}
-
-.teamTutorialDescription {
-  display: block;
-  text-align: right;
-  padding-top: 0.25%; bottom: 0px; padding-right: 0%; padding-left: 0%;
-  font-size: 12pt;
-  font-family:'Helvetica Neue'; 
-  color: #D2B48C;
-  margin: auto;
-}
-
-.missionTitle {
-  display: block;
-  padding-top: 5%;
+  font-weight: 300;
+  letter-spacing: 0;
+  line-height: 60px;
   text-align: center;
-  color: #EDD4B2;
-  font-size: 60pt;
-  font-family: 'Helvetica Neue';
+  width: 648px;
 }
 
-.missionStatement {
-  box-sizing: border-box;
-  color: #D2B48C;
-  display: block;
-  font-family:'Helvetica Neue'; 
-  font-size: 14.399999618530273px;
-  font-weight: 400;
-  height: 210px;
-  letter-spacing: 1px;
-  line-height: 21.600000381469727px;
-  margin-block-end: 0px;
-  margin-block-start: 0px;
-  margin-bottom: 0px;
-  margin-inline-end: 0px;
-  margin-inline-start: 0px;
-  margin-top: 0px;
-  text-align: center;
-  padding-left: 25%;
-  width: 75%;
+.cardsContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 3vw;
+  margin-top: 3vw;
 }
 
-.tutorialProfile {
-  border-bottom-style: none;
-  border-left-style: none;
-  border-right-style: none;
-  border-top-style: none;
-  box-sizing: border-box;
-  color: rgb(33, 37, 41);
-  display: inline-flex;
-  font-family: Nunito;
-  font-size: 16px;
-  font-weight: 400;
-  height: 50%;
-  max-height: 50%;
-  letter-spacing: 1px;
+.printerFeatureCard {
+  display: flex;
+  align-items: flex-start;
+  border: 1px solid;
+  border-color: rgba(230, 232, 236, 0.502);
+  border-radius: 20px;
+  gap: 32px;
+  padding: 40px;
+  width: fit-content;
+}
+
+.cardsTextContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6vw;
+}
+
+.cardTitle {
+  letter-spacing: 0;
+  line-height: 32px;
+  font-size: 1.5vw;
+  font-weight: 200;
+  white-space: nowrap;
+  width: 460px;
+  font-family: 'Lexend Regular';
+}
+
+.cardText {
+  letter-spacing: 0;
   line-height: 24px;
-  max-width: 50%;
-  text-align: right;
-  vertical-align: right;
-  width: 50%;
-  margin-top: -100%;
-  margin-left: 600px;
+  width: 460px;
+  font-family: 'Lexend Light';
+}
+
+
+
+@media screen and (max-width: 900px) {
+  .StartScreen {  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: auto;
+    height: 80vh;
+    margin: auto;
+    position: absolute;
+    top: 0px; bottom: 0px; right: 0px; left: 0px;
+  }
+
+  .intro {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 15vw;
+  }
+  .title {
+    color: #F0F5FF;
+    font-family: "Lexend Regular";
+    font-size: clamp(50px, 6vw, 100px);
+    font-weight: 600;
+    letter-spacing: 0px;
+    line-height: clamp(50px, 8vh, 200px);
+  }
+  
+  .subtitleContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-top: 3vw;
+    gap: 1vw;
+  }
+  .subtitle { 
+    color: #F0F5FF;
+    font-family: "Lexend Regular";
+    font-size: clamp(10px, 0.9vw, 20px);
+    font-weight: 100;
+    line-height: 20px;
+    width: clamp(275px, 32vw, 475px);
+    text-align: center;
+
+  }
+  
+  .line{
+    background-color: #094FB7;
+    height: 60px;
+    width: 3px;
+  }
+  
+  .buttonContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    margin-top: 3vw;
+    gap: 1vw;
+  }
+  
+  .userButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    background-color: #F0F5FF;
+    border-radius: 7px;
+    padding: 0px 32px;
+    width: fit-content;
+  } 
+  
+  .userText{
+    color: #094FB7;
+    font-family: "Lexend Regular";
+    font-size: 0.9vw;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 56px;
+    margin-top: -2px;
+    white-space: nowrap;
+    width: fit-content;
+  }
+
 }

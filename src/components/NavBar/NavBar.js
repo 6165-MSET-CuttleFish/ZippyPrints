@@ -17,8 +17,12 @@ render () {
         <a href="discover">Map</a>
         </div>
         <div className="Auth">
-       <a href ="Logout" className={"Login"}>Log out</a>
-       <a href ="Profile" className="Login">Profile</a>
+       <a href ="Logout" className={styles.loginButton}>            
+        <div className={styles.loginText}>Log out</div>
+      </a>
+       <a href ="Profile" className={styles.registerButton}>
+         <div className={styles.registerText}>Profile</div>
+       </a>
       </div>
 
     </div> 
@@ -27,10 +31,12 @@ render () {
   } else {
     return (
       <div className="App">
+        
         <div className="Elements">
           <a href="home">Zippyprints</a>
           <a href="discover">Map</a>
         </div>
+
         <div className="Auth">
           <a href ="Login" className={styles.loginButton}>
             <div className={styles.loginText}>Login</div>
@@ -39,9 +45,8 @@ render () {
             <div className={styles.registerText}>Register</div>
           </a>
         </div> 
-      </div>
-      
 
+      </div>
     );
   }
   }
