@@ -13,6 +13,8 @@ import { query, collection, getDocs, where } from "firebase/firestore";
 import { API_KEY } from '../../api/firebaseConfig'
 import { AuthContext } from "./Auth";
 import styles from '../Auth/dashboard.module.css'
+import {useNavigate} from "react-router-dom"
+
 
 const apiKey = API_KEY
 const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
@@ -56,9 +58,27 @@ const useStyles = makeStyles(theme =>({
       }
 }))
 
+let open = false;
+module.export = {open:open}
+
+export function setOpen(children){
+    open = children;
+  }
       
-export default function Dashboard() {
+function Dashboard() {
     const {currentUser} = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const checkVerified= ()=>
+    {
+        if(!currentUser.emailVerified)
+        {
+        navigate("/Verification");
+        setOpen(true);
+        }
+    }
+    
+
     const username = currentUser?.displayName
     const db = getFirestore();
     const colRef = doc(db, 'users', "" + currentUser?.uid)
@@ -101,6 +121,11 @@ export default function Dashboard() {
     }
 }
   
+    useEffect(() => {
+        checkVerified()
+        })
+
+
 const getGeoLocation = async (address) => {
     try {
         const data = await axios.get(baseUrl + `${address}&key=${apiKey}`);
@@ -341,4 +366,6 @@ const getGeoLocation = async (address) => {
           </ThemeProvider>
         )
 }
+
+export default Dashboard
 

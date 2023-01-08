@@ -3,7 +3,7 @@ import { Grid} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import { makeStyles } from '@mui/styles'
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import GoogleIcon from '@mui/icons-material/Google';
 import { useNavigate } from 'react-router-dom';
 import { getFirestore, setDoc, doc } from 'firebase/firestore/lite';
@@ -58,6 +58,7 @@ const initalFValues = {
     userName:'',
     email: '',
     password: '',
+    reconfirmPassword: '',
     printer: false
 
 }
@@ -70,7 +71,9 @@ export default function RegisterForm() {
         if ('email' in fieldValues)
             temp.email = (/.+@.+../).test(fieldValues.email)?"":"Email is not valid."
         if ('password' in fieldValues)
-            temp.password = fieldValues.password?"":"This field is required."
+            temp.password = fieldValues.password.length>5?"":"Passwords should be at least 6 characters long."
+        if('reconfirmPassword' in fieldValues)
+            temp.reconfirmPassword={...values}.password===fieldValues.reconfirmPassword?"":"Passwords must match."
         
         setErrors({
             ...temp
@@ -88,14 +91,16 @@ export default function RegisterForm() {
         errors,
         setErrors,
         handleInputChange,
-        resetForm
+        resetForm,
+        loadingStatus,
+        setLoading
     } = useForm(initalFValues, true, validate);
 
     const handleSubmit = async(e) => {    
         e.preventDefault();    
         if(validate()) {
+          setLoading({loading: true})
           await makeAccount();
-          navigate('../Profile', { replace: true })
         }  
     }
 
@@ -118,8 +123,9 @@ export default function RegisterForm() {
             displayName: userName,
             
           }).then(() => {
-            // Profile updated!
-            // ...
+            setLoading({loading: false})
+            navigate('../Verification', { replace: true })
+            //sendEmailVerification(auth.currentUser)
           }).catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -130,13 +136,29 @@ export default function RegisterForm() {
             email: userEmail,
             printer: printer,
           })
-
-        
           })
           .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            window.alert("Error: " + errorCode + ", " + errorMessage)
+              setLoading({loading: false})
+              let temp= {...errors}
+              const errorCode = error.code;
+              if(errorCode=="auth/email-already-in-use")
+              {
+                temp.email="An account is already registered under that email address."
+                setErrors({
+                    ...temp
+                })
+                //resets email field
+                setValues({
+                    id: values.id, 
+                    userName: values.userName,
+                    email: '',
+                    password: values.password,
+                    reconfirmPassword: values.reconfirmPassword,
+                    rememberMe: values.rememberMe
+                  })
+              }
+            //const errorMessage = error.message;
+            //window.alert("Error: " + errorCode + ", " + errorMessage)
             // ..
           });
         } else {
@@ -150,8 +172,9 @@ export default function RegisterForm() {
             displayName: userName,
             
           }).then(() => {
-            // Profile updated!
-            // ...
+            setLoading({loading: false})
+            navigate('../Verification', { replace: true })
+            //sendEmailVerification(auth.currentUser)
           }).catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -162,18 +185,33 @@ export default function RegisterForm() {
             email: userEmail,
             printer: printer,
           })
-
-        
           })
           .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            window.alert("Error: " + errorCode + ", " + errorMessage)
+            setLoading({loading: false})
+              let temp= {...errors}
+              const errorCode = error.code;
+              if(errorCode=="auth/email-already-in-use")
+              {
+                temp.email="An account is already registered under that email address."
+                setErrors({
+                    ...temp
+                })
+                //resets email field
+                setValues({
+                    id: values.id, 
+                    userName: values.userName,
+                    email: '',
+                    password: values.password,
+                    reconfirmPassword: values.reconfirmPassword,
+                    rememberMe: values.rememberMe
+                  })
+              }
+              //idk figure out other error codes later or something
+              //const errorMessage = error.message;
+              //window.alert("Error: " + errorCode + ", " + errorMessage)
             // ..
           });
-        }
-        
-          
+        }        
     }
     
     
@@ -194,17 +232,7 @@ export default function RegisterForm() {
             className={styles.botBox}>
             <Form onSubmit={handleSubmit}>
             <Grid container>
-                <Grid item xs = {6}>
-                    <Controls.Input
-                        label = "Username"
-                        name="userName"
-                        value={values.userName}
-                        onChange = {handleInputChange}
-                        error={errors.userName}
-                        className={classes.textbox}
-                        style = {{width: '350px'}}
-                        required
-                    />
+                <Grid item xs = {7}>
                     <Controls.Input
                         label = "Email"
                         name="email"
@@ -213,6 +241,16 @@ export default function RegisterForm() {
                         error={errors.email}
                         className={classes.textbox}
                         fullWidth = {false}
+                        style = {{width: '350px'}}
+                        required
+                    />
+                    <Controls.Input
+                        label = "Username"
+                        name="userName"
+                        value={values.userName}
+                        onChange = {handleInputChange}
+                        error={errors.userName}
+                        className={classes.textbox}
                         style = {{width: '350px'}}
                         required
                     />
@@ -227,6 +265,17 @@ export default function RegisterForm() {
                         style = {{width: '350px'}}
                         required
                     />
+                    <Controls.Input 
+                        label = "Reconfirm Password"
+                        name="reconfirmPassword"
+                        type = "password"
+                        value={values.reconfirmPassword}
+                        onChange = {handleInputChange}
+                        error={errors.reconfirmPassword}
+                        className={classes.textbox}
+                        style = {{width: '350px'}}
+                        required
+                    />
                     <Controls.Checkbox
                         name="printer"
                         label="Are you a printer?"
@@ -234,11 +283,13 @@ export default function RegisterForm() {
                         onChange={handleInputChange}
                     />
                     <Controls.Button 
+                    type="submit"
                     className = {classes.loginButton}
                     variant = "contained"
                     size = "large"
                     style={{
-                      backgroundColor: "#001b2e",
+                      backgroundColor: loadingStatus.loading?true: "#4f6b80",
+                      backgroundColor: loadingStatus.loading?false: "#001b2e"
                     }}
                     text = "Sign Up"
                     onClick = {handleSubmit}

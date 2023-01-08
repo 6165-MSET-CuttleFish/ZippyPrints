@@ -45,9 +45,16 @@ function Discover() {
   const [openRegisterPopup, setOpenRegisterPopup] = useState(false)
   const navigate = useNavigate();
   
+  //const auth = getAuth();
+  //const user = auth.currentUser;
   
   if (!currentUser) {
     navigate("/Login");
+    setOpen(true);
+  }
+  if(!currentUser.emailVerified)
+  {
+    navigate("../Verification");
     setOpen(true);
   }
     useEffect(() => {

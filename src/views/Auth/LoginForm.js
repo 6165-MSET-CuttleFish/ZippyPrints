@@ -70,7 +70,7 @@ export default function LoginForm() {
         return Object.values(temp).every(x => x === "")
 
     }
-    
+
     const classes = useStyles();
     const {
         values,
@@ -78,7 +78,9 @@ export default function LoginForm() {
         errors,
         setErrors,
         handleInputChange,
-        resetForm
+        resetForm,
+        loadingStatus,
+        setLoading
     } = useForm(initalFValues, true, validate);
 
     const{status} = useContext(RedirectCheck)
@@ -123,11 +125,14 @@ export default function LoginForm() {
             var userEmail = values.email
             var userPassword = values.password
             const auth = getAuth();
+            setLoading({loading: true})
             signInWithEmailAndPassword(auth, userEmail, userPassword)
+
             .then((userCredential) => {
+                setLoading({loading: false})
                 navigate('../Profile', { replace: true })
                 // Signed in 
-                window.alert("Welcome")
+                //window.alert("Welcome")
                 
                 
                 // ...
@@ -135,7 +140,20 @@ export default function LoginForm() {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                window.alert(errorMessage + ": " + errorCode)
+                //window.alert(errorMessage + ": " + errorCode)
+                setLoading({loading: false})
+                let temp= {...errors}
+                temp.password="Incorrect Password."
+                setErrors({
+                    ...temp
+                })
+                //resets password field
+                setValues({
+                    id: values.id, 
+                    email: values.email,
+                    password: '',
+                    rememberMe: values.rememberMe
+                })
             });
            
         }  
@@ -181,13 +199,16 @@ export default function LoginForm() {
                     className={classes.textbox}
                     style = {{width: '350px'}}
                     required
+                    //add something to call handlesubmit when enter pressed in this box
                 />
                 <Controls.Button 
+                    type="submit"
                     className = {classes.loginButton}
                     variant = "contained"
                     size = "large"
                     style={{
-                        backgroundColor: "#001b2e",
+                        backgroundColor: loadingStatus.loading?true: "#4f6b80",
+                        backgroundColor: loadingStatus.loading?false: "#001b2e"
                     }}
                     text = "Login"
                     onClick = {handleSubmit}

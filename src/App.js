@@ -13,6 +13,7 @@ import AuthenticationError from './views/404/AuthenticationError'
 import { Helmet } from 'react-helmet'
 import { RedirectCheckProvider } from './views/Auth/RedirectCheck';
 import styles from './App.css'
+import Verification from './views/Auth/Verification';
 class App extends React.Component {
  
 
@@ -36,6 +37,7 @@ render()  {
               <Route exact path="/Register" element={<RegisterExport />} />
               <Route exact path="/Logout" element={<Logout />} />
               <Route exact path="/AuthError" element={<AuthenticationError />} />
+              <Route exact path="/Verification" element={<Verification />} />
             </Routes>
           </RedirectCheckProvider>
         </BrowserRouter>
