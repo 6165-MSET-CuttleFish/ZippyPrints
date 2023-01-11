@@ -52,7 +52,7 @@ function Discover() {
     navigate("/Login");
     setOpen(true);
   }
-  if(!currentUser.emailVerified)
+  else if(!currentUser.emailVerified)
   {
     navigate("../Verification");
     setOpen(true);

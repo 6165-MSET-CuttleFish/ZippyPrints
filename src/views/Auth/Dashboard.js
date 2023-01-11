@@ -69,20 +69,36 @@ function Dashboard() {
     const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const checkVerified= ()=>
+
+    let username=null;
+    let db=null;
+    let colRef=null;
+    let markerColRef=null;
+    if(currentUser!=null)
     {
-        if(!currentUser.emailVerified)
+        username = (currentUser?.displayName)
+        db = (getFirestore());
+        colRef = (doc(db, 'users', "" + currentUser?.uid))
+        markerColRef = (doc(db, 'markers', "" + currentUser?.uid))
+    }
+    
+    
+
+    const checkViewable= ()=>
+    {
+        if(!currentUser)
+        {
+            navigate("/Login")
+            setOpen(true)
+        }
+        else if(!currentUser.emailVerified)
         {
         navigate("/Verification");
         setOpen(true);
         }
     }
-    
 
-    const username = currentUser?.displayName
-    const db = getFirestore();
-    const colRef = doc(db, 'users', "" + currentUser?.uid)
-    const markerColRef = doc(db, 'markers', "" + currentUser?.uid)
+    
 
     const classes = useStyles();
     const [geoLocationData, setGeoLocationData] = useState(null);
@@ -122,7 +138,7 @@ function Dashboard() {
 }
   
     useEffect(() => {
-        checkVerified()
+        checkViewable()
         })
 
 
@@ -207,7 +223,7 @@ const getGeoLocation = async (address) => {
     return(
         <ThemeProvider theme={theme}>
         <Box className={styles.topBox}>
-        <h3 className={styles.text}> Edit {currentUser.displayName}'s Profile </h3>
+        <h3 className={styles.text}> Edit {username}'s Profile </h3>
            <Avatar sx={{ m: 0, bgcolor: '#e0c699', fontSize: 2, marginTop: 1}}>
 
           </Avatar>

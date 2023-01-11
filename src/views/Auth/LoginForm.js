@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useForm, Form } from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import { makeStyles } from '@mui/styles'
@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom';
 import styles from '../Auth/login.module.css'
 import { RedirectCheck, RedirectCheckProvider } from './RedirectCheck';
+import {AuthContext} from "../../views/Auth/Auth"
+
 const useStyles = makeStyles(e =>({ 
     loginButton: {
         border: 0,
@@ -51,10 +53,33 @@ const initalFValues = {
     rememberMe: ''
 
 }
+
+let open = false;
+module.export = {open:open}
+
+function setOpen(children){
+open = children;
+}  
 export default function LoginForm() {
 
+    const {currentUser} = useContext(AuthContext);
+    const navigate = useNavigate();
+    
+    const checkViewable= ()=>
+    {
+        if(currentUser)
+        {
+            navigate("/Profile")
+            setOpen(true)
+        }
+    }
+
+    useEffect(() => {
+        checkViewable()
+        })
+
+
     firebase.initializeApp(firebaseConfig)
-    let navigate = useNavigate();
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
         if ('email' in fieldValues)
@@ -115,7 +140,7 @@ export default function LoginForm() {
           // The AuthCredential type that was used.
           const credential = GoogleAuthProvider.credentialFromError(error);
           // ...
-          window.alert(errorCode + ": " + errorMessage)
+          //window.alert(errorCode + ": " + errorMessage)
         });
     }
 
@@ -143,7 +168,14 @@ export default function LoginForm() {
                 //window.alert(errorMessage + ": " + errorCode)
                 setLoading({loading: false})
                 let temp= {...errors}
-                temp.password="Incorrect Password."
+                if(errorCode=="auth/wrong-password")
+                {
+                    temp.password="Incorrect Password."
+                }
+                else
+                {
+                    temp.password=errorCode;
+                }
                 setErrors({
                     ...temp
                 })
@@ -233,6 +265,16 @@ export default function LoginForm() {
                     color: '#001b2e'
                 }}>
                     {"Don't have an account? Sign Up"}
+                </Link>
+                <Link href="reset" variant="body2" sx={{
+                    marginTop: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    marginRight: 3,
+                    color: '#001b2e'
+                }}>
+                    {"Forgot your password?"}
                 </Link>
                 </Form>
                 </Box>

@@ -14,6 +14,8 @@ import { Helmet } from 'react-helmet'
 import { RedirectCheckProvider } from './views/Auth/RedirectCheck';
 import styles from './App.css'
 import Verification from './views/Auth/Verification';
+import VerifySuccess from './views/Auth/VerifySuccess';
+import ResetPassword from './views/Auth/ResetPassword';
 class App extends React.Component {
  
 
@@ -38,6 +40,8 @@ render()  {
               <Route exact path="/Logout" element={<Logout />} />
               <Route exact path="/AuthError" element={<AuthenticationError />} />
               <Route exact path="/Verification" element={<Verification />} />
+              <Route exact path="/VerSuccess" element={<VerifySuccess />} />=
+              <Route exact path="/Reset" element={<ResetPassword />} />=
             </Routes>
           </RedirectCheckProvider>
         </BrowserRouter>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Grid} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
@@ -11,6 +11,8 @@ import { Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import '../Auth/Register.css'
 import styles from '../Auth/register.module.css'
+import {AuthContext} from "../../views/Auth/Auth"
+
 
     
 const useStyles = makeStyles(e =>({ 
@@ -63,8 +65,30 @@ const initalFValues = {
 
 }
 
+let open = false;
+module.export = {open:open}
+
+function setOpen(children){
+open = children;
+}  
+
 export default function RegisterForm() {
-    const navigate = useNavigate();
+
+  const {currentUser} = useContext(AuthContext);
+  const navigate = useNavigate();
+  
+  const checkViewable= ()=>
+  {
+      if(currentUser)
+      {
+          navigate("/Profile")
+          setOpen(true)
+      }
+  }
+
+  useEffect(() => {
+      checkViewable()
+      })
 
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
@@ -144,19 +168,25 @@ export default function RegisterForm() {
               if(errorCode=="auth/email-already-in-use")
               {
                 temp.email="An account is already registered under that email address."
-                setErrors({
-                    ...temp
-                })
-                //resets email field
-                setValues({
-                    id: values.id, 
-                    userName: values.userName,
-                    email: '',
-                    password: values.password,
-                    reconfirmPassword: values.reconfirmPassword,
-                    rememberMe: values.rememberMe
-                  })
               }
+              else
+              {
+                temp.email=errorCode;
+              }
+              setErrors({
+                  ...temp
+              })
+              //resets email field
+              setValues({
+                  id: values.id, 
+                  userName: values.userName,
+                  email: '',
+                  password: values.password,
+                  reconfirmPassword: values.reconfirmPassword,
+                  rememberMe: values.rememberMe
+              })
+              
+                
             //const errorMessage = error.message;
             //window.alert("Error: " + errorCode + ", " + errorMessage)
             // ..
