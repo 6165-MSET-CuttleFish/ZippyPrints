@@ -26,31 +26,30 @@ export const Menu = () => {
           try {
               const querySnapshot = await getDocs(q);
               querySnapshot.forEach((doc) => {
-                const updatePlaces = [...places,
-                {
-                    lat: doc.data()?.lat,
-                    lng: doc.data()?.lng,
-                    team: doc.data()?.teamnumber,
-                    location: doc.data()?.formattedAddress,
-                    email:doc.data()?.email,
-                    uid: doc.data()?.uid,
-                    username: doc.data()?.displayName
-                }];
-                    setPlaces(updatePlaces);
+                setPlaces((current) => [...current,
+                    {
+                      lat: doc.data()?.lat,
+                      lng: doc.data()?.lng,
+                      team: doc.data()?.teamnumber,
+                      location: doc.data()?.formattedAddress,
+                      email:doc.data()?.email,
+                      uid: doc.data()?.uid
+                    },
+                  ]);
                 }
           );
-        
-  
+
+
           } catch (error){
             // window.alert(error) //We want to use a snackbar instead of a popup so this is commmented out
             console.log(error)
             // console.log(redirect)
-  
+
           }
       }
         getMarkerData()
       }, [storage])
-    console.log(places.length)
+
     useEffect(() => {
         setElRefs((refs) => Array(places.length).fill().map((_, i) => refs[i] || createRef()));
       }, [places]);
