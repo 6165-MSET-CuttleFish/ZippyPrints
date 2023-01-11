@@ -6,13 +6,57 @@ import { Autocomplete } from '@react-google-maps/api';
 import { AppBar, Toolbar, Box, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CssStyles from '../Menu/menu.module.css'
-// import {SelectChangeEvent } from '@mui/material/SelectChangeEvent';
-
+import { getFirestore, collection, getDocs, addDoc, updateDoc, doc, getDoc, GeoPoint, query, setDoc } from 'firebase/firestore/lite';
+import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 export const Menu = () => {
     const classes = useStyles();
     const [type, setType] = useState("3D Printing");
-    const places = [{}] // get from firebase?
+    const [elRefs, setElRefs] = useState([]);
+    
+   
+    const [markers, setMarkers] = useState([]);
+    const storage = getStorage();
+    const [places, setPlaces] = useState([]);
+    
+    useEffect(() => {
+        const getMarkerData = async () => {
+          const db = getFirestore();
+          const q = query(collection(db, "markers"));
+          try {
+              const querySnapshot = await getDocs(q);
+              querySnapshot.forEach((doc) => {
+                const updatePlaces = [...places,
+                {
+                    lat: doc.data()?.lat,
+                    lng: doc.data()?.lng,
+                    team: doc.data()?.teamnumber,
+                    location: doc.data()?.formattedAddress,
+                    email:doc.data()?.email,
+                    uid: doc.data()?.uid,
+                    username: doc.data()?.displayName
+                }];
+                    setPlaces(updatePlaces);
+                }
+          );
+        
+  
+          } catch (error){
+            // window.alert(error) //We want to use a snackbar instead of a popup so this is commmented out
+            console.log(error)
+            // console.log(redirect)
+  
+          }
+      }
+        getMarkerData()
+      }, [storage])
+    console.log(places.length)
+    useEffect(() => {
+        setElRefs((refs) => Array(places.length).fill().map((_, i) => refs[i] || createRef()));
+      }, [places]);
+    
+
+    
     const handleInputChange = (event) => {
         setType(event?.target.value);
     }
@@ -40,7 +84,7 @@ export const Menu = () => {
             </FormControl>
             <Grid container spacing = {3} className = {classes.list}>
                 {places?.map((place,i) =>(
-                   <Grid item key = {i} xs = {12}>
+                   <Grid ref={elRefs[i]} key={i} item xs={12}>
                         <Details place ={place}/>
                    </Grid> 
                 ))}

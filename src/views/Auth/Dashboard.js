@@ -61,7 +61,7 @@ export default function Dashboard() {
     const {currentUser} = useContext(AuthContext);
     const username = currentUser?.displayName
     const db = getFirestore();
-    const colRef = doc(db, 'users', "" + currentUser?.uid)
+    const colRef = doc(db, 'printers', "" + currentUser?.uid)
     const markerColRef = doc(db, 'markers', "" + currentUser?.uid)
 
     const classes = useStyles();

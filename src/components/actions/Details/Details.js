@@ -5,7 +5,10 @@ const Details = ({place}) => {
     console.log(place)
     return(
         <h1>
-        {place.name}
+        {place.username}
+        {place?.team}
+        {place?.email}
+        {place.location.split(",")[1]}, {place.location.split(",")[2]}
         </h1>
     );
 }
