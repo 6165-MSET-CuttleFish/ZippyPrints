@@ -20,7 +20,7 @@ body {
     flex-direction: column;
     align-items: flex-start;
     width: auto;
-    height: 75vh;
+    height: 80vh;
     margin: auto;
     position: absolute;
     top: 0px; bottom: 0px; right: 0px; left: 0px;
@@ -51,6 +51,7 @@ body {
   margin-top: 3vw;
   gap: 1vw;
 }
+
 .subtitle { 
   color: #F0F5FF;
   font-family: "Lexend Regular";
@@ -99,6 +100,12 @@ body {
 
 /*FROM NOW ON: TUTORIAL*/
 
+.divider1 {
+  width: 120.99vw;
+  margin-top: 8vw;
+  height: 200vw;
+  margin-left: -22vw;
+}
 .tutorialBackground {
   display: block;
   height: 1700px;
@@ -121,10 +128,10 @@ body {
   font-size: 4vw;
   font-weight: 600;
   letter-spacing: -0.84;
-  line-height: 60px;
+  line-height: 70px;
   text-align: center;
   width: 1320px;
-  margin-top: 7vw;
+  margin-top: 5vw;
 }
 
 .tutorialSubtitle {
@@ -155,7 +162,7 @@ body {
   border-radius: 20px;
   gap: 32px;
   padding: 40px;
-  width: fit-content;
+  width: clamp(75px, 2vw, 200px);
 }
 
 .cardsTextContainer {
@@ -179,12 +186,100 @@ body {
   letter-spacing: 0;
   line-height: 24px;
   width: 460px;
+  font-size: clamp(14px, 1.5vw, 16px);
   font-family: 'Lexend Light';
 }
 
+.missionContainer {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 48px;
+  width: fit-content;
+  padding-left: 15%;
+  padding-top: 10%;
+}
 
+.missionTitle {
+  color: rgba(6, 28, 61, 1);
+  font-family: "Lexend Regular";
+  font-weight: 600;
+  letter-spacing: -0.84px;
+  line-height: 60px;
+  margin-top: -1px;
+  width: 648px;
+}
 
-@media screen and (max-width: 900px) {
+.missionDescriptionContainer {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 16px;
+  padding: 0px 0px 0px 24px;
+  width: fit-content;
+  background-color: #F0F5FF;
+  box-shadow: inset 3px 0px 0px #094FB7;
+}
+
+.missionDescription {
+  color: rgba(6, 28, 61, 1);
+  font-family: "Lexend Light";
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 0;
+  line-height: 32px;
+  margin-top: -1px;
+  width: 624px;
+}
+
+.tutorialButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  padding: 6px 0px;
+  box-shadow: inset 0px -1.5px 0px #094FB7;
+  width: fit-content;
+}
+
+.tutorialButtonText {
+  color: #094FB7;
+  font-family: "Lexend Light";
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 20px;
+  margin-top: -1px;
+  text-align: center;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+.arrowRight {
+  height: 5vw;
+  min-width: 20px;
+}
+@media screen and (max-width: 1150px) {
+  .cardText {
+    letter-spacing: 0;
+    line-height: 24px;
+    width: 390px;
+    font-size: 16px;
+    font-family: 'Lexend Light';
+  }
+  .cardTitle {
+    letter-spacing: 0;
+    line-height: 32px;
+    font-size: 1.5vw;
+    font-weight: 200;
+    white-space: nowrap;
+    width: 390px;
+    font-family: 'Lexend Regular';
+    
+}
+
+}
+
+@media screen and (max-width: 1000px) {
   .StartScreen {  
     display: flex;
     flex-direction: column;
@@ -201,6 +296,7 @@ body {
       flex-direction: column;
       align-items: center;
       margin-right: 15vw;
+      margin-top: clamp(100px, 5vw, 500px);
   }
   .title {
     color: #F0F5FF;
@@ -255,7 +351,7 @@ body {
   } 
   
   .userText{
-    color: #094FB7;
+    color: #7a7f86;
     font-family: "Lexend Regular";
     font-size: 0.9vw;
     font-weight: 500;
@@ -265,5 +361,75 @@ body {
     white-space: nowrap;
     width: fit-content;
   }
-
+  .divider1 {
+    width: 0px;
+    height: 0px;
+  }
+  .tutorialTitle {
+    color: #094FB7;
+    font-family:'Lexend Regular'; 
+    font-size: clamp(30px, 4vw, 70px);
+    font-weight: 600;
+    letter-spacing: -0.84;
+    line-height: 60px;
+    text-align: center;
+    width: clamp(500px, 20vw, 1320px);
+    margin-top: 7vw;
+  }
+  
+  .tutorialSubtitle {
+    color: #094FB7;
+    font-family:'Lexend Regular'; 
+    font-size: 12pt;
+    font-weight: 300;
+    letter-spacing: 0;
+    line-height: 60px;
+    text-align: center;
+    width: 648px;
+  }
+  
+  .cardsContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3vw;
+    margin-top: 3vw;
+  }
+  
+  .printerFeatureCard {
+    display: flex;
+    align-items: flex-start;
+    border: 1px solid;
+    border-color: rgba(230, 232, 236, 0.502);
+    border-radius: 20px;
+    gap: 32px;
+    padding: 40px;
+    width: clamp(100px, 3vw, 500px);
+  }
+  
+  .cardsTextContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.6vw;
+  }
+  
+  .cardTitle {
+    letter-spacing: 0;
+    line-height: 32px;
+    font-size: clamp(24px, 0.5vw, 60px);
+    font-weight: 200;
+    white-space: nowrap;
+    width: 460px;
+    font-family: 'Lexend Regular';
+  }
+  
+  .cardText {
+    letter-spacing: 0;
+    line-height: 24px;
+    max-width: clamp(px, 100vw, 460px);
+    font-size: 16px;
+    font-family: 'Lexend Light';
+  }
 }

@@ -5,6 +5,8 @@ import ZippyPrints from './images/ZippyPrints.png'
 import Button from '../../components/actions/Button';
 import {useNavigate} from "react-router-dom"
 import { Paper } from '@mui/material';
+import waves from './images/wave-5.png'
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 export default function Home(){
   const navigate = useNavigate();
@@ -86,6 +88,7 @@ export default function Home(){
                       marginTop: '-2px',
                       whiteSpace: 'nowrap',
                       width: 'fit-content'
+
                       
                     },
                     "&:hover": {
@@ -100,6 +103,8 @@ export default function Home(){
                 </div>   
               </div>
 
+              <img src={waves} alt="ZippyPrints divider" className={styles.divider1}></img>
+              
               <div ref={ref} className={styles.tutorialBackground}>
                 <div className={styles.tutorialHeadingContainer}>
                   <h1 className={styles.tutorialTitle}>Discover how ZippyPrints works</h1>
@@ -147,31 +152,21 @@ export default function Home(){
                                                     or by navigating the map manually and submit a 
                                                       valid request with any additional information!</p>
                       <p className={styles.cardText}>Hit submit and wait for an email response from your printer!</p>
-
+                      <div className={styles.tutorialButton}>
+                        <a className={styles.tutorialButtonText} href="/Register">Get Started! <ArrowForwardIcon className={styles.arrowRight}/></a>
+                      </div>
                   </div>
+                  
                 </Paper>
                 </div>
 
-                {/* <p className={styles.tutorialDescription}>- Register your account</p>
-                <p className={styles.tutorialDescription}>- Fill out the necessary information on your profile!</p>
-                <p className={styles.tutorialDescription}>- Make an estimation on how much you want to charge ($/cm<sup>3</sup>)!</p>
-                <p className={styles.tutorialDescription}>- When a team reuqests a print, you will recieve an email with their</p>
-                <p className={styles.tutorialDescription}>‏‏‎ ‎‏‏‎ ‎contact information and any additional information!</p>
-                <p className={styles.tutorialDescription}>- Now, simply wait for requests to flow in</p>
-                <div className={styles.redVertical} /> */}
-
-                {/* <p className={styles.teamTutorialSubtitle}>For Teams:
-                  <p className={styles.teamTutorialDescription}>Register your account -</p>
-                  <p className={styles.teamTutorialDescription}>Fill out the necessary information on your profile! -</p>
-                  <p className={styles.teamTutorialDescription}>Navigate to the 'Maps' menu on the navigation bar! -</p>
-                  <p className={styles.teamTutorialDescription}>Find a printer near you if available and submit a -</p>
-                  <p className={styles.teamTutorialDescription}>‏‏valid request with any additional information! -</p>
-                  <p className={styles.teamTutorialDescription}>Hit submit and wait for an email response from your printer! -</p>
-                  <div className={styles.teamVertical} />
-                  </p>
+                <div className={styles.missionContainer}>
                   <h1 className={styles.missionTitle}>Mission Statement</h1>
-              <p className={styles.missionStatement}>ZippyPrints was created by 6165 MSET Cuttlefish, a FIRST Tech Challenge robotics team, to connect FTC teams with 3D printers with underresourced teams needing custom manufacturing services. 
-              </p> */}
+                  <div className={styles.missionDescriptionContainer}>
+                    <p className={styles.missionDescription}>ZippyPrints was created by 6165 MSET Cuttlefish, a FIRST Tech Challenge robotics team, to connect FTC teams with 3D printers with underresourced teams needing custom manufacturing services.</p>
+                  </div>
+
+                </div>
               </div>
           </div>
 

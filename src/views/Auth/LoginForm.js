@@ -184,7 +184,7 @@ export default function LoginForm() {
                     id: values.id, 
                     email: values.email,
                     password: '',
-                    rememberMe: values.rememberMe
+                    rememberMe: values.rememberMe,
                 })
             });
            

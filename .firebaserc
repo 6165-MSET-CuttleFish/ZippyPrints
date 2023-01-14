@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "uberprints-f0132"
+  },
+  "targets": {
+    "uberprints-f0132": {
+      "hosting": {
+        "test": [
+          "uberprints-f0132"
+        ]
+      }
+    }
   }
 }
