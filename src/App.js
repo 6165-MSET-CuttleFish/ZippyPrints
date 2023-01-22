@@ -25,7 +25,7 @@ render()  {
       <AuthProvider>
       <Helmet>
         <title>ZippyPrints</title>
-        <meta name="description" content="A fast, easy to use, and reliable way for printing custom designs through printers near you!" />
+        <meta name="description" content="A fast, easy to use, and reliable way for printing custom designs through printers near you!!" />
       </Helmet>
         <NavBar />
         <BrowserRouter>
