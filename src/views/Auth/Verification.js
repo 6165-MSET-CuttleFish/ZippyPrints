@@ -5,7 +5,7 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerifi
 import { Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 import {useNavigate} from "react-router-dom"
 import {AuthContext} from "../../views/Auth/Auth"
-
+import styles from "../Auth/verification.module.css"
 
 
 let open = false;
@@ -82,7 +82,7 @@ export default function Verification()
 
     const theme = createTheme();
     return(
-        <ThemeProvider theme={theme}>
+        <div>
             <div>Please verify your email</div>
             <Form onSubmit={handleSubmit}>
             <Controls.Button 
@@ -92,12 +92,12 @@ export default function Verification()
                         backgroundColor: loadingStatus.loading?true: "#4f6b80",
                         backgroundColor: loadingStatus.loading?false: "#001b2e"
                     }}
-                    text = "Send Verification Email"
+                    text = "Resend Verification Email"
                     onClick = {handleSubmit}
                     />
             <textarea value={values.message}/>
             </Form>
-        </ThemeProvider>        
+        </div>
     );
 
 }

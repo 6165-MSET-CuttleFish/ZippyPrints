@@ -5,6 +5,7 @@ import { Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 import {useNavigate} from "react-router-dom"
 import {AuthContext} from "../../views/Auth/Auth"
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import styles from "../Auth/resetpassword.module.css"
 
 
 let open = false;
