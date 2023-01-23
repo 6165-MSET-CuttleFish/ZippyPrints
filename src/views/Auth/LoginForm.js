@@ -195,10 +195,6 @@ export default function LoginForm() {
     const theme = createTheme();
     return (
         <div>
-            <div className={styles.requestMartin}>
-                    Request a Martin!
-                </div>
-            <div>
 <ThemeProvider theme={theme}>
     <Snackbar className = {styles.SnackBar} anchorOrigin = {{vertical: "top", horizontal: "center"}} open={status} autoHideDuration={1} onClose={handleClose}>
         <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
@@ -260,7 +256,6 @@ export default function LoginForm() {
                     text = "Login with Google"
                     onClick ={handleGoogleLogin}
                 />
-                
                 <Link href="register" variant="body2" sx={{
                     marginTop: 4,
                     display: 'flex',
@@ -285,8 +280,6 @@ export default function LoginForm() {
                 </Box>
             </Box>
     </ThemeProvider>   
-    </div>
-    
     </div>     
     )
 }
