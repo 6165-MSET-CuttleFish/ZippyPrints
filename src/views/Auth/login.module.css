@@ -24,4 +24,19 @@
 .SnackBar {
     padding-top: 100px; 
 }
+
+.requestMartin{
+    align-items: center;
+    background-color: white;
+    border-radius: 7px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    padding: 0px 32px;
+    width: fit-content;
+    margin-left: 200px;
+    margin-top: 40px;
+}
+
+
 /* change to dynamic */
