@@ -1,5 +1,5 @@
 import React, { useState, useEffect, createRef } from 'react';
-import { CircularProgress, Grid, Typography, InputLabel, MenuItem, FormControl, Select } from '@material-ui/core';
+import { CircularProgress, Grid, Typography, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
 import useStyles from './styles';
 import Details from '../Details/Details';
 import { Autocomplete } from '@react-google-maps/api';
