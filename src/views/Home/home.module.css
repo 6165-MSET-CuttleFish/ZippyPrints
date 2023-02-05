@@ -100,7 +100,12 @@ body {
 
 /*FROM NOW ON: TUTORIAL*/
 
-.divider1 {
+.dividerContainer {
+  display: flex;
+  justify-items: left;
+}
+
+#divider1 {
   width: 120.99vw;
   margin-top: 8vw;
   height: 200vw;
@@ -108,7 +113,7 @@ body {
 }
 .tutorialBackground {
   display: block;
-  height: 1700px;
+  height: 1600px;
   margin-top: clamp(725px, 50%, 1000px);
   position: absolute;
   top: 0px; bottom: 0px; right: 0px; left: 0px;
@@ -117,21 +122,22 @@ body {
 
 .tutorialHeadingContainer {
   display: flex;
+  align-items: flex-start;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  gap: 48px;
+  width: fit-content;
+  margin-left: 10vw;
 }
 
 .tutorialTitle {
-  color: #094FB7;
-  font-family:'Lexend Regular'; 
-  font-size: 4vw;
+  color: rgba(6, 28, 61, 1);
+  font-family: "Lexend Regular";
   font-weight: 600;
-  letter-spacing: -0.84;
-  line-height: 70px;
-  text-align: center;
-  width: 1320px;
+  letter-spacing: -0.84px;
+  line-height: 60px;
   margin-top: 5vw;
+  width: 700px;
+  font-size: 26pt;
 }
 
 .tutorialSubtitle {
@@ -190,48 +196,6 @@ body {
   font-family: 'Lexend Light';
 }
 
-.missionContainer {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  gap: 48px;
-  width: fit-content;
-  padding-left: 15%;
-  padding-top: 10%;
-}
-
-.missionTitle {
-  color: rgba(6, 28, 61, 1);
-  font-family: "Lexend Regular";
-  font-weight: 600;
-  letter-spacing: -0.84px;
-  line-height: 60px;
-  margin-top: -1px;
-  width: 648px;
-}
-
-.missionDescriptionContainer {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  gap: 16px;
-  padding: 0px 0px 0px 24px;
-  width: fit-content;
-  background-color: #F0F5FF;
-  box-shadow: inset 3px 0px 0px #094FB7;
-}
-
-.missionDescription {
-  color: rgba(6, 28, 61, 1);
-  font-family: "Lexend Light";
-  font-size: 16px;
-  font-weight: 300;
-  letter-spacing: 0;
-  line-height: 32px;
-  margin-top: -1px;
-  width: 624px;
-}
-
 .tutorialButton {
   display: flex;
   align-items: center;
@@ -240,6 +204,7 @@ body {
   padding: 6px 0px;
   box-shadow: inset 0px -1.5px 0px #094FB7;
   width: fit-content;
+  transition-duration: 500ms;
 }
 
 .tutorialButtonText {
@@ -252,11 +217,76 @@ body {
   text-align: center;
   white-space: nowrap;
   width: fit-content;
+  
 }
 
 .arrowRight {
+  color: #094FB7;
   height: 5vw;
   min-width: 20px;
+}
+
+.tutorialButton:hover {
+  border: 1px hidden #094FB7;
+  border-radius: 2px;
+  transition-duration: 500ms;
+  background: #094fb723;
+}
+
+.missionContainer {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 48px;
+  width: fit-content;
+  margin-left: 10vw;
+  margin-top: 7vw;
+}
+
+.missionTitle {
+  color: rgba(6, 28, 61, 1);
+  font-family: "Lexend Regular";
+  font-weight: 600;
+  letter-spacing: -0.84px;
+  line-height: 60px;
+  margin-top: 5vw;
+  width: 1000px;
+  font-size: 26pt;
+}
+
+.missionDescriptionContainer {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: 16px;
+  padding: 0px 0px 0px 0px;
+  width: fit-content;
+}
+
+.missionDescriptionContainer2 {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: row;
+  gap: 16px;
+  padding: 0px 0px 0px 24px;
+  width: fit-content;
+  box-shadow: inset 3px 0px 0px #094FB7;
+}
+
+.missionDescription {
+  color: rgba(6, 28, 61, 1);
+  font-family: "Lexend Light";
+  font-size: 16px;
+  font-weight: 300;
+  letter-spacing: 0px;
+  line-height: 32px;
+  margin-top: -1px;
+  width: 850px;
+}
+.cuttlelogo {
+  margin-top: -3vw;
+  height: 250px;
+  width: 250px;
 }
 @media screen and (max-width: 1150px) {
   .cardText {
@@ -265,7 +295,7 @@ body {
     width: 390px;
     font-size: 16px;
     font-family: 'Lexend Light';
-  }
+    }
   .cardTitle {
     letter-spacing: 0;
     line-height: 32px;
@@ -274,8 +304,15 @@ body {
     white-space: nowrap;
     width: 390px;
     font-family: 'Lexend Regular';
-    
-}
+  }
+  .tutorialBackground {
+    display: block;
+    height: 1500px;
+    margin-top: clamp(725px, 50%, 1000px);
+    position: absolute;
+    top: 0px; bottom: 0px; right: 0px; left: 0px;
+    background-color: #F0F5FF;  
+  }
 
 }
 
@@ -373,7 +410,7 @@ body {
     letter-spacing: -0.84;
     line-height: 60px;
     text-align: center;
-    width: clamp(500px, 20vw, 1320px);
+    width: 200px;
     margin-top: 7vw;
   }
   
@@ -432,4 +469,29 @@ body {
     font-size: 16px;
     font-family: 'Lexend Light';
   }
+  .tutorialBackground {
+    display: block;
+    height: 2000px;
+    margin-top: clamp(725px, 50%, 1000px);
+    position: absolute;
+    top: 0px; bottom: 0px; right: 0px; left: 0px;
+    background-color: #F0F5FF;  
+  }
+  .missionScreen {
+    display: block;
+    height: 700px;
+    margin-top: clamp(1150px, 50%, 1300px);
+    position: absolute;
+    top: 0px; bottom: 0px; right: 0px; left: 0px;
+    background-color: #F0F5FF;
+    } 
+
+    .tutorialHeadingContainer {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-left: 0;
+      margin-right: 0;
+    }
 }

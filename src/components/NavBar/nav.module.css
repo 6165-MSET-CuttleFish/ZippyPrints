@@ -21,6 +21,12 @@
   margin-top: -2px;
   white-space: nowrap;
   width: fit-content;
+  transition-duration: 500ms;
+}
+
+.loginButton:hover {
+  transition-duration: 500ms;
+  background-color: #ffffff;
 }
 
 
@@ -33,7 +39,12 @@
   border-radius: 5px;
   padding: 0px 32px;
   width: fit-content;
+  transition-duration: 500ms;
 } 
+.registerButton:hover {
+  transition-duration: 500ms;
+  background-color: #0967f5;
+}
 
 .registerText{
   color: #F0F5FF;

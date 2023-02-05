@@ -6,6 +6,7 @@ import Button from '../../components/actions/Button';
 import {useNavigate} from "react-router-dom"
 import { Paper } from '@mui/material';
 import waves from './images/wave-5.png'
+import cuttlelogo from './images/cuttlelogo.PNG'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 export default function Home(){
@@ -29,7 +30,7 @@ export default function Home(){
                 <div className={styles.subtitleContainer}>
                   <div className={styles.line}></div>
                   <p className={styles.subtitle}>ZippyPrints is a fast, easy to use, and reliable way 
-                  for underfunded robotics teams to receive 3D printed custom designs. 
+                  for robotics teams without access to 3D printers to receive custom designs. 
                   Make an account now.</p>
                   </div>
                 <div className={styles.buttonContainer}>
@@ -45,6 +46,7 @@ export default function Home(){
                     borderRadius: '7px',
                     padding: '0px 32px',
                     width: 'fit-content',
+                    transitionDuration: '500ms',
                     "&.MuiButton-contained": {
                       color: '#0B63E5',
                       fontFamily: "Lexend Regular",
@@ -57,8 +59,9 @@ export default function Home(){
                       width: 'fit-content'
                     },
                     "&:hover": {
-                      background: "#F0F5FF",
-                      boxShadow: '3px 3px 1.5px #02142E'
+                      background: "#d9e6ff",
+                      boxShadow: '5px 5px 5px #02142e8e',
+                      transitionDuration: '500ms',                  
                     },
                   }}
                     text = "Request a Print"
@@ -78,6 +81,7 @@ export default function Home(){
                     borderRadius: '7px',
                     padding: '0px 32px',
                     width: 'fit-content',
+                    transitionDuration: '500ms',
                     "&.MuiButton-contained": {
                       color: '#F0F5FF',
                       fontFamily: "Lexend Regular",
@@ -88,12 +92,11 @@ export default function Home(){
                       marginTop: '-2px',
                       whiteSpace: 'nowrap',
                       width: 'fit-content'
-
-                      
                     },
                     "&:hover": {
-                      background: "#0B63E5",
-                      boxShadow: '3px 3px 1.5px #02142E'
+                      background: "#035ee6",
+                      boxShadow: '5px 5px 5px #02142e8e',
+                      transitionDuration: '500ms'
                     },
                   }}
                     text = "Become a Vendor"
@@ -103,11 +106,15 @@ export default function Home(){
                 </div>   
               </div>
 
-              <img src={waves} alt="ZippyPrints divider" className={styles.divider1}></img>
+              <div className={styles.dividerContainer}>
+                
+
+              </div>
+              {/* <img src={cuttlelogo} alt="ZippyPrints divider" className={styles.cuttlelogo}></img> */}
               
               <div ref={ref} className={styles.tutorialBackground}>
                 <div className={styles.tutorialHeadingContainer}>
-                  <h1 className={styles.tutorialTitle}>Discover how ZippyPrints works</h1>
+                  <h1 className={styles.tutorialTitle}>Learn how to utilize ZippyPrints</h1>
                 </div>
                 <div className={styles.cardsContainer}>
                 <Paper 
@@ -125,12 +132,16 @@ export default function Home(){
                     <p className={styles.cardTitle}>Get Started: Printers</p>
                     <p className={styles.cardText}>Register your account</p>
                     <p className={styles.cardText}>Fill out the necessary information on your profile!</p>
-                    <p className={styles.cardText}>Make an estimation on how much you want to charge ($/cm<sup>3</sup>)!</p>
+                    <p className={styles.cardText}>Make an estimation on how much you want to charge ($/cm<sup>3</sup>), or volunteer your services for free!</p>
                     <p className={styles.cardText}>When a team reuqests a print, you will recieve an email 
                                                   with their contact information and any additional information!</p>
                     <p className={styles.cardText}>Now, simply wait for requests to flow in</p>
- 
-
+                    <div className={styles.tutorialButton}>
+                        <a className={styles.tutorialButtonText} href="/Register">Register now!</a>
+                        <a href="/Register">
+                          <ArrowForwardIcon className={styles.arrowRight}/>
+                        </a>                      
+                        </div> 
                   </div>
                 </Paper>
                 <Paper sx={{
@@ -143,7 +154,7 @@ export default function Home(){
                   padding: '40px',
                   width: 'fit-content',
                 }}>
-                   <div className={styles.cardsTextContainer}> 
+                   <div className={styles.cardsTextContainer}>
                       <p className={styles.cardTitle}>Get Started: Users</p>
                       <p className={styles.cardText}>Register your account</p>
                       <p className={styles.cardText}>Fill out the necessary information on your profile!</p>
@@ -153,21 +164,32 @@ export default function Home(){
                                                       valid request with any additional information!</p>
                       <p className={styles.cardText}>Hit submit and wait for an email response from your printer!</p>
                       <div className={styles.tutorialButton}>
-                        <a className={styles.tutorialButtonText} href="/Register">Get Started! <ArrowForwardIcon className={styles.arrowRight}/></a>
+                        <a className={styles.tutorialButtonText} href="/Register">Become a printer!</a>
+                        <a href="/Register">
+                          <ArrowForwardIcon className={styles.arrowRight}/>
+                        </a>
                       </div>
                   </div>
-                  
                 </Paper>
+
                 </div>
-
+                
                 <div className={styles.missionContainer}>
-                  <h1 className={styles.missionTitle}>Mission Statement</h1>
+                  <h1 className={styles.missionTitle}>Getting you your prints, whenever you need</h1>
                   <div className={styles.missionDescriptionContainer}>
-                    <p className={styles.missionDescription}>ZippyPrints was created by 6165 MSET Cuttlefish, a FIRST Tech Challenge robotics team, to connect FTC teams with 3D printers with underresourced teams needing custom manufacturing services.</p>
+                  <img src={cuttlelogo} alt="ZippyPrints divider" className={styles.cuttlelogo}></img>
+                  <div className={styles.missionDescriptionContainer2}>
+                    <p className={styles.missionDescription}>ZippyPrints was created by 6165 MSET Cuttlefish, a FIRST Tech 
+                    Challenge (FTC) robotics team, to connect FTC teams with 3D printers with underresourced teams needing custom 
+                    manufacturing services to create custom parts they design. Through ZippyPrints, our team hopes to provide
+                    more learning opportunities and increase the competitiveness of traditionally underepresented teams in
+                    not only FTC teams, but teams from all competitions. Individuals who require custom parts
+                    for their personal or professional projects can benefit as well!</p>
                   </div>
-
+                  </div>
                 </div>
               </div>
+             
           </div>
 
       );
