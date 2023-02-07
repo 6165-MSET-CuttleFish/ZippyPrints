@@ -22,3 +22,9 @@ code {
   src: local("Lexend-Light"),
   url("./fonts/Lexend-Light.ttf");
 }
+
+@font-face {
+  font-family: "Lexend SemiBold";
+  src: local("Lexend-SemiBold"),
+  url("./fonts/Lexend-SemiBold.ttf");
+}

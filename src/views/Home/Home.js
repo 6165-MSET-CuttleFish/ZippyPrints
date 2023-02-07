@@ -8,6 +8,8 @@ import { Paper } from '@mui/material';
 import waves from './images/wave-5.png'
 import cuttlelogo from './images/cuttlelogo.PNG'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import YouTubeIcon from '@mui/icons-material/YouTube';
 
 export default function Home(){
   const navigate = useNavigate();
@@ -112,7 +114,7 @@ export default function Home(){
               </div>
               {/* <img src={cuttlelogo} alt="ZippyPrints divider" className={styles.cuttlelogo}></img> */}
               
-              <div ref={ref} className={styles.tutorialBackground}>
+              <div className={styles.tutorialBackground}>
                 <div className={styles.tutorialHeadingContainer}>
                   <h1 className={styles.tutorialTitle}>Learn how to utilize ZippyPrints</h1>
                 </div>
@@ -174,18 +176,52 @@ export default function Home(){
 
                 </div>
                 
-                <div className={styles.missionContainer}>
-                  <h1 className={styles.missionTitle}>Getting you your prints, whenever you need</h1>
+                  <div className={styles.missionHeadingContainer}>
+                    <h1 className={styles.missionTitle}>Getting you your prints, whenever you need</h1>
+                  </div>
+                  <div className={styles.missionContainer}>
                   <div className={styles.missionDescriptionContainer}>
                   <img src={cuttlelogo} alt="ZippyPrints divider" className={styles.cuttlelogo}></img>
                   <div className={styles.missionDescriptionContainer2}>
                     <p className={styles.missionDescription}>ZippyPrints was created by 6165 MSET Cuttlefish, a FIRST Tech 
                     Challenge (FTC) robotics team, to connect FTC teams with 3D printers with underresourced teams needing custom 
-                    manufacturing services to create custom parts they design. Through ZippyPrints, our team hopes to provide
+                    manufacturing services to  create custom parts they design. Through ZippyPrints, our team hopes to provide
                     more learning opportunities and increase the competitiveness of traditionally underepresented teams in
                     not only FTC teams, but teams from all competitions. Individuals who require custom parts
                     for their personal or professional projects can benefit as well!</p>
                   </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className={styles.footerScreen}>
+                <div className={styles.footerContainer}>
+                  <div className={styles.footerColumn1}>
+                      <div className={styles.rowTitleBig}>ZippyPrints</div>
+
+                      <div className={styles.footerRow2}>
+                        <div className={styles.navigation}>
+                          <div className={styles.rowTitle}>User</div>
+                          <a href="/Login" className={styles.rowDescription}>Login</a>
+                          <a href="/Register" className={styles.rowDescription}>Register</a>
+                          <a href="/Profile" className={styles.rowDescription}>Profile</a>
+
+                        </div>
+                        <div className={styles.navigation}>
+                          <div className={styles.rowTitle}>Functions</div>
+                          <div className={styles.rowDescription}>Maps</div>
+                          <div className={styles.rowDescription}>Safety Policy</div>
+                          <div className={styles.rowDescription}>Terms of Service</div>
+                        </div>
+                      <div className={styles.contactUs}>
+                        <div className={styles.rowTitle}>Contact us</div>
+                          <div className={styles.rowDescription}>Email: 6165zippyprints@gmail.com</div>
+                          <div className={styles.logoContainer}>
+                            <InstagramIcon className={styles.footerIcons}/>
+                            <YouTubeIcon className={styles.footerIcons}/>
+                          </div>
+                      </div>
+                      </div>
                   </div>
                 </div>
               </div>

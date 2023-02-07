@@ -122,11 +122,9 @@ body {
 
 .tutorialHeadingContainer {
   display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  gap: 48px;
-  width: fit-content;
-  margin-left: 10vw;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-left: clamp(0px, 10vw, 1000px);
 }
 
 .tutorialTitle {
@@ -135,8 +133,8 @@ body {
   font-weight: 600;
   letter-spacing: -0.84px;
   line-height: 60px;
-  margin-top: 5vw;
-  width: 700px;
+  margin-top: 7vw;
+  width: fit-content;
   font-size: 26pt;
 }
 
@@ -240,9 +238,16 @@ body {
   gap: 48px;
   width: fit-content;
   margin-left: 10vw;
-  margin-top: 7vw;
+  margin-top: 3vw;
 }
 
+.missionHeadingContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-left: clamp(0px, 10vw, 1000px);
+  margin-top: 5vw;
+}
 .missionTitle {
   color: rgba(6, 28, 61, 1);
   font-family: "Lexend Regular";
@@ -281,13 +286,119 @@ body {
   letter-spacing: 0px;
   line-height: 32px;
   margin-top: -1px;
-  width: 850px;
+  width: 60vw;
 }
+
 .cuttlelogo {
   margin-top: -3vw;
-  height: 250px;
-  width: 250px;
+  height: clamp(200px, 18vw, 300px);
+  width: clamp(200px, 18vw, 300px);
 }
+
+.footerScreen {
+  display: block;
+  height: 300px;
+  margin-top: 145%;
+  position: absolute;
+  top: 0px; bottom: 0px; right: 0px; left: 0px;
+  background-color: #02142E;  
+}
+
+.footerContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  column-gap: 20vw;
+  margin-top: 4vw;
+}
+
+.footerColumn1 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-left: 15vw;
+}
+
+.footerRow2 {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-top: 3vw;
+  column-gap: 25vw;
+}
+.navigation {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.contactUs {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+}
+.rowTitleBig {
+  color: #F0F5FF;
+  font-family: "Lexend SemiBold";
+  font-size: 22pt;
+  font-weight: 100;
+  line-height: 20px;
+  width: fit-content;
+}
+.rowTitle {
+  color: #F0F5FF;
+  font-family: "Lexend Regular";
+  font-size: 16pt;
+  font-weight: 100;
+  line-height: 20px;
+  width: fit-content;
+}
+
+.rowDescription {
+  color: #F0F5FF;
+  font-family: "Lexend Light";
+  font-size: 10pt;
+  font-weight: 100;
+  line-height: 20px;
+  margin-top: 1vw;
+  width: fit-content;
+  transition-duration: 250ms;
+}
+
+.rowDescription:hover {
+  color: #0B63E5;
+  font-family: "Lexend Light";
+  font-size: 10pt;
+  font-weight: 100;
+  line-height: 20px;
+  margin-top: 1vw;
+  width: fit-content;
+  transition-duration: 250ms;
+}
+
+.logoContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 1vw;
+  margin-top: 1vw;
+}
+
+.footerIcons {
+  height: 40px;
+  width: 40px;
+  color: #F0F5FF;
+  border: 10px hidden #f0f5ff63;
+  border-radius: 6px;
+  transition: 250ms;
+}
+.footerIcons:hover {
+  transition: 250ms;
+  background-color: #f0f5ff63;
+}
+
+
 @media screen and (max-width: 1150px) {
   .cardText {
     letter-spacing: 0;
@@ -312,6 +423,52 @@ body {
     position: absolute;
     top: 0px; bottom: 0px; right: 0px; left: 0px;
     background-color: #F0F5FF;  
+  }
+  .tutorialHeadingContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-left: 0vw;
+  }
+  
+  .tutorialTitle {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend Regular";
+    font-weight: 600;
+    letter-spacing: -0.84px;
+    line-height: 60px;
+    margin-top: 5vw;
+    width: fit-content;
+    font-size: 22pt;
+  }
+
+  .missionHeadingContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-left: 0vw;
+  }
+  
+  .missionTitle {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend Regular";
+    font-weight: 600;
+    letter-spacing: -0.84px;
+    line-height: 60px;
+    margin-top: 5vw;
+    width: fit-content;
+    font-size: 22pt;
+  }
+
+  .missionDescription {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend Light";
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0px;
+    line-height: 32px;
+    margin-top: -1px;
+    width: 60vw;
   }
 
 }
@@ -402,17 +559,6 @@ body {
     width: 0px;
     height: 0px;
   }
-  .tutorialTitle {
-    color: #094FB7;
-    font-family:'Lexend Regular'; 
-    font-size: clamp(30px, 4vw, 70px);
-    font-weight: 600;
-    letter-spacing: -0.84;
-    line-height: 60px;
-    text-align: center;
-    width: 200px;
-    margin-top: 7vw;
-  }
   
   .tutorialSubtitle {
     color: #094FB7;
@@ -469,6 +615,7 @@ body {
     font-size: 16px;
     font-family: 'Lexend Light';
   }
+  
   .tutorialBackground {
     display: block;
     height: 2000px;
@@ -477,6 +624,7 @@ body {
     top: 0px; bottom: 0px; right: 0px; left: 0px;
     background-color: #F0F5FF;  
   }
+
   .missionScreen {
     display: block;
     height: 700px;
@@ -484,14 +632,61 @@ body {
     position: absolute;
     top: 0px; bottom: 0px; right: 0px; left: 0px;
     background-color: #F0F5FF;
-    } 
+  } 
 
-    .tutorialHeadingContainer {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin-left: 0;
-      margin-right: 0;
-    }
+  .tutorialHeadingContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-left: 0vw;
+  }
+  
+  .tutorialTitle {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend Regular";
+    font-weight: 600;
+    letter-spacing: -0.84px;
+    line-height: 60px;
+    margin-top: 5vw;
+    width: fit-content;
+    font-size: 18pt;
+  }
+
+  .missionContainer {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 48px;
+    margin-left: 0vw;
+    margin-top: 7vw;
+  }
+  
+  .missionHeadingContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-left: 0vw;
+  }
+  
+  .missionTitle {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend Regular";
+    font-weight: 600;
+    letter-spacing: -0.84px;
+    line-height: 60px;
+    margin-top: 5vw;
+    text-align: center;
+    font-size: 18pt;
+  }
+
+  .missionDescription {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend Light";
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0px;
+    line-height: 32px;
+    margin-top: -1px;
+    width: clamp(180px, 55vw, 1200px);
+  }
 }
