@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="67182f16-5134-4393-a3d5-fc7aac633b83" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/404/404.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Auth/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Auth/Dashboard.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Auth/RegisterForm.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Auth/RegisterForm.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Discover/Discover.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Discover/Discover.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,9 +34,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="RunOnceActivity.cidr.known.project.marker" value="true" />
     <property name="android.sdk.path" value="$USER_HOME$/Library/Android/sdk" />
-    <property name="cidr.known.project.marker" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="settings.editor.selected.configurable" value="AndroidSdkUpdater" />
     <property name="show.migrate.to.gradle.popup" value="false" />
