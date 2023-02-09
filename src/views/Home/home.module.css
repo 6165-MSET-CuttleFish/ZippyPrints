@@ -297,8 +297,8 @@ body {
 
 .footerScreen {
   display: block;
-  height: 300px;
-  margin-top: 145%;
+  height: clamp(300px, 20vw, 500px);
+  margin-top: clamp(2100px, 145%, 2500px);
   position: absolute;
   top: 0px; bottom: 0px; right: 0px; left: 0px;
   background-color: #02142E;  
@@ -386,13 +386,16 @@ body {
 }
 
 .footerIcons {
-  height: 40px;
-  width: 40px;
+  height: 100px;
+  width: 80px;
+  size: 5px;
   color: #F0F5FF;
-  border: 10px hidden #f0f5ff63;
+  border: 1px hidden #f0f5ff63;
   border-radius: 6px;
   transition: 250ms;
 }
+
+
 .footerIcons:hover {
   transition: 250ms;
   background-color: #f0f5ff63;
@@ -469,6 +472,118 @@ body {
     line-height: 32px;
     margin-top: -1px;
     width: 60vw;
+  }
+
+  .cuttlelogo {
+    margin-top: -3vw;
+    height: clamp(200px, 18vw, 300px);
+    width: clamp(200px, 18vw, 300px);
+  }
+  
+  .footerScreen {
+    display: block;
+    height: 300px;
+    margin-top: clamp(2000px, 145%, 2200px);
+    position: absolute;
+    top: 0px; bottom: 0px; right: 0px; left: 0px;
+    background-color: #02142E;  
+  }
+  
+  .footerContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    column-gap: 20vw;
+    margin-top: 4vw;
+  }
+  
+  .footerColumn1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: 15vw;
+  }
+  
+  .footerRow2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 3vw;
+    column-gap: 25vw;
+  }
+  .navigation {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .contactUs {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  
+  }
+  .rowTitleBig {
+    color: #F0F5FF;
+    font-family: "Lexend SemiBold";
+    font-size: 22pt;
+    font-weight: 100;
+    line-height: 20px;
+    width: fit-content;
+  }
+  .rowTitle {
+    color: #F0F5FF;
+    font-family: "Lexend Regular";
+    font-size: 16pt;
+    font-weight: 100;
+    line-height: 20px;
+    width: fit-content;
+  }
+  
+  .rowDescription {
+    color: #F0F5FF;
+    font-family: "Lexend Light";
+    font-size: 10pt;
+    font-weight: 100;
+    line-height: 20px;
+    margin-top: 1vw;
+    width: fit-content;
+    transition-duration: 250ms;
+  }
+  
+  .rowDescription:hover {
+    color: #0B63E5;
+    font-family: "Lexend Light";
+    font-size: 10pt;
+    font-weight: 100;
+    line-height: 20px;
+    margin-top: 1vw;
+    width: fit-content;
+    transition-duration: 250ms;
+  }
+  
+  .logoContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 1vw;
+    margin-top: 1vw;
+  }
+  
+  .footerIcons {
+    height: 100px;
+    width: 80px;
+    size: 5px;
+    color: #F0F5FF;
+    border: 1px hidden #f0f5ff63;
+    border-radius: 6px;
+    transition: 250ms;
+  }
+  
+  
+  .footerIcons:hover {
+    transition: 250ms;
+    background-color: #f0f5ff63;
   }
 
 }
@@ -559,7 +674,7 @@ body {
     width: 0px;
     height: 0px;
   }
-  
+
   .tutorialSubtitle {
     color: #094FB7;
     font-family:'Lexend Regular'; 
@@ -688,5 +803,111 @@ body {
     line-height: 32px;
     margin-top: -1px;
     width: clamp(180px, 55vw, 1200px);
+  }
+
+  .footerScreen {
+    display: block;
+    height: 300px;
+    margin-top: clamp(2450px, 145%, 2600px);
+    position: absolute;
+    top: 0px; bottom: 0px; right: 0px; left: 0px;
+    background-color: #02142E;  
+  }
+  
+  .footerContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    column-gap: 25vw;
+    margin-top: 10vw;
+  }
+  
+  .footerColumn1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: 7vw;
+  }
+  
+  .footerRow2 {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 5vw;
+    column-gap: 15vw;
+  }
+  .navigation {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  
+  .contactUs {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  
+  }
+  .rowTitleBig {
+    color: #F0F5FF;
+    font-family: "Lexend SemiBold";
+    font-size: 18pt;
+    font-weight: 100;
+    line-height: 20px;
+    width: fit-content;
+  }
+  .rowTitle {
+    color: #F0F5FF;
+    font-family: "Lexend Regular";
+    font-size: 12pt;
+    font-weight: 100;
+    line-height: 20px;
+    width: fit-content;
+  }
+  
+  .rowDescription {
+    color: #F0F5FF;
+    font-family: "Lexend Light";
+    font-size: 10pt;
+    font-weight: 100;
+    line-height: 20px;
+    margin-top: 1vw;
+    width: fit-content;
+    transition-duration: 250ms;
+  }
+  
+  .rowDescription:hover {
+    color: #0B63E5;
+    font-family: "Lexend Light";
+    font-size: 10pt;
+    font-weight: 100;
+    line-height: 20px;
+    margin-top: 1vw;
+    width: fit-content;
+    transition-duration: 250ms;
+  }
+  
+  .logoContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 1vw;
+    margin-top: 1vw;
+  }
+  
+  .footerIcons {
+    height: 100px;
+    width: 80px;
+    size: 5px;
+    color: #F0F5FF;
+    border: 1px hidden #f0f5ff63;
+    border-radius: 6px;
+    transition: 250ms;
+  }
+  
+  
+  .footerIcons:hover {
+    transition: 250ms;
+    background-color: #f0f5ff63;
   }
 }

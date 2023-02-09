@@ -202,23 +202,26 @@ export default function Home(){
                       <div className={styles.footerRow2}>
                         <div className={styles.navigation}>
                           <div className={styles.rowTitle}>User</div>
-                          <a href="/Login" className={styles.rowDescription}>Login</a>
-                          <a href="/Register" className={styles.rowDescription}>Register</a>
-                          <a href="/Profile" className={styles.rowDescription}>Profile</a>
+                          <a href="/login" className={styles.rowDescription}>Login</a>
+                          <a href="/register" className={styles.rowDescription}>Register</a>
+                          <a href="/profile" className={styles.rowDescription}>Profile</a>
 
                         </div>
                         <div className={styles.navigation}>
                           <div className={styles.rowTitle}>Functions</div>
-                          <div className={styles.rowDescription}>Maps</div>
-                          <div className={styles.rowDescription}>Safety Policy</div>
-                          <div className={styles.rowDescription}>Terms of Service</div>
+                          <a href="/discover" className={styles.rowDescription}>Maps</a>
+                          <a href="/safety" className={styles.rowDescription}>Safety Policy</a>
+                          <a href="/terms" className={styles.rowDescription}>Terms of Service</a>
                         </div>
                       <div className={styles.contactUs}>
                         <div className={styles.rowTitle}>Contact us</div>
-                          <div className={styles.rowDescription}>Email: 6165zippyprints@gmail.com</div>
+                          <div onClick={() => window.location = 'mailto:6165zippyprints@gmail.com'}
+                          className={styles.rowDescription}>Email: 6165zippyprints@gmail.com</div>
                           <div className={styles.logoContainer}>
-                            <InstagramIcon className={styles.footerIcons}/>
-                            <YouTubeIcon className={styles.footerIcons}/>
+                            <InstagramIcon onClick={() => window.open('https://www.instagram.com/mset6165/', '_blank', 'noreferrer')}
+                            className={styles.footerIcons}/>  
+                            <YouTubeIcon onClick={() => window.open('https://www.youtube.com/c/msetcuttlefish6165', '_blank', 'noreferrer')}
+                            className={styles.footerIcons}/>
                           </div>
                       </div>
                       </div>
