@@ -181,7 +181,7 @@ export default function Home(){
                   </div>
                   <div className={styles.missionContainer}>
                   <div className={styles.missionDescriptionContainer}>
-                  <img src={cuttlelogo} alt="ZippyPrints divider" className={styles.cuttlelogo}></img>
+                  <img src={cuttlelogo} alt="Cuttle Logo" className={styles.cuttlelogo}></img>
                   <div className={styles.missionDescriptionContainer2}>
                     <p className={styles.missionDescription}>ZippyPrints was created by 6165 MSET Cuttlefish, a FIRST Tech 
                     Challenge (FTC) robotics team, to connect FTC teams with 3D printers with underresourced teams needing custom 

@@ -1,0 +1,120 @@
+.background {
+    display: block;
+    height: 87.4vh;
+    position: relative;
+    top: 0px; bottom: 0px; right: 0px; left: 0px;
+    background-color: #F0F5FF;  
+  }
+
+.rowContainer {  
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+#columnContainer {  
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: 17.5vw;
+    margin-top: 15vw;
+}
+
+.errorTitle {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend SemiBold";
+    font-weight: 600;
+    letter-spacing: -0.84px;
+    line-height: 40px;
+    margin-top: -1px;
+    font-size: 26pt;
+    width: 450px;
+}
+
+.errorSubtitle {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend Light";
+    width: 450px;
+    margin-top: 1.5vw;
+    font-size: 10pt;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-top: 1.5vw;
+    gap: 20px;
+}
+.errorContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.errorcuttle {
+    height: 600px;
+    width: 600px;
+    margin-top: 5vw;
+    margin-left: -2vw;
+}
+
+@media screen and (max-width: 1000px) {
+    .rowContainer {  
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-top: 15vw;
+        margin-left: 0vw;
+    }
+    .errorTitle {
+        color: rgba(6, 28, 61, 1);
+        font-family: "Lexend SemiBold";
+        font-weight: 600;
+        letter-spacing: -0.84px;
+        line-height: 40px;
+        margin-top: -1px;
+        font-size: 26pt;
+        width: 450px;
+        text-align: center;
+    }
+    
+    .errorSubtitle {
+        color: rgba(6, 28, 61, 1);
+        font-family: "Lexend Light";
+        width: 450px;
+        margin-top: 1.5vw;
+        font-size: 10pt;
+        text-align: center;
+    }
+
+    .buttonContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        margin-top: 1.5vw;
+        gap: 20px;
+    }
+    .errorContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 0vw;
+    }
+    .errorcuttle {
+        height: 250px;
+        width: 250px;
+        margin-left: clamp(0px, 20vw, 120px);
+    }
+}

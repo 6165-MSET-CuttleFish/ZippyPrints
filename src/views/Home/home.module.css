@@ -34,7 +34,6 @@ body {
   padding-top: 10%;
 }
 
-
 .title {
   color: #F0F5FF;
   font-family: "Lexend Regular";
@@ -42,7 +41,9 @@ body {
   font-weight: 600;
   letter-spacing: -1.3px;
   line-height: clamp(50px, 8vh, 200px);
-}
+  transition: 500ms;
+  opacity: 1;
+ }
 
 .subtitleContainer {
   display: flex;

@@ -9,13 +9,14 @@ import Dashboard from "./views/Auth/Dashboard"
 import RegisterExport from "./views/Auth/RegisterExport"
 import Logout from "./views/Auth/Logout"
 import { AuthProvider } from './views/Auth/Auth'
-import AuthenticationError from './views/404/AuthenticationError'
+import AuthenticationError from './views/Error/AuthenticationError'
 import { Helmet } from 'react-helmet'
 import { RedirectCheckProvider } from './views/Auth/RedirectCheck';
 import styles from './App.css'
 import Verification from './views/Auth/Verification';
 import VerifySuccess from './views/Auth/VerifySuccess';
 import ResetPassword from './views/Auth/ResetPassword';
+import PageNotFound from './views/Error/PageNotFound'
 class App extends React.Component {
  
 
@@ -40,8 +41,9 @@ render()  {
               <Route exact path="/Logout" element={<Logout />} />
               <Route exact path="/AuthError" element={<AuthenticationError />} />
               <Route exact path="/Verification" element={<Verification />} />
-              <Route exact path="/VerSuccess" element={<VerifySuccess />} />=
-              <Route exact path="/Reset" element={<ResetPassword />} />=
+              <Route exact path="/VerSuccess" element={<VerifySuccess />} />
+              <Route exact path="/Reset" element={<ResetPassword />} />
+              <Route exact path="/404" element={<PageNotFound />} />
             </Routes>
           </RedirectCheckProvider>
         </BrowserRouter>
