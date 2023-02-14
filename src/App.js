@@ -44,6 +44,7 @@ render()  {
               <Route exact path="/VerSuccess" element={<VerifySuccess />} />
               <Route exact path="/Reset" element={<ResetPassword />} />
               <Route exact path="/404" element={<PageNotFound />} />
+              <Route path='*' element={<PageNotFound />}/>
             </Routes>
           </RedirectCheckProvider>
         </BrowserRouter>
