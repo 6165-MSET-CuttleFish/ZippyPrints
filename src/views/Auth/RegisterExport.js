@@ -6,18 +6,7 @@ import styles from '../Auth/register.module.css'
 
 const RegisterExport = props => {
   return (
-    <div>
-      <Paper className = {styles.Paper}
-       style={{
-        backgroundColor: "#EDD4B2",
-        square: "true"
-      }}            
-    variant="elevation5"
-    square={true}>
       <RegisterForm />
-      </Paper>
-     
-    </div>
   )
 }
 export default RegisterExport

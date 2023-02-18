@@ -5,7 +5,7 @@ import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerifi
 import { Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 import {useNavigate} from "react-router-dom"
 import {AuthContext} from "../../views/Auth/Auth"
-
+import styles from '../Auth/verification.module.css'
 
 
 let open = false;
@@ -15,17 +15,11 @@ function setOpen(children){
 open = children;
 }  
 
-
-
-
 const initalFValues = {
     message: ''
 }
-
-export default function Verification() 
-{
+export default function Verification() {
     const validate=(fieldValues = values)=>{}
-
     const {
         values,
         setValues,
@@ -41,27 +35,22 @@ export default function Verification()
     const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const checkViewable= ()=>
-    {
-        if(!currentUser)
-        {
+    const checkViewable= ()=> {
+        if(!currentUser) {
             navigate("/Login")
             setOpen(true)
         }
-        else if(currentUser.emailVerified)
-        {
+        else if(currentUser.emailVerified){
         navigate("/VerSuccess")
         setOpen(true);
         }
     }
 
-
     useEffect(() => {
         checkViewable()
         })
 
-    const handleSubmit = async(e) => 
-    {
+    const handleSubmit = async(e) => {
         e.preventDefault()
         const auth = getAuth();
         setLoading({loading: true})
@@ -80,10 +69,13 @@ export default function Verification()
     }
 
 
-    const theme = createTheme();
     return(
-        <ThemeProvider theme={theme}>
-            <div>Please verify your email</div>
+        <div className = {styles.container}>
+            <div className = {styles.columnContainer}>
+            <div className = {styles.verificationTitle}>Hello {currentUser.displayName}!</div>
+            <div className = {styles.verificationSubtitle}>A code should have been sent to your email address. 
+            In order to proceed, please verify your account by entering the code into the textbox below.</div>
+
             <Form onSubmit={handleSubmit}>
             <Controls.Button 
                     variant = "contained"
@@ -97,7 +89,8 @@ export default function Verification()
                     />
             <textarea value={values.message}/>
             </Form>
-        </ThemeProvider>        
+            </div>
+        </div>
     );
 
 }

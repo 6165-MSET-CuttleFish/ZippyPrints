@@ -8,7 +8,7 @@ import errorcuttle from './errorcuttle.png'
 export default function PageNotFound(){
     const navigate = useNavigate();
     const goBack = () => {
-        navigate(-2);
+        navigate(-1);
       }
       const returnHome = () => {
         navigate("/home");

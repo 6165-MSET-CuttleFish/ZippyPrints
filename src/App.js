@@ -18,9 +18,8 @@ import VerifySuccess from './views/Auth/VerifySuccess';
 import ResetPassword from './views/Auth/ResetPassword';
 import PageNotFound from './views/Error/PageNotFound'
 class App extends React.Component {
- 
 
-render()  {  
+render() {  
     return (
       <body className = {styles.body}>
       <AuthProvider>

@@ -68,8 +68,6 @@ export function setOpen(children){
 function Dashboard() {
     const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
-
-
     let username=null;
     let db=null;
     let colRef=null;
@@ -82,24 +80,16 @@ function Dashboard() {
         markerColRef = (doc(db, 'markers', "" + currentUser?.uid))
     }
     
-    
-
-    const checkViewable= ()=>
-    {
-        if(!currentUser)
-        {
+    const checkViewable= ()=> {
+        if(!currentUser) {
             navigate("/Login")
             setOpen(true)
         }
-        else if(!currentUser.emailVerified)
-        {
+        else if(!currentUser.emailVerified) {
         navigate("/Verification");
         setOpen(true);
         }
     }
-
-    
-
     const classes = useStyles();
     const [geoLocationData, setGeoLocationData] = useState(null);
 
@@ -165,6 +155,7 @@ const getGeoLocation = async (address) => {
            })
            await getData();
        }
+
     const handleSubmit = async(e) => {        
         e.preventDefault()
         if(validate()) {

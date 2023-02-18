@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Grid} from '@mui/material'
+import { Grid, Paper} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import { makeStyles } from '@mui/styles'
@@ -220,8 +220,7 @@ export default function RegisterForm() {
             setLoading({loading: false})
               let temp= {...errors}
               const errorCode = error.code;
-              if(errorCode=="auth/email-already-in-use")
-              {
+              if(errorCode === "auth/email-already-in-use") {
                 temp.email="An account is already registered under that email address."
                 setErrors({
                     ...temp
@@ -244,95 +243,87 @@ export default function RegisterForm() {
         }        
     }
     
-    
-
-    
-
-    const theme = createTheme();
     return (
-        <ThemeProvider theme={theme}>
-        <Box className={styles.topBox}> 
+      <div className = {styles.container}>
+        {/* <Box className={styles.topBox}> 
         <Avatar sx={{ m: 1, bgcolor: '#00ff00' }}>
             <LockOutlinedIcon />
         </Avatar>
-        <h4>Sign up</h4>
-        <Box component="form" 
-            onSubmit={handleSubmit} 
-            noValidate 
-            className={styles.botBox}>
-            <Form onSubmit={handleSubmit}>
-            <Grid container>
-                <Grid item xs = {7}>
-                    <Controls.Input
-                        label = "Email"
-                        name="email"
-                        value={values.email}
-                        onChange = {handleInputChange}
-                        error={errors.email}
-                        className={classes.textbox}
-                        fullWidth = {false}
-                        style = {{width: '350px'}}
-                        required
-                    />
-                    <Controls.Input
-                        label = "Username"
-                        name="userName"
-                        value={values.userName}
-                        onChange = {handleInputChange}
-                        error={errors.userName}
-                        className={classes.textbox}
-                        style = {{width: '350px'}}
-                        required
-                    />
-                    <Controls.Input 
-                        label = "Password"
-                        name="password"
-                        type = "password"
-                        value={values.password}
-                        onChange = {handleInputChange}
-                        error={errors.password}
-                        className={classes.textbox}
-                        style = {{width: '350px'}}
-                        required
-                    />
-                    <Controls.Input 
-                        label = "Reconfirm Password"
-                        name="reconfirmPassword"
-                        type = "password"
-                        value={values.reconfirmPassword}
-                        onChange = {handleInputChange}
-                        error={errors.reconfirmPassword}
-                        className={classes.textbox}
-                        style = {{width: '350px'}}
-                        required
-                    />
-                    <Controls.Checkbox
-                        name="printer"
-                        label="Are you a printer?"
-                        values={values.printer}
-                        onChange={handleInputChange}
-                    />
-                    <Controls.Button 
-                    type="submit"
-                    className = {classes.loginButton}
-                    variant = "contained"
-                    size = "large"
-                    style={{
-                      backgroundColor: loadingStatus.loading?true: "#4f6b80",
-                      backgroundColor: loadingStatus.loading?false: "#001b2e"
-                    }}
-                    text = "Sign Up"
-                    onClick = {handleSubmit}
-                    />
-                    
-                
-                </Grid>
-            </Grid>
+        <h4>Sign up</h4> */}
+        <Paper component="form" onSubmit={handleSubmit} noValidate className={styles.registerPaper}
+        sx={{"&.MuiPaper-root": {borderRadius: "10px"}}}>
+          <div className = {styles.registerTitleContainer}>
+                    <div className = {styles.logoContainer}>
+                        <Avatar sx={{ marginLeft: 2.5, bgcolor: '#094FB7' }}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <div className = {styles.registerTitle}>Register</div>
+                    </div>
+                </div>
+          <Form onSubmit={handleSubmit}>
+            <Controls.Input
+              label = "Email"
+              name="email"
+              value={values.email}
+              onChange = {handleInputChange}
+              error={errors.email}
+              className={classes.textbox}
+              fullWidth = {false}
+              style = {{width: '350px'}}
+              required
+            />
+            <Controls.Input
+              label = "Username"
+              name="userName"
+              value={values.userName}
+              onChange = {handleInputChange}
+              error={errors.userName}
+              className={classes.textbox}
+              style = {{width: '350px'}}
+              required
+            />
+            <Controls.Input 
+              label = "Password"
+              name="password"
+              type = "password"
+              value={values.password}
+              onChange = {handleInputChange}
+              error={errors.password}
+              className={classes.textbox}
+              style = {{width: '350px'}}
+              required
+            />
+            <Controls.Input 
+              label = "Reconfirm Password"
+              name="reconfirmPassword"
+              type = "password"
+              value={values.reconfirmPassword}
+              onChange = {handleInputChange}
+              error={errors.reconfirmPassword}
+              className={classes.textbox}
+              style = {{width: '350px'}}
+              required
+            />
+            <Controls.Checkbox
+              name="printer"
+              label="Are you a printer?"
+              values={values.printer}
+              onChange={handleInputChange}
+            />
+            <Controls.Button 
+              type="submit"
+              className = {classes.loginButton}
+              variant = "contained"
+              size = "large"
+              style={{
+                backgroundColor: loadingStatus.loading?true: "#4f6b80",
+                backgroundColor: loadingStatus.loading?false: "#001b2e"
+              }}
+              text = "Sign Up"
+              onClick = {handleSubmit}
+            />
             </Form>
-            
-          </Box>
-          </Box>
-          </ThemeProvider>
-            
+          </Paper>
+        </div>
     )
 }

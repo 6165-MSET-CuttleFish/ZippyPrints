@@ -14,23 +14,16 @@ let open = false;
     open = children;
     }
 
-export default function VerifySuccess()
-{
-
-    
-  
+export default function VerifySuccess(){
     const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const checkViewable= ()=>
-    {
-        if(!currentUser)
-        {
+    const checkViewable= ()=>{
+        if(!currentUser){
             navigate("/Login")
             setOpen(true)
         }
-        else if(!currentUser.emailVerified)
-        {
+        else if(!currentUser.emailVerified){
         navigate("/Verification")
         setOpen(true);
         }
