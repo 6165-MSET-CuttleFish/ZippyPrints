@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
-import { Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
+import { Alert, Snackbar } from '@mui/material'
 import {useNavigate} from "react-router-dom"
 import {AuthContext} from "../../views/Auth/Auth"
 import styles from '../Auth/verification.module.css'
@@ -19,6 +19,9 @@ const initalFValues = {
     message: ''
 }
 export default function Verification() {
+    const [openSuccess, setOpenSuccess] = useState(false);
+    const [openError, setOpenError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState();
     const validate=(fieldValues = values)=>{}
     const {
         values,
@@ -48,7 +51,7 @@ export default function Verification() {
 
     useEffect(() => {
         checkViewable()
-        })
+    })
 
     const handleSubmit = async(e) => {
         e.preventDefault()
@@ -57,14 +60,16 @@ export default function Verification() {
         sendEmailVerification(auth.currentUser)
         .then(() => {
             setLoading({loading: false})
-            setValues({message: "Email Sent!"})
-          // Password reset email sent!
-          // ..
+            setOpenSuccess(true);
         })
-        .catch((error)=>
-        {
+        .catch((error)=>{
             setLoading({loading: false})
-            setValues({message: error.code})
+            setOpenError(true);
+            if (error = "auth/too-many-requests") {
+                setErrorMessage("Please wait before sending another email!");
+            } else {
+                setErrorMessage(error.message);
+            }
         })
     }
 
@@ -73,10 +78,8 @@ export default function Verification() {
         <div className = {styles.container}>
             <div className = {styles.columnContainer}>
             <div className = {styles.verificationTitle}>Hello {currentUser.displayName}!</div>
-            <div className = {styles.verificationSubtitle}>A code should have been sent to your email address. 
-            In order to proceed, please verify your account by entering the code into the textbox below.</div>
-
-            <Form onSubmit={handleSubmit}>
+            <div className = {styles.verificationSubtitle}>Thanks for signing up!  
+            In order to proceed, please check your email for a verification link from us.</div>
             <Controls.Button 
                     variant = "contained"
                     size = "large"
@@ -84,12 +87,20 @@ export default function Verification() {
                         backgroundColor: loadingStatus.loading?true: "#4f6b80",
                         backgroundColor: loadingStatus.loading?false: "#001b2e"
                     }}
-                    text = "Send Verification Email"
+                    text = "Resend Verification Email"
                     onClick = {handleSubmit}
                     />
-            <textarea value={values.message}/>
-            </Form>
             </div>
+            <Snackbar open={openSuccess} autoCloseDuration={5000} onClose={() => setOpenSuccess(false)}>
+                <Alert severity="success" sx={{ width: '100%' }} onClose={() => setOpenSuccess(false)}>
+                    Email sent!
+                </Alert>
+            </Snackbar>
+            <Snackbar open={openError} autoCloseDuration={5000} onClose={() => setOpenError(false)}>
+                <Alert onClose={() => setOpenError(false)} severity="error" sx={{ width: '100%' }}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
         </div>
     );
 

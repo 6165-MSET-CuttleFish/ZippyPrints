@@ -136,68 +136,12 @@ export default function RegisterForm() {
         const userName = values.userName;
         const printer = values.printer;
         const auth = getAuth();
-        if (printer) {
-          await createUserWithEmailAndPassword(auth, userEmail, userPassword)
-          .then(async (userCredential) => {
-            // Sgned in 
-          const db = getFirestore();
-          const colRef = doc(db, "printers", "" + auth.currentUser.uid)
-
-          await updateProfile(await auth.currentUser, {
-            displayName: userName,
-            
-          }).then(() => {
-            setLoading({loading: false})
-            navigate('../Verification', { replace: true })
-            //sendEmailVerification(auth.currentUser)
-          }).catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            window.alert("Error: " + errorCode + ", " + errorMessage)
-          });
-          await setDoc(colRef, {
-            username: userName,
-            email: userEmail,
-            printer: printer,
-          })
-          })
-          .catch((error) => {
-              setLoading({loading: false})
-              let temp= {...errors}
-              const errorCode = error.code;
-              if(errorCode=="auth/email-already-in-use")
-              {
-                temp.email="An account is already registered under that email address."
-              }
-              else
-              {
-                temp.email=errorCode;
-              }
-              setErrors({
-                  ...temp
-              })
-              //resets email field
-              setValues({
-                  id: values.id, 
-                  userName: values.userName,
-                  email: '',
-                  password: values.password,
-                  reconfirmPassword: values.reconfirmPassword,
-                  rememberMe: values.rememberMe
-              })
-              
-                
-            //const errorMessage = error.message;
-            //window.alert("Error: " + errorCode + ", " + errorMessage)
-            // ..
-          });
-        } else {
-          await createUserWithEmailAndPassword(auth, userEmail, userPassword)
-          .then(async (userCredential) => {
-            // Sgned in 
+        await createUserWithEmailAndPassword(auth, userEmail, userPassword)
+        .then(async (userCredential) => {
+          // Signed in 
           const db = getFirestore();
           const colRef = doc(db, "users", "" + auth.currentUser.uid)
-
+          sendEmailVerification(auth.currentUser)
           await updateProfile(await auth.currentUser, {
             displayName: userName,
             
@@ -239,8 +183,7 @@ export default function RegisterForm() {
               //const errorMessage = error.message;
               //window.alert("Error: " + errorCode + ", " + errorMessage)
             // ..
-          });
-        }        
+          });     
     }
     
     return (
