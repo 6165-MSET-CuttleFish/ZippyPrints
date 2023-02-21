@@ -54,7 +54,6 @@ export const Menu = () => {
         setElRefs((refs) => Array(places.length).fill().map((_, i) => refs[i] || createRef()));
       }, [places]);
     
-
     
     const handleInputChange = (event) => {
         setType(event?.target.value);
