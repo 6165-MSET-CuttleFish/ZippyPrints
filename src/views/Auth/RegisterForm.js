@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react'
-import { Grid} from '@mui/material'
+import React, { useState, useContext, useEffect } from 'react'
+import { Grid, Paper} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import { makeStyles } from '@mui/styles'
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import GoogleIcon from '@mui/icons-material/Google';
 import { useNavigate } from 'react-router-dom';
 import { getFirestore, setDoc, doc } from 'firebase/firestore/lite';
@@ -11,6 +11,9 @@ import { Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import '../Auth/Register.css'
 import styles from '../Auth/register.module.css'
+import {AuthContext} from "../../views/Auth/Auth"
+
+
 
     
 const useStyles = makeStyles(e =>({ 
@@ -58,19 +61,44 @@ const initalFValues = {
     userName:'',
     email: '',
     password: '',
+    reconfirmPassword: '',
     printer: false
 
 }
 
+let open = false;
+module.export = {open:open}
+
+function setOpen(children){
+open = children;
+}  
+
 export default function RegisterForm() {
-    const navigate = useNavigate();
+
+  const {currentUser} = useContext(AuthContext);
+  const navigate = useNavigate();
+  
+  const checkViewable= ()=>
+  {
+      if(currentUser)
+      {
+          navigate("/Profile")
+          setOpen(true)
+      }
+  }
+
+  useEffect(() => {
+      checkViewable()
+      })
 
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
         if ('email' in fieldValues)
             temp.email = (/.+@.+../).test(fieldValues.email)?"":"Email is not valid."
         if ('password' in fieldValues)
-            temp.password = fieldValues.password?"":"This field is required."
+            temp.password = fieldValues.password.length>5?"":"Passwords should be at least 6 characters long."
+        if('reconfirmPassword' in fieldValues)
+            temp.reconfirmPassword={...values}.password===fieldValues.reconfirmPassword?"":"Passwords must match."
         
         setErrors({
             ...temp
@@ -88,19 +116,22 @@ export default function RegisterForm() {
         errors,
         setErrors,
         handleInputChange,
-        resetForm
+        resetForm,
+        loadingStatus,
+        setLoading
     } = useForm(initalFValues, true, validate);
 
     const handleSubmit = async(e) => {    
         e.preventDefault();    
         if(validate()) {
+          setLoading({loading: true})
           await makeAccount();
-          navigate('../Profile', { replace: true })
         }  
     }
 
     
-    console.log(values.printer)
+    const {setTimeActive} = useContext(AuthContext)
+
     const makeAccount = async ()  => {
         const userEmail = values.email
         const userPassword = values.password
@@ -108,17 +139,19 @@ export default function RegisterForm() {
         const printer = values.printer;
         const auth = getAuth();
         await createUserWithEmailAndPassword(auth, userEmail, userPassword)
-          .then(async (userCredential) => {
-            // Sgned in 
+        .then(async (userCredential) => {
+          // Signed in 
           const db = getFirestore();
           const colRef = doc(db, "users", "" + auth.currentUser.uid)
-
+          sendEmailVerification(auth.currentUser)
           await updateProfile(await auth.currentUser, {
             displayName: userName,
             
           }).then(() => {
-            // Profile updated!
-            // ...
+            setLoading({loading: false})
+            setTimeActive(true)
+            navigate('../Verification', { replace: true })
+            //sendEmailVerification(auth.currentUser)
           }).catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
@@ -129,94 +162,114 @@ export default function RegisterForm() {
             email: userEmail,
             printer: printer,
           })
-
-        
           })
           .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            window.alert("Error: " + errorCode + ", " + errorMessage)
+            setLoading({loading: false})
+              let temp= {...errors}
+              const errorCode = error.code;
+              if(errorCode === "auth/email-already-in-use") {
+                temp.email="An account is already registered under that email address."
+                setErrors({
+                    ...temp
+                })
+                //resets email field
+                setValues({
+                    id: values.id, 
+                    userName: values.userName,
+                    email: '',
+                    password: values.password,
+                    reconfirmPassword: values.reconfirmPassword,
+                    rememberMe: values.rememberMe
+                  })
+              }
+              //idk figure out other error codes later or something
+              //const errorMessage = error.message;
+              //window.alert("Error: " + errorCode + ", " + errorMessage)
             // ..
-          });
-          
+          });     
     }
     
-    
-
-    
-
-    const theme = createTheme();
     return (
-        <ThemeProvider theme={theme}>
-        <Box className={styles.topBox}> 
+      <div className = {styles.container}>
+        {/* <Box className={styles.topBox}> 
         <Avatar sx={{ m: 1, bgcolor: '#00ff00' }}>
             <LockOutlinedIcon />
         </Avatar>
-        <h4>Sign up</h4>
-        <Box component="form" 
-            onSubmit={handleSubmit} 
-            noValidate 
-            className={styles.botBox}>
-            <Form onSubmit={handleSubmit}>
-            <Grid container>
-                <Grid item xs = {6}>
-                    <Controls.Input
-                        label = "Username"
-                        name="userName"
-                        value={values.userName}
-                        onChange = {handleInputChange}
-                        error={errors.userName}
-                        className={classes.textbox}
-                        style = {{width: '350px'}}
-                        required
-                    />
-                    <Controls.Input
-                        label = "Email"
-                        name="email"
-                        value={values.email}
-                        onChange = {handleInputChange}
-                        error={errors.email}
-                        className={classes.textbox}
-                        fullWidth = {false}
-                        style = {{width: '350px'}}
-                        required
-                    />
-                    <Controls.Input 
-                        label = "Password"
-                        name="password"
-                        type = "password"
-                        value={values.password}
-                        onChange = {handleInputChange}
-                        error={errors.password}
-                        className={classes.textbox}
-                        style = {{width: '350px'}}
-                        required
-                    />
-                    <Controls.Checkbox
-                        name="printer"
-                        label="Are you a printer?"
-                        values={values.printer}
-                        onChange={handleInputChange}
-                    />
-                    <Controls.Button 
-                    className = {classes.loginButton}
-                    variant = "contained"
-                    size = "large"
-                    style={{
-                      backgroundColor: "#001b2e",
-                    }}
-                    text = "Sign Up"
-                    onClick = {handleSubmit}
-                    />
-                    
-                
-                </Grid>
-            </Grid>
+        <h4>Sign up</h4> */}
+        <Paper component="form" onSubmit={handleSubmit} noValidate className={styles.registerPaper}
+        sx={{"&.MuiPaper-root": {borderRadius: "10px"}}}>
+          <div className = {styles.registerTitleContainer}>
+                    <div className = {styles.logoContainer}>
+                        <Avatar sx={{ marginLeft: 2.5, bgcolor: '#094FB7' }}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <div className = {styles.registerTitle}>Register</div>
+                    </div>
+                </div>
+          <Form onSubmit={handleSubmit}>
+            <Controls.Input
+              label = "Email"
+              name="email"
+              value={values.email}
+              onChange = {handleInputChange}
+              error={errors.email}
+              className={classes.textbox}
+              fullWidth = {false}
+              style = {{width: '350px'}}
+              required
+            />
+            <Controls.Input
+              label = "Username"
+              name="userName"
+              value={values.userName}
+              onChange = {handleInputChange}
+              error={errors.userName}
+              className={classes.textbox}
+              style = {{width: '350px'}}
+              required
+            />
+            <Controls.Input 
+              label = "Password"
+              name="password"
+              type = "password"
+              value={values.password}
+              onChange = {handleInputChange}
+              error={errors.password}
+              className={classes.textbox}
+              style = {{width: '350px'}}
+              required
+            />
+            <Controls.Input 
+              label = "Reconfirm Password"
+              name="reconfirmPassword"
+              type = "password"
+              value={values.reconfirmPassword}
+              onChange = {handleInputChange}
+              error={errors.reconfirmPassword}
+              className={classes.textbox}
+              style = {{width: '350px'}}
+              required
+            />
+            <Controls.Checkbox
+              name="printer"
+              label="Are you a printer?"
+              values={values.printer}
+              onChange={handleInputChange}
+            />
+            <Controls.Button 
+              type="submit"
+              className = {classes.loginButton}
+              variant = "contained"
+              size = "large"
+              style={{
+                backgroundColor: loadingStatus.loading?true: "#4f6b80",
+                backgroundColor: loadingStatus.loading?false: "#001b2e"
+              }}
+              text = "Sign Up"
+              onClick = {handleSubmit}
+            />
             </Form>
-            
-          </Box>
-          </Box>
-          </ThemeProvider>
-            
+          </Paper>
+        </div>
     )
 }

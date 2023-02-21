@@ -15,7 +15,7 @@ export const RedirectCheckProvider = ({ children }) => {
         setOpen(false)
       }
     }, [location.pathname])
-
+    
   return (
     <RedirectCheck.Provider
       value={{
@@ -24,5 +24,5 @@ export const RedirectCheckProvider = ({ children }) => {
     >
       {children}
     </RedirectCheck.Provider>
-  );
+    );
 };

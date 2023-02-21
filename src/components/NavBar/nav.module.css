@@ -1,0 +1,59 @@
+.loginButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background-color: #F0F5FF;
+  border-radius: 5px;
+  padding: 0px 32px;
+  width: fit-content;
+} 
+
+
+
+.loginText{
+  color: #0B63E5;
+  font-family: "Lexend Regular";
+  font-size: 0.9vw;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 56px;
+  margin-top: -2px;
+  white-space: nowrap;
+  width: fit-content;
+  transition-duration: 500ms;
+}
+
+.loginButton:hover {
+  transition-duration: 500ms;
+  background-color: #ffffff;
+}
+
+
+.registerButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background-color: #094FB7;
+  border-radius: 5px;
+  padding: 0px 32px;
+  width: fit-content;
+  transition-duration: 500ms;
+} 
+.registerButton:hover {
+  transition-duration: 500ms;
+  background-color: #0967f5;
+}
+
+.registerText{
+  color: #F0F5FF;
+  font-family: "Lexend Regular";
+  font-size: 0.9vw;
+  font-weight: 500;
+  letter-spacing: 0;
+  line-height: 56px;
+  margin-top: -2px;
+  white-space: nowrap;
+  width: fit-content;
+}

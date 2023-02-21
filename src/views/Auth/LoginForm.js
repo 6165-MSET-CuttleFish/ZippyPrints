@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { useForm, Form } from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import { makeStyles } from '@mui/styles'
@@ -12,6 +12,8 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom';
 import styles from '../Auth/login.module.css'
 import { RedirectCheck, RedirectCheckProvider } from './RedirectCheck';
+import {AuthContext} from "../../views/Auth/Auth"
+
 const useStyles = makeStyles(e =>({ 
     loginButton: {
         border: 0,
@@ -51,10 +53,33 @@ const initalFValues = {
     rememberMe: ''
 
 }
+
+let open = false;
+module.export = {open:open}
+
+function setOpen(children){
+open = children;
+}  
 export default function LoginForm() {
 
+    const {currentUser} = useContext(AuthContext);
+    const navigate = useNavigate();
+    
+    const checkViewable= ()=>
+    {
+        if(currentUser)
+        {
+            navigate("/Profile")
+            setOpen(true)
+        }
+    }
+
+    useEffect(() => {
+        checkViewable()
+        })
+
+
     firebase.initializeApp(firebaseConfig)
-    let navigate = useNavigate();
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
         if ('email' in fieldValues)
@@ -70,7 +95,7 @@ export default function LoginForm() {
         return Object.values(temp).every(x => x === "")
 
     }
-    
+
     const classes = useStyles();
     const {
         values,
@@ -78,7 +103,9 @@ export default function LoginForm() {
         errors,
         setErrors,
         handleInputChange,
-        resetForm
+        resetForm,
+        loadingStatus,
+        setLoading
     } = useForm(initalFValues, true, validate);
 
     const{status} = useContext(RedirectCheck)
@@ -113,7 +140,7 @@ export default function LoginForm() {
           // The AuthCredential type that was used.
           const credential = GoogleAuthProvider.credentialFromError(error);
           // ...
-          window.alert(errorCode + ": " + errorMessage)
+          //window.alert(errorCode + ": " + errorMessage)
         });
     }
 
@@ -123,11 +150,14 @@ export default function LoginForm() {
             var userEmail = values.email
             var userPassword = values.password
             const auth = getAuth();
+            setLoading({loading: true})
             signInWithEmailAndPassword(auth, userEmail, userPassword)
+
             .then((userCredential) => {
+                setLoading({loading: false})
                 navigate('../Profile', { replace: true })
                 // Signed in 
-                window.alert("Welcome")
+                //window.alert("Welcome")
                 
                 
                 // ...
@@ -135,88 +165,123 @@ export default function LoginForm() {
             .catch((error) => {
                 const errorCode = error.code;
                 const errorMessage = error.message;
-                window.alert(errorMessage + ": " + errorCode)
+                //window.alert(errorMessage + ": " + errorCode)
+                setLoading({loading: false})
+                let temp= {...errors}
+                if(errorCode === "auth/wrong-password") {
+                    temp.password="Incorrect Password."
+                }
+                else {
+                    temp.password=errorCode;
+                }
+                setErrors({
+                    ...temp
+                })
+                //resets password field
+                setValues({
+                    id: values.id, 
+                    email: values.email,
+                    password: '',
+                    rememberMe: values.rememberMe,
+                })
             });
            
         }  
        
     }
     //TODO: functionalize remember me switch
-    const theme = createTheme();
     return (
-        <div>
-<ThemeProvider theme={theme}>
-    <Snackbar className = {styles.SnackBar} anchorOrigin = {{vertical: "top", horizontal: "center"}} open={status} autoHideDuration={1} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-           Please login before trying to access the map!
-        </Alert>
-    </Snackbar>
-        <Box
-          className={styles.topBox}
-        > 
+        <div className = {styles.container}>
+            {/* <Snackbar className = {styles.SnackBar} anchorOrigin = {{vertical: "top", horizontal: "center"}} open={status} autoHideDuration={1} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
+                    Please login before trying to access the map!
+                </Alert>
+            </Snackbar>
+        <Box className={styles.topBox}> 
         <Avatar sx={{ m: 1, bgcolor: '#00ff00' }}>
             <LockOutlinedIcon />
         </Avatar>
-        <h4>Sign in</h4>
-        <Box component="form" onSubmit={handleSubmit} noValidate className={styles.botBox}>
-            <Form onSubmit={handleSubmit}>
-                <Controls.Input
-                    label = "Email"
-                    name="email"
-                    value={values.email}
-                    onChange = {handleInputChange}
-                    error={errors.email}
-                    className={classes.textbox}
-                    fullWidth = {false}
-                    style = {{width: '350px'}}
-                    required
-                />
-                <Controls.Input 
-                    label = "Password"
-                    name="password"
-                    type = "password"
-                    value={values.password}
-                    onChange = {handleInputChange}
-                    error={errors.password}
-                    className={classes.textbox}
-                    style = {{width: '350px'}}
-                    required
-                />
-                <Controls.Button 
-                    className = {classes.loginButton}
-                    variant = "contained"
-                    size = "large"
-                    style={{
-                        backgroundColor: "#001b2e",
-                    }}
-                    text = "Login"
-                    onClick = {handleSubmit}
-                />
-                <Controls.Button 
-                    className = {classes.googleButton}
-                    variant = "outlined"
-                    style={{
-                        borderColor: "#001b2e",
-                        color: "#001b2e"
-                    }}
-                    size = "large"
-                    text = "Login with Google"
-                    onClick ={handleGoogleLogin}
-                />
-                <Link href="register" variant="body2" sx={{
-                    marginTop: 4,
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    marginRight: 3,
-                    color: '#001b2e'
-                }}>
-                    {"Don't have an account? Sign Up"}
-                </Link>
+        <h4>Sign in</h4> */}
+            <Paper root component="form" onSubmit={handleSubmit} noValidate className={styles.loginPaper} 
+            sx={{"&.MuiPaper-root": {borderRadius: "10px"}}}>
+                <div className = {styles.loginTitleContainer}>
+                    <div className = {styles.logoContainer}>
+                        <Avatar sx={{ m: 1, bgcolor: '#094FB7' }}>
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <div className = {styles.loginTitle}>Login</div>
+                    </div>
+                </div>
+                <Form onSubmit={handleSubmit}>
+                    <Controls.Input
+                        label = "Email"
+                        name="email"
+                        value={values.email}
+                        onChange = {handleInputChange}
+                        error={errors.email}
+                        className={classes.textbox}
+                        fullWidth = {false}
+                        style = {{width: '350px'}}
+                        required
+                    />
+                    <Controls.Input 
+                        label = "Password"
+                        name="password"
+                        type = "password"
+                        value={values.password}
+                        onChange = {handleInputChange}
+                        error={errors.password}
+                        className={classes.textbox}
+                        style = {{width: '350px'}}
+                        required
+                        //add something to call handlesubmit when enter pressed in this box
+                    />
+                    <Controls.Button 
+                        type="submit"
+                        className = {classes.loginButton}
+                        variant = "contained"
+                        size = "large"
+                        style={{
+                            backgroundColor: loadingStatus.loading?true: "#4f6b80",
+                            backgroundColor: loadingStatus.loading?false: "#001b2e",
+                        }}
+                        text = "Login"
+                        onClick = {handleSubmit}
+                    />
+                    <Controls.Button 
+                        className = {classes.googleButton}
+                        variant = "outlined"
+                        style={{
+                            borderColor: "#001b2e",
+                            color: "#001b2e"
+                        }}
+                        size = "large"
+                        text = "Login with Google"
+                        onClick ={handleGoogleLogin}
+                    />
+                    <Link href="register" variant="body2" sx={{
+                        marginTop: 4,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        marginRight: 3,
+                        color: '#001b2e'
+                    }}>
+                        {"Don't have an account? Sign Up"}
+                    </Link>
+                    <Link href="reset" variant="body2" sx={{
+                        marginTop: 1,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        marginRight: 3,
+                        color: '#001b2e'
+                    }}>
+                        {"Forgot your password?"}
+                    </Link>
                 </Form>
-                </Box>
-            </Box>
-    </ThemeProvider>   
+            </Paper>
+            {/* </Box> */}
     </div>     
     )
 }

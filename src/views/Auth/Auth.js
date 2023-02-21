@@ -6,6 +6,8 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [pending, setPending] = useState(true);
   const auth = getAuth();
+  const [timeActive, setTimeActive] = useState(false)
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       setCurrentUser(user)
@@ -20,7 +22,9 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        currentUser
+        currentUser, 
+        timeActive, 
+        setTimeActive,
       }}
     >
       {children}

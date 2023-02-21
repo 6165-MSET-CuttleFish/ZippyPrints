@@ -13,6 +13,8 @@ import { query, collection, getDocs, where } from "firebase/firestore";
 import { API_KEY } from '../../api/firebaseConfig'
 import { AuthContext } from "./Auth";
 import styles from '../Auth/dashboard.module.css'
+import {useNavigate} from "react-router-dom"
+
 
 const apiKey = API_KEY
 const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
@@ -56,14 +58,38 @@ const useStyles = makeStyles(theme =>({
       }
 }))
 
-      
-export default function Dashboard() {
-    const {currentUser} = useContext(AuthContext);
-    const username = currentUser?.displayName
-    const db = getFirestore();
-    const colRef = doc(db, 'printers', "" + currentUser?.uid)
-    const markerColRef = doc(db, 'markers', "" + currentUser?.uid)
+let open = false;
+module.export = {open:open}
 
+export function setOpen(children){
+    open = children;
+  }
+      
+function Dashboard() {
+    const {currentUser} = useContext(AuthContext);
+    const navigate = useNavigate();
+    let username=null;
+    let db=null;
+    let colRef=null;
+    let markerColRef=null;
+    if(currentUser!=null)
+    {
+        username = (currentUser?.displayName)
+        db = (getFirestore());
+        colRef = (doc(db, 'users', "" + currentUser?.uid))
+        markerColRef = (doc(db, 'markers', "" + currentUser?.uid))
+    }
+    
+    const checkViewable= ()=> {
+        if(!currentUser) {
+            navigate("/Login")
+            setOpen(true)
+        }
+        else if(!currentUser.emailVerified) {
+        navigate("/Verification");
+        setOpen(true);
+        }
+    }
     const classes = useStyles();
     const [geoLocationData, setGeoLocationData] = useState(null);
 
@@ -99,10 +125,13 @@ export default function Dashboard() {
     }catch(error) {
         console.log(error.message);
     }
-
-    
 }
   
+    useEffect(() => {
+        checkViewable()
+        })
+
+
 const getGeoLocation = async (address) => {
     try {
         const data = await axios.get(baseUrl + `${address}&key=${apiKey}`);
@@ -126,6 +155,7 @@ const getGeoLocation = async (address) => {
            })
            await getData();
        }
+
     const handleSubmit = async(e) => {        
         e.preventDefault()
         if(validate()) {
@@ -184,7 +214,7 @@ const getGeoLocation = async (address) => {
     return(
         <ThemeProvider theme={theme}>
         <Box className={styles.topBox}>
-        <h3 className={styles.text}> Edit {currentUser.displayName}'s Profile </h3>
+        <h3 className={styles.text}> Edit {username}'s Profile </h3>
            <Avatar sx={{ m: 0, bgcolor: '#e0c699', fontSize: 2, marginTop: 1}}>
 
           </Avatar>
@@ -343,4 +373,6 @@ const getGeoLocation = async (address) => {
           </ThemeProvider>
         )
 }
+
+export default Dashboard
 

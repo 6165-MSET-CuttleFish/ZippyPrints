@@ -45,9 +45,16 @@ function Discover() {
   const [openRegisterPopup, setOpenRegisterPopup] = useState(false)
   const navigate = useNavigate();
   
+  //const auth = getAuth();
+  //const user = auth.currentUser;
   
   if (!currentUser) {
     navigate("/Login");
+    setOpen(true);
+  }
+  else if(!currentUser.emailVerified)
+  {
+    navigate("../Verification");
     setOpen(true);
   }
     useEffect(() => {
@@ -64,7 +71,8 @@ function Discover() {
                     team: doc.data()?.teamnumber,
                     location: doc.data()?.formattedAddress,
                     email:doc.data()?.email,
-                    uid: doc.data()?.uid
+                    uid: doc.data()?.uid,
+                    username: doc.data()?.displayName
                   },
                 ]);
         });

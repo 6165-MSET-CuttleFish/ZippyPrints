@@ -1,0 +1,35 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 5vw;
+}
+
+.columnContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
+}
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.verificationTitle {
+    color: #F0F5FF;
+    font-family: "Lexend SemiBold";
+    font-size: 28pt;
+    font-weight: 100;
+    line-height: 20px;
+    text-align: center;
+    width: 45vw;
+}
+.verificationSubtitle {
+    color: #F0F5FF;
+    font-family: "Lexend Light";
+    text-align: center;
+    font-size: 12pt;
+    width: 45vw;
+    margin-bottom: 10vw;
+}

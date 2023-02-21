@@ -5,7 +5,8 @@ export function useForm(initalFValues, validateOnChange=false, validate) {
 
     const [values, setValues] = useState(initalFValues);
     const [errors, setErrors] = useState({});
-    
+    const [loadingStatus, setLoading]=useState({loading: false})
+
     const handleInputChange = e => {
         const { name, value } = e.target
         setValues({
@@ -26,8 +27,9 @@ export function useForm(initalFValues, validateOnChange=false, validate) {
         errors,
         setErrors,
         handleInputChange,
-        resetForm
-        
+        resetForm,
+        loadingStatus,
+        setLoading
     }
 }
 const useStyles = makeStyles(theme => ({

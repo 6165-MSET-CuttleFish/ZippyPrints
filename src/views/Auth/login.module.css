@@ -1,26 +1,52 @@
-.Paper {
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: clamp(75px, 5vw, 1000px);
+}
+
+.loginPaper {
     width: 550px;
     height: 550px; 
-    margin: auto;
-    position: relative;
-    top: 100px; bottom: 0px; right: 0px; left: 0px;
+    position: absolute;
+    border-radius: 10px;
+    background-color: #F0F5FF;
+}
+.MuiPaper-root {
+    border-radius: 10px;
 }
 
-.topBox {
+.loginTitleContainer {
     display: flex;
-    margin-top: auto;
-    padding-top: 2%;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 2vw;
+    margin-bottom: 2vw;
+}
+
+.logoContainer {
+    display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    gap: 5px;
 }
 
-.botBox {
-    display: flex;
-    margin-top: 2%;
-    flex-direction: column;
-    align-items: center;
+.loginTitle {
+    color: black;
+    font-family: "Lexend SemiBold";
+    font-size: 16pt;
+    font-weight: 100;
+    line-height: 20px;
+    width: fit-content;
 }
+
+.subtitles {
+    color: black;
+    font-family: "Lexend Light";
+    font-size: 12pt;
+    
+}
+
 .SnackBar {
     padding-top: 100px; 
 }

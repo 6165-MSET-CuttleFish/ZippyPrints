@@ -1,7 +1,7 @@
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', 'Lexend',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -10,4 +10,21 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+@font-face {
+  font-family: "Lexend Regular";
+  src: local("Lexend-Regular"),
+  url("./fonts/Lexend-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Lexend Light";
+  src: local("Lexend-Light"),
+  url("./fonts/Lexend-Light.ttf");
+}
+
+@font-face {
+  font-family: "Lexend SemiBold";
+  src: local("Lexend-SemiBold"),
+  url("./fonts/Lexend-SemiBold.ttf");
 }
