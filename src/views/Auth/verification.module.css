@@ -11,6 +11,11 @@
     justify-content: center;
     gap: 20px;
 }
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
 .verificationTitle {
     color: #F0F5FF;
     font-family: "Lexend SemiBold";

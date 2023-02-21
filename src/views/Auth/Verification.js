@@ -6,6 +6,7 @@ import { Alert, Snackbar } from '@mui/material'
 import {useNavigate} from "react-router-dom"
 import {AuthContext} from "../../views/Auth/Auth"
 import styles from '../Auth/verification.module.css'
+import { CircularProgress, Button } from '@mui/material';
 
 
 let open = false;
@@ -22,6 +23,10 @@ export default function Verification() {
     const [openSuccess, setOpenSuccess] = useState(false);
     const [openError, setOpenError] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
+    const [buttonDisabled, setButtonDisabled] = useState(false)
+    const [time, setTime] = useState(60)
+    const {timeActive, setTimeActive} = useContext(AuthContext)
+
     const validate=(fieldValues = values)=>{}
     const {
         values,
@@ -43,53 +48,100 @@ export default function Verification() {
             navigate("/Login")
             setOpen(true)
         }
-        else if(currentUser.emailVerified){
-        navigate("/VerSuccess")
-        setOpen(true);
+        if(currentUser.emailVerified){
+            navigate("/VerSuccess")
+            setOpen(true);
         }
     }
-
-    useEffect(() => {
-        checkViewable()
-    })
-
-    const handleSubmit = async(e) => {
-        e.preventDefault()
-        const auth = getAuth();
-        setLoading({loading: true})
-        sendEmailVerification(auth.currentUser)
+    const resendEmailVerification = () => {
+        setButtonDisabled(true)
+        sendEmailVerification(currentUser)
         .then(() => {
-            setLoading({loading: false})
-            setOpenSuccess(true);
-        })
-        .catch((error)=>{
-            setLoading({loading: false})
-            setOpenError(true);
-            if (error = "auth/too-many-requests") {
+            setButtonDisabled(false)
+            setTimeActive(true)
+        }).catch((err) => {
+            if (err = "auth/too-many-requests") {
                 setErrorMessage("Please wait before sending another email!");
             } else {
-                setErrorMessage(error.message);
-            }
+                setErrorMessage(err.message);
+            }       
+            setButtonDisabled(false)
         })
-    }
+      }
 
+      useEffect(() => {
+        let interval = null
+        if (timeActive && time !== 0 ){
+          interval = setInterval(() => {
+            setTime((time) => time - 1)
+          }, 1000)
+        } else if(time === 0){
+          setTimeActive(false)
+          setTime(60)
+          clearInterval(interval)
+        }
+        return () => clearInterval(interval);
+      }, [timeActive, time])
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          currentUser?.reload()
+          .then(() => {
+            if(currentUser?.emailVerified){
+              clearInterval(interval)
+                navigate('/profile')
+            }
+          })
+          .catch((err) => {
+            alert(err.message)
+          })
+        }, 1000)
+      }, [navigate, currentUser])
 
     return(
         <div className = {styles.container}>
             <div className = {styles.columnContainer}>
             <div className = {styles.verificationTitle}>Hello {currentUser.displayName}!</div>
-            <div className = {styles.verificationSubtitle}>Thanks for signing up!  
-            In order to proceed, please check your email for a verification link from us.</div>
-            <Controls.Button 
-                    variant = "contained"
-                    size = "large"
-                    style={{
-                        backgroundColor: loadingStatus.loading?true: "#4f6b80",
-                        backgroundColor: loadingStatus.loading?false: "#001b2e"
-                    }}
-                    text = "Resend Verification Email"
-                    onClick = {handleSubmit}
-                    />
+            <div className = {styles.verificationSubtitle}>Thanks for signing up! An verification email has been sent to: {currentUser.email}.
+             In order to proceed, please check your email for a verification link from us.</div>
+             <div className = {styles.buttonContainer}>
+            <Button 
+                variant = "contained"
+                size = "large"
+                onClick = {resendEmailVerification}
+                disabled={timeActive}
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '12px',
+                    backgroundColor: '#F0F5FF',
+                    borderRadius: '7px',
+                    padding: '0px 32px',
+                    width: 'fit-content',
+                    bottom: '5px',
+                    transitionDuration: '500ms',
+                    "&.MuiButton-contained": {
+                      color: '#0B63E5',
+                      fontFamily: "Lexend Regular",
+                      fontSize: 'clamp(10px, 0.9vw, 18px)',
+                      fontWeight: '500',
+                      letterSpacing: '0',
+                      lineHeight: '56px',
+                      marginTop: '-2px',
+                      whiteSpace: 'nowrap',
+                      width: 'fit-content'
+                    },
+                    "&:hover": {
+                      background: "#d9e6ff",
+                      boxShadow: '5px 5px 5px #02142e8e',
+                      transitionDuration: '500ms'
+                    },
+                }}
+                >
+                Resend Verification Email {timeActive && time}
+            </Button>
+            </div>
             </div>
             <Snackbar open={openSuccess} autoCloseDuration={5000} onClose={() => setOpenSuccess(false)}>
                 <Alert severity="success" sx={{ width: '100%' }} onClose={() => setOpenSuccess(false)}>

@@ -14,6 +14,7 @@ import styles from '../Auth/register.module.css'
 import {AuthContext} from "../../views/Auth/Auth"
 
 
+
     
 const useStyles = makeStyles(e =>({ 
     loginButton: {
@@ -129,7 +130,8 @@ export default function RegisterForm() {
     }
 
     
-    console.log(values.printer)
+    const {setTimeActive} = useContext(AuthContext)
+
     const makeAccount = async ()  => {
         const userEmail = values.email
         const userPassword = values.password
@@ -147,6 +149,7 @@ export default function RegisterForm() {
             
           }).then(() => {
             setLoading({loading: false})
+            setTimeActive(true)
             navigate('../Verification', { replace: true })
             //sendEmailVerification(auth.currentUser)
           }).catch((error) => {

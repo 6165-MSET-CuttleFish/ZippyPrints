@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import  { Home }  from './views/Home';
-import { Route, Routes, BrowserRouter  } from 'react-router-dom';
+import { Route, Routes, BrowserRouter,   } from 'react-router-dom';
 import './App.css';
 import NavBar from './components/NavBar/NavBar';
 import LoginExport from './views/Auth/LoginExport';
@@ -17,11 +17,11 @@ import Verification from './views/Auth/Verification';
 import VerifySuccess from './views/Auth/VerifySuccess';
 import ResetPassword from './views/Auth/ResetPassword';
 import PageNotFound from './views/Error/PageNotFound'
-class App extends React.Component {
+function App()  {
 
-render() {  
+
     return (
-      <body className = {styles.body}>
+      <body>
       <AuthProvider>
       <Helmet>
         <title>ZippyPrints</title>
@@ -51,5 +51,4 @@ render() {
       </body>
     );
   }
-}
 export default App
