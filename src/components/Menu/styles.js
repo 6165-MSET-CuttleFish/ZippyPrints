@@ -3,7 +3,7 @@ import { useTheme } from '@mui/material/styles';
 
 export default makeStyles(() => ({
   formControl: {
-    margin: useTheme().spacing(2), minWidth: 120, marginBottom: '30px',
+    margin: useTheme().spacing(10), minWidth: 120, marginBottom: '30px',
   },
   selectEmpty: {
     marginTop: useTheme().spacing(2),
@@ -28,7 +28,7 @@ export default makeStyles(() => ({
     marginBottom: '30px',
   },
   list: {
-    height: '75vh', overflow: 'auto',
+    height: '70vh', overflow: 'auto',
   },
   search: {
     position: 'relative',

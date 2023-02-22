@@ -1,4 +1,4 @@
-import { getFirestore, doc, getDoc, query, collection, getDocs } from 'firebase/firestore/lite';
+import { getFirestore, query, collection, getDocs } from 'firebase/firestore/lite';
 
 
 export const getMarkerData = async () => {

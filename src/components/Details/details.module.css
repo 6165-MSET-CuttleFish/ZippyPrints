@@ -1,0 +1,47 @@
+.titleContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+    margin-left: 1vw;
+}
+
+.infoContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-top: 1vw;
+    margin-bottom: 1vw;
+    margin-left: 1vw;
+}
+
+.printerTitle {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend SemiBold";
+    font-size: 18pt;
+    font-weight: 100;
+    line-height: 20px;
+
+}
+
+.printerHeading {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend Regular";
+    font-size: 12pt;
+}
+
+.printerSubtitle {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend Light";
+    font-size: 12pt;
+}
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-left: 1vw;
+    margin-top: 0.5vw;
+    gap: 1vw;
+  }

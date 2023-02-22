@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import  { Home }  from './views/Home';
 import { Route, Routes, BrowserRouter,   } from 'react-router-dom';
 import './App.css';
-import NavBar from './components/NavBar/NavBar';
+import NavBar from './components/NavBar/NavBar.js';
 import LoginExport from './views/Auth/LoginExport';
 import { Map } from './views/Discover'
 import Dashboard from "./views/Auth/Dashboard"

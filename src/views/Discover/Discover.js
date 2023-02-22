@@ -16,7 +16,7 @@ import {useForm, Form} from '../../components/useForm'
 import { v4 as uuidv4 } from 'uuid';
 import styles from '../Discover/map.module.css'
 import {useNavigate} from "react-router-dom"
-import {Menu} from '../../components/actions/Menu/Menu'
+import {Menu} from '../../components/Menu/Menu'
 const initalFValues = {
     id: 0,
     requester_email: '',
@@ -108,7 +108,7 @@ const onSelect = (marker) => {
        const getData = async () => {
         try {
          await addDoc(collection(db, "email"), {
-          to:selected.email,
+          to: [selected.email, currentUser.email],
           message:{subject: 'New ZippyPrints Request #' + uuidv4().split("-")[1],
           text:
             'Hello ' + currentUser.displayName + ', we have a new request from Team '+ values.teamnumber+ '\n\n'+
@@ -122,14 +122,12 @@ const onSelect = (marker) => {
             'Please contact the requester through their email for further communications'+'\n\n'+
             'Thanks for your continued support of ZippyPrints! \n'+
             'To stop receiving requests, go to your account page and disable your printer.'+'\n\n' 
-}
- });
-        values.id++;
-        }catch(error) {
-            console.log(error.message);
-        }
-
-
+          }
+        });
+          values.id++;
+          } catch(error) {
+              console.log(error.message);
+          }
     }
   const options = {
     disableDefaultUI: true,

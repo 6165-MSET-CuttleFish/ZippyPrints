@@ -111,6 +111,7 @@ function Dashboard() {
             geoPoint: new GeoPoint(await (data.results[0]?.geometry?.location?.lat), await (data.results[0]?.geometry?.location?.lng))
         })
         await setDoc(markerColRef, {
+            username: currentUser.displayName,
             lat: await (data.results[0]?.geometry?.location?.lat),
             lng: await (data.results[0]?.geometry?.location?.lng),
             formattedAddress: data.results[0]?.formatted_address,
