@@ -81,7 +81,7 @@ export default function Verification() {
           clearInterval(interval)
         }
         return () => clearInterval(interval);
-      }, [timeActive, time])
+      }, [timeActive, time, setTimeActive])
 
       useEffect(() => {
         const interval = setInterval(() => {

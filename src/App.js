@@ -5,7 +5,7 @@ import './App.css';
 import NavBar from './components/NavBar/NavBar.js';
 import LoginExport from './views/Auth/LoginExport';
 import { Map } from './views/Discover'
-import Dashboard from "./views/Auth/Dashboard"
+import Dashboard from "./views/Profile/Dashboard"
 import RegisterExport from "./views/Auth/RegisterExport"
 import Logout from "./views/Auth/Logout"
 import { AuthProvider } from './views/Auth/Auth'

@@ -1,0 +1,98 @@
+.topBox {
+    margin: auto;
+    padding-top: 2%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.textboxContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    column-gap: 25px;
+    row-gap: 15px;
+}
+
+.button {
+    height: 48;
+    width: 350;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 7.5vw;
+}
+
+.dashboardNav {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-left: 2.5vw;
+    margin-top: 2vw;
+    gap: 25px;
+    border-bottom: 1.5px solid #E0E4EC;
+}
+
+.dashboardButtonText {
+    color: #717B8C;
+    font-family: "Lexend Light";
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 20px;
+    margin-top: -1px;
+    text-align: center;
+    white-space: nowrap;
+    width: fit-content;
+  }
+
+  .dashboardButton:hover {
+    border: 1px hidden #094FB7;
+    border-radius: 2px;
+    transition-duration: 500ms;
+    background: #094fb723;
+  }
+.textbox {
+    width: 34vw;
+}
+
+.singleContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+}
+
+.label {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend Light";
+    line-height: 20px;
+    text-align: center;
+    white-space: nowrap;
+    width: fit-content;
+}
+.text {
+    display: block;
+    text-align: center;
+    color: #EDD4B2;
+    font-family: 'Helvetica Neue';
+    font-weight: 700;
+    font-weight: 600;
+    min-width: 12vw;
+}
+
+
+
+  /* position: 'absolute',
+            top: '30%',
+            bottom: '20%',
+            left: '10%',
+            right: '10%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            
+             */

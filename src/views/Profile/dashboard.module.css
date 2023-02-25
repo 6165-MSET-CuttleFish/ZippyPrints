@@ -1,0 +1,28 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 7.5vw;
+}
+
+.dashboardNav {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    margin-left: 2.5vw;
+    margin-top: 2vw;
+    gap: 25px;
+    border-bottom: 1.5px solid #E0E4EC;
+}
+
+.dashboardButtonText {
+    font-family: "Lexend Light";
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 20px;
+    margin-top: -1px;
+    font-size: 12pt;
+    text-align: center;
+    white-space: nowrap;
+    width: fit-content;
+  }
