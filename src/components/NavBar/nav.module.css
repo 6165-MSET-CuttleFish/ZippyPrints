@@ -2,11 +2,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: clamp(6px, 2vw, 12px);
   background-color: #F0F5FF;
   border-radius: 5px;
   padding: 0px 32px;
-  width: fit-content;
+  width: clamp(20px, 3vw, 500px);
 } 
 
 
@@ -14,7 +14,7 @@
 .loginText{
   color: #0B63E5;
   font-family: "Lexend Regular";
-  font-size: 0.9vw;
+  font-size: clamp(10pt, 0.9vw, 18pt);
   font-weight: 500;
   letter-spacing: 0;
   line-height: 56px;
@@ -34,11 +34,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: clamp(6px, 2vw, 12px);
   background-color: #094FB7;
   border-radius: 5px;
   padding: 0px 32px;
-  width: fit-content;
+  width: clamp(15px, 3vw, 300px);
   transition-duration: 500ms;
 } 
 .registerButton:hover {
@@ -49,7 +49,7 @@
 .registerText{
   color: #F0F5FF;
   font-family: "Lexend Regular";
-  font-size: 0.9vw;
+  font-size: clamp(10pt, 0.9vw, 18pt);
   font-weight: 500;
   letter-spacing: 0;
   line-height: 56px;

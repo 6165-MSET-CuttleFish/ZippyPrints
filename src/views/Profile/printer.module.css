@@ -23,7 +23,7 @@
 .container {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
+    justify-content: center;
     margin-top: 7.5vw;
 }
 
@@ -58,6 +58,9 @@
 .textbox {
     width: 34vw;
 }
+.longTextbox {
+    width: 70vw;
+}
 
 .singleContainer {
     display: flex;
@@ -75,46 +78,6 @@
     width: fit-content;
 }
 
-.dividerLine {
-    border-bottom: 1.5px solid #E0E4EC;
-    width: 70vw;
+.serviceSelect {
+    width: 250px;
 }
-
-.bottomContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 7.5vw;
-}
-
-.bottomRightContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.dividerLine2{
-    border-right: 1.5px solid #E0E4EC;
-}
-
-.dashboardButtonText {
-    color: #F0F5FF;
-    font-family: "Lexend Light";
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: 20px;
-    margin-top: -1px;
-    font-size: 10pt;
-    text-align: center;
-    white-space: nowrap;
-    width: fit-content;
-    text-transform: none;
-  }
-
-  .deleteContainer {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: clamp(50px, 7vw, 200px);
-    margin-right: 2vw;
-    margin-bottom: 1vw;
-  }

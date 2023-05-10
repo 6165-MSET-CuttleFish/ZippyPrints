@@ -1,0 +1,13 @@
+{
+    "short_name": "ZippyPrints",
+    "name": "ZippyPrints",
+    "icons": [
+      {
+        "src": "favicon.ico",
+        "sizes": "512x512",
+        "type": "image/x-icon"
+      }
+    ],
+    "start_url": ".",
+    "display": "standalone"
+  }

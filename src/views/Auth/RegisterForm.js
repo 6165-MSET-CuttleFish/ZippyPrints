@@ -82,7 +82,7 @@ export default function RegisterForm() {
   {
       if(currentUser)
       {
-          navigate("/Profile")
+          navigate("/dashboard")
           setOpen(true)
       }
   }

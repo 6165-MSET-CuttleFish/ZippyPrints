@@ -8,11 +8,11 @@ import {Paper} from '@mui/material'
 import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint } from 'firebase/firestore/lite';
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
-import { Avatar, ThemeProvider, createTheme, Box, Button } from '@mui/material'
+import { Avatar, ThemeProvider, createTheme, Box, Select, OutlinedInput, MenuItem } from '@mui/material'
 import { query, collection, getDocs, where } from "firebase/firestore";
 import { API_KEY } from '../../api/firebaseConfig'
 import { AuthContext } from "../Auth/Auth";
-import styles from '../Profile/location.module.css'
+import styles from '../Profile/printer.module.css'
 import {useNavigate} from "react-router-dom"
 
 
@@ -20,13 +20,19 @@ const apiKey = API_KEY
 const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
 
 const initalFValues = {
-    address: '',
-    address2: '',
-    city: '',
-    country:'',
-    state: '',
-    zipcode:'',
+    filament: '',
+    price: '',
+    printers: '',
+    service: '',
+    bio: '',
 }
+const services = [
+    '3D Printing',
+    'Laser Cutting',
+    'CNC Work',
+    'CNC Routing',
+    'Other (describe below)',
+  ];
 
 let open = false;
 module.export = {open:open}
@@ -35,7 +41,7 @@ export function setOpen(children){
     open = children;
   }
       
-function Location() {
+function Printer() {
     const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
     let username=null;
@@ -60,23 +66,21 @@ function Location() {
         }
     }
     const [geoLocationData, setGeoLocationData] = useState(null);
-    const [street1, setStreet1] = useState("Please enter your address");
-    const [street2, setStreet2] = useState("Please enter your address (if applicable)");
-    const [zipcode, setZipcode] = useState("Please enter your zip code");
-    const [city, setCity] = useState("Please enter your city");
-    const [state, setState] = useState("Please enter your state");
-    const [country, setCountry] = useState("Please enter your country");
+    const [printerInfo, setPrinterInfo] = useState("Please enter your information about your printer");
+    const [filament, setFilament] = useState("Please enter information about the type of filament you offer");
+    const [price, setPrice] = useState("Please enter an estimate price range for your service");
+    const [service, setService] = useState([]);
+    const [bio, setBio] = useState("Write a short bio about the service(s) you provide");
+
 
     useEffect(() => {
         const fetchData = async () => {
             const docSnap = await getDoc(colRef);
             if (docSnap.data().address != null) {
-            setStreet1(((await docSnap).data().address) !== undefined? ((await docSnap).data().address) : "Please enter your address");  
-            setStreet2(((await docSnap).data().address2) !== undefined? ((await docSnap).data().address2) : "Please enter your address (if applicable)");      
-            setZipcode(((await docSnap).data().zipcode) !== undefined? ((await docSnap).data().zipcode) : "Please enter your zipcode");
-            setCity(((await docSnap).data().city) !== undefined? ((await docSnap).data().city) : "Please enter your city");
-            setState(((await docSnap).data().state) !== undefined? ((await docSnap).data().state) : "Please enter your state");
-            setCountry(((await docSnap).data().country) !== undefined? ((await docSnap).data().country) : "Please enter your country");
+            setPrinterInfo(((await docSnap).data().printers) !== undefined? ((await docSnap).data().printers) : "Please enter your information about your printer");  
+            setFilament(((await docSnap).data().filament) !== undefined? ((await docSnap).data().filament) : "Please enter information about the type of filament you offer");   
+            setPrice(((await docSnap).data().price) !== undefined? ((await docSnap).data().price) : "Please enter an estimate price range for your service");
+            setBio(((await docSnap).data().bio) !== undefined? ((await docSnap).data().bio) : "Write a short bio about the service(s) you provide");
             }
         }
         fetchData()
@@ -126,14 +130,11 @@ function Location() {
 
    const uploadData = async () => {
            await updateDoc(colRef, {
-                username: username,
-                email: currentUser?.email,
-                address: values.address,
-                address2: values.address2,
-                city: values.city,
-                state: values.state,
-                country: values.country,
-                zipcode: values.zipcode,
+                printers: values.printers,
+                price: values.price,
+                filament: values.filament,
+                service: service,
+                bio: values.bio,
            })
            await getData();
        }
@@ -143,18 +144,14 @@ function Location() {
 
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
-        if ('address' in fieldValues)
-            temp.address = (/..../).test(fieldValues.address)?"":"Street is not valid."
-        if ('address2' in fieldValues)
-            temp.address2 = (/./).test(fieldValues.address2)?"":"Street 2 is not valid."
-        if ('city' in fieldValues)
-            temp.city = (/..../).test(fieldValues.city)?"":"City is not valid."
-        if ('country' in fieldValues)
-            temp.country = (/..../).test(fieldValues.country)?"":"Country is not valid."
-        if ('state' in fieldValues)
-            temp.state = (/..../).test(fieldValues.state)?"":"State is not valid."
-        if ('zipcode' in fieldValues)
-            temp.zipcode = (/..../).test(fieldValues.zipcode)?"":"Zip Code is not valid."
+        if ('printers' in fieldValues)
+            temp.printers = (/.../).test(fieldValues.printers)?"":"Please enter at least three characters."
+        if ('filament' in fieldValues)
+            temp.address2 = (/.../).test(fieldValues.address2)?"":"Please enter at least three characters."
+        if ('price' in fieldValues)
+            temp.price = (/.../).test(fieldValues.price)?"":"Please enter at least three characters."
+        if ('bio' in fieldValues)
+            temp.bio = (/.../).test(fieldValues.bio)?"":"Please enter at least three characters."
                 
         setErrors({
             ...temp
@@ -170,7 +167,16 @@ function Location() {
             resetForm();
         }  
     }
-
+    const handleChange = (event) => {
+        const {
+          target: { value },
+        } = event;
+        setService(
+          // On autofill we get a stringified value.
+          typeof value === 'string' ? value.split(',') : value,
+        );
+      };
+    
     const {
         values,
         setValues,
@@ -192,14 +198,14 @@ function Location() {
             <Box component="form" noValidate >    
                 <Form onSubmit={handleSubmit} className={styles.textboxContainer}>
                     <div className={styles.singleContainer}>
-                        <div className={styles.label}>Street *</div>
+                        <div className={styles.label}>Manufacturing Info *</div>
                         <Controls.Input
-                            placeholder={street1}
-                            name="address"
+                            placeholder={printerInfo}
+                            name="printers"
                             variant="filled"
-                            value={values.address}
+                            value={values.printers}
                             onChange = {handleInputChange}
-                            error={errors.address}
+                            error={errors.printers}
                             InputProps={{
                                 className: styles.textbox,
                             }}
@@ -207,28 +213,28 @@ function Location() {
                         />
                     </div>
                     <div className={styles.singleContainer}>
-                        <div className={styles.label}>Street 2</div>
+                        <div className={styles.label}>Filament Type *</div>
                         <Controls.Input 
-                            placeholder={street2}
-                            name="address2"
+                            placeholder={filament}
+                            name="filament"
                             variant="filled"
-                            value={values.address2}
+                            value={values.filament}
                             onChange = {handleInputChange}
-                            error={errors.address2}
+                            error={errors.filament}
                             InputProps={{
                                 className: styles.textbox,
                             }}                        
                         />
                     </div>
                     <div className={styles.singleContainer}>
-                        <div className={styles.label}>Zipcode *</div>
+                        <div className={styles.label}>Price *</div>
                         <Controls.Input 
-                            placeholder={zipcode}
-                            name="zipcode"
+                            placeholder={price}
+                            name="price"
                             variant="filled"
-                            value={values.zipcode}
+                            value={values.price}
                             onChange = {handleInputChange}
-                            error={errors.zipcode}
+                            error={errors.price}
                             InputProps={{
                                 className: styles.textbox,
                             }} 
@@ -236,50 +242,41 @@ function Location() {
                         />
                     </div>
                     <div className={styles.singleContainer}>
-                        <div className={styles.label}>City *</div>
-                        <Controls.Input 
-                            placeholder={city}
-                            name="city"
-                            variant="filled"
-                            value={values.city}
-                            onChange = {handleInputChange}
-                            error={errors.city}
-                            InputProps={{
-                                className: styles.textbox,
-                            }} 
+                        <div className={styles.label}>Service Type *</div>
+                        <Select
+                            placeholder="Hello"
+                            multiple
+                            value={service}
+                            onChange={handleChange}
                             required
-                            />
+                            sx={{width: '34vw'}}>
+                            {services.map((name) => (
+                                <MenuItem
+                                key={name}
+                                value={name}
+                                InputProps={{
+                                    className: styles.textbox,
+                                }}>
+                                {name}
+                                </MenuItem>
+                            ))}
+                        </Select>
                     </div>
                     <div className={styles.singleContainer}>
-                        <div className={styles.label}>State *</div>
+                        <div className={styles.label}>Bio</div>
                         <Controls.Input 
-                            placeholder={state}
-                            name="state"
+                            placeholder={bio}
+                            name="bio"
                             variant="filled"
-                            value={values.state}
+                            value={values.bio}
                             onChange = {handleInputChange}
-                            error={errors.state}
+                            error={errors.bio}
                             InputProps={{
-                                className: styles.textbox,
+                                className: styles.longTextbox,
                             }} 
                             required
                             />
                     </div>    
-                    <div className={styles.singleContainer}>
-                        <div className={styles.label}>Country *</div>
-                        <Controls.Input 
-                            placeholder={country}
-                            name="country"
-                            variant="filled"
-                            value={values.country}
-                            onChange = {handleInputChange}
-                            error={errors.country}
-                            InputProps={{
-                                className: styles.textbox,
-                            }}
-                            required
-                            />
-                        </div>
                         <Controls.Button 
                         className = {styles.button}
                         variant = "contained"
@@ -312,5 +309,4 @@ function Location() {
         )
 }
 
-export default Location
-
+export default Printer

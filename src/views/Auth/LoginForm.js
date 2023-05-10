@@ -155,7 +155,7 @@ export default function LoginForm() {
 
             .then((userCredential) => {
                 setLoading({loading: false})
-                navigate('../Profile', { replace: true })
+                navigate('../dashboard', { replace: true })
                 // Signed in 
                 //window.alert("Welcome")
                 

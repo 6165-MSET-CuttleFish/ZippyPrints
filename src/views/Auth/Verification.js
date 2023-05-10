@@ -53,6 +53,7 @@ export default function Verification() {
             setOpen(true);
         }
     }
+    
     const resendEmailVerification = () => {
         setButtonDisabled(true)
         sendEmailVerification(currentUser)

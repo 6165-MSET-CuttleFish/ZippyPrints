@@ -20,7 +20,7 @@ render () {
        <a href ="Logout" className={styles.loginButton}>            
         <div className={styles.loginText}>Log out</div>
       </a>
-       <a href ="Profile" className={styles.registerButton}>
+       <a href ="Dashboard" className={styles.registerButton}>
          <div className={styles.registerText}>Profile</div>
        </a>
       </div>

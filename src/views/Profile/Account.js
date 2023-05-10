@@ -14,6 +14,7 @@ import { API_KEY } from '../../api/firebaseConfig'
 import { AuthContext } from "../Auth/Auth";
 import styles from '../Profile/account.module.css'
 import {useNavigate} from "react-router-dom"
+import Popup from "../../components/Popup";
 
 
 const apiKey = API_KEY
@@ -39,6 +40,7 @@ function Account() {
     let db=null;
     let colRef=null;
     let markerColRef=null;
+    const [openDeletePopup, setOpenDeletePopup] = useState(false);
     if(currentUser!=null){
         username = (currentUser?.displayName)
         db = (getFirestore());
@@ -57,20 +59,24 @@ function Account() {
         }
     }
     const [geoLocationData, setGeoLocationData] = useState(null);
-    const [name, setName] = useState("Please enter your address");
-    const [teamnumber, setTeamnumber] = useState("Please enter your address (if applicable)");
+    const [name, setName] = useState("Update your username");
+    const [teamnumber, setTeamnumber] = useState("Please enter your team number");
+    const [printer, setPrinter] = useState();
 
     useEffect(() => {
         const fetchData = async () => {
             const docSnap = await getDoc(colRef);
             if (docSnap.data().address != null) {
             setName(((await docSnap).data().username) !== undefined? ((await docSnap).data().username) : "Update your username");  
-            setTeamnumber(((await docSnap).data().teamnumber) !== undefined? ((await docSnap).data().teamnumber) : "Please enter your team number");      
+            setTeamnumber(((await docSnap).data().teamnumber) !== undefined? ((await docSnap).data().teamnumber) : "Please enter your team number");
+            setPrinter(((await docSnap).data().printer))  
             }
         }
         fetchData()
     }, [colRef])
-    
+
+    console.log(printer)
+
     const getGeoLocation = async (address) => {
         try {
             const data = await axios.get(baseUrl + `${address}&key=${apiKey}`);
@@ -100,6 +106,9 @@ function Account() {
               teamnumber: values.teamnumber,
               uid: currentUser.uid,
               email: currentUser.email,
+              lat: await (data.results[0]?.geometry?.location?.lat),
+              lng: await (data.results[0]?.geometry?.location?.lng),
+              formattedAddress: data.results[0]?.formatted_address,
             })
   
       }catch(error) {
@@ -120,13 +129,9 @@ function Account() {
            })
            await updateProfile(await currentUser, {
             displayName: values.name,
-            
           })
            await getData();
-       }
-
-    
-
+    }
 
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
@@ -145,7 +150,8 @@ function Account() {
     const handleSubmit = async(e) => {        
         e.preventDefault()
         if(validate()) {
-            uploadData();  
+            uploadData(); 
+            resetForm();
         }  
     }
 
@@ -177,8 +183,33 @@ function Account() {
         navigate("/reset_email");
     }
     const handlePassword = () => {
-        navigate("/reset_password");
+        navigate("/reset");
     }
+    const handleDeletePopup = () => {
+        setOpenDeletePopup(true)
+      }
+      const handlePrinter = async () => {
+        if (printer) {
+            try {
+                await updateDoc(colRef, {
+                    printer: false
+                  })
+        
+            }catch(error) {
+                console.log(error.message);
+            }
+        } else if (!printer) {
+            try {
+                await updateDoc(colRef, {
+                    printer: true
+                  })
+        
+            }catch(error) {
+                console.log(error.message);
+            }
+        }
+        
+      }
     return(
         <div>
             {/* <Box className={styles.topBox}>
@@ -243,24 +274,7 @@ function Account() {
                             onClick = {handleSubmit}
                         />
                     <div className={styles.dividerLine}></div>
-
-                    <div className={styles.bottomContainer}>
-                        <div className={styles.bottomLeftContainer}>
                             <div className={styles.singleContainer}>
-                                <div className={styles.label}>Delete Account</div>
-                                <Controls.Input
-                                    placeholder="Please enter your password"
-                                    name="password"
-                                    variant="filled"
-                                    type="password"
-                                    value={values.password}
-                                    onChange = {handleInputChange}
-                                    error={errors.password}
-                                    InputProps={{
-                                        className: styles.textbox,
-                                    }}
-                                    required
-                                />   
                                 <Controls.Button
                                     className = {styles.button}
                                     variant = "contained"
@@ -269,10 +283,10 @@ function Account() {
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         gap: '12px',
-                                        backgroundColor: '#0B63E5',
+                                        backgroundColor: '#02142E',
                                         borderRadius: '7px',
                                         padding: '0px 32px',
-                                        width: '300px',
+                                        width: '315px',
                                         transitionDuration: '500ms',
                                         height: '50px',
                                         "&:hover": {
@@ -282,42 +296,11 @@ function Account() {
                                         },
                                     }}
                                     size = "large"
-                                    text = "Delete Account"
-                                    onClick = {handleDelete(values.password)}
-                                />
-                            </div>
-                        </div>
-                        <div className={styles.dividerLine2}></div>
-                        <div className={styles.bottomRightContainer}>
-                            <div className={styles.singleContainer}>
-                                <div className={styles.label}>Update email address</div>
-                                <Controls.Button
-                                    className = {styles.button}
-                                    variant = "contained"
-                                    style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        gap: '12px',
-                                        backgroundColor: '#0B63E5',
-                                        borderRadius: '7px',
-                                        padding: '0px 32px',
-                                        width: '300px',
-                                        transitionDuration: '500ms',
-                                        height: '50px',
-                                        "&:hover": {
-                                        background: "#035ee6",
-                                        boxShadow: '5px 5px 5px #02142e8e',
-                                        transitionDuration: '500ms'
-                                        },
-                                    }}
-                                    size = "large"
-                                    text = "Reset Email Address"
+                                    text = "Update Email Address"
                                     onClick = {handleEmail}
                                 />
                             </div>
                             <div className={styles.singleContainer}>
-                                <div className={styles.label}>Forgot your password?</div>
                                 <Controls.Button
                                     className = {styles.button}
                                     variant = "contained"
@@ -326,10 +309,10 @@ function Account() {
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         gap: '12px',
-                                        backgroundColor: '#0B63E5',
+                                        backgroundColor: '#02142E',
                                         borderRadius: '7px',
                                         padding: '0px 32px',
-                                        width: '300px',
+                                        width: '315px',
                                         transitionDuration: '500ms',
                                         height: '50px',
                                         "&:hover": {
@@ -343,78 +326,111 @@ function Account() {
                                     onClick = {handlePassword}
                                 />
                             </div>
-                        </div>
-                    </div>
+                            <div className={styles.singleContainer}>
+                                <Controls.Button
+                                    className = {styles.button}
+                                    variant = "contained"
+                                    style={{
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        gap: '12px',
+                                        backgroundColor: '#02142E',
+                                        borderRadius: '7px',
+                                        padding: '0px 32px',
+                                        width: '315px',
+                                        transitionDuration: '500ms',
+                                        height: '50px',
+                                        "&:hover": {
+                                        background: "#035ee6",
+                                        boxShadow: '5px 5px 5px #02142e8e',
+                                        transitionDuration: '500ms'
+                                        },
+                                    }}
+                                    size = "large"
+                                    text = "Update Printer Preference"
+                                    onClick = {handlePrinter}
+                                />
+                            </div>    
                 </Form>
+                <div className={styles.deleteContainer}>
+                            <Button
+                                className = {styles.button}
+                                variant = "contained"
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    gap: '12px',
+                                    backgroundColor: '#ff0000',
+                                    borderRadius: '7px',
+                                    padding: '0px 32px',
+                                    width: '100px',
+                                    transitionDuration: '500ms',
+                                    height: '40px',
+                                    "&:hover": {
+                                    backgroundColor: '#ff0000',
+                                    boxShadow: '5px 5px 5px #02142e8e',
+                                    transitionDuration: '500ms'
+                                    },
+                                }}
+                                size = "large"
+                                onClick = {handleDeletePopup}
+                        >
+                                <div className={styles.dashboardButtonText}>Delete Account</div>
+                            </Button> 
+                        </div>
             </Box>
+            <Popup
+            openPopup={openDeletePopup}
+            setOpenPopup={setOpenDeletePopup}
+            sx={{
+                marginTop: '20vw'
+            }}
+            >
+                <div className={styles.singleContainer}>
+                    <div className={styles.label}>Delete Account</div>
+                        <Controls.Input
+                        placeholder="Please enter your password"
+                        name="password"
+                        variant="filled"
+                        type="password"
+                        value={values.password}
+                        onChange = {handleInputChange}
+                        error={errors.password}
+                        sx={{
+                            width: 350
+                        }}
+                        required
+                        />   
+                        <Controls.Button
+                            className = {styles.button}
+                            variant = "contained"
+                            style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: '12px',
+                                backgroundColor: '#ff0000',
+                                borderRadius: '7px',
+                                padding: '0px 32px',
+                                width: '350px',
+                                transitionDuration: '500ms',
+                                height: '50px',
+                                "&:hover": {
+                                background: "#035ee6",
+                                boxShadow: '5px 5px 5px #02142e8e',
+                                transitionDuration: '500ms'
+                                },
+                            }}
+                            size = "large"
+                            text = "Delete Account"
+                            onClick = {handleDelete(values.password)}
+                                />
+                    </div>
+            </Popup>
           </div>
         )
 }
 
 export default Account
-
-
-
-
-{/* <Controls.Input
-                        label = "Team Number"
-                        name="teamnumber"
-                        value={values.teamnumber}
-                        onChange = {handleInputChange}
-                        error={errors.teamnumber}
-                        className={classes.textbox}
-                        style = {{width: '350px'}}
-                        required
-                        />
-                    <Controls.Input
-                        label = "Phone Number"
-                        name="phone"
-                        value={values.phone}
-                        onChange = {handleInputChange}
-                        error={errors.phone}
-                        className={classes.textbox}
-                        style = {{width: '350px'}}
-                        required
-                        /> */}
-
-
-                        // <Controls.Input
-                    //     label = "Printers"
-                    //     name="printers"
-                    //     value={values.printers}
-                    //     onChange = {handleInputChange}
-                    //     error={errors.printers}
-                    //     className={classes.textbox}
-                    //     style = {{width: '350px'}}
-                    //     required
-                    //     />
-                    // <Controls.Input
-                    //     label = "Filaments Available"
-                    //     name="filament"
-                    //     value={values.filament}
-                    //     onChange = {handleInputChange}
-                    //     error={errors.filament}
-                    //     className={classes.textbox}
-                    //     style = {{width: '350px'}}
-                    //     required
-                    //     />
-                    //     <Controls.Input
-                    //     label = "Email for Requests"
-                    //     name="email"
-                    //     value={values.email}
-                    //     onChange = {handleInputChange}
-                    //     error={errors.email}
-                    //     className={classes.textbox}
-                    //     style = {{width: '350px'}}
-                    //     required
-                    //     />
-                    // <Controls.Input
-                    //     label = "Estimated Price ($/cm^3)"
-                    //     name="price"
-                    //     value={values.price}
-                    //     onChange = {handleInputChange}
-                    //     error={errors.price}
-                    //     className={classes.textbox}
-                    //     style = {{width: '350px'}}
-                    //     required
-                    //     />

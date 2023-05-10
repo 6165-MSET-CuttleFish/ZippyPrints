@@ -5,6 +5,11 @@ import { Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 import {useNavigate} from "react-router-dom"
 import {AuthContext} from "../../views/Auth/Auth"
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import styles from '../Auth/reset.module.css'
+import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
+import { Alert, Snackbar } from '@mui/material'
+import { CircularProgress, Button } from '@mui/material';
+
 
 
 let open = false;
@@ -48,23 +53,54 @@ export default function ResetPassword()
     const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
     const auth = getAuth();
+    const [time, setTime] = useState(60)
+    const {timeActive, setTimeActive} = useContext(AuthContext);
+    const [openSuccess, setOpenSuccess] = useState(false);
+    const [openError, setOpenError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState();
 
 
-    const checkViewable= ()=>
-    {
-        if(currentUser)
-        {
-            navigate("/Profile")
-            setOpen(true)
+    const checkViewable= () => {
+        if(!currentUser) {
+            navigate("/Home")
         }
     }
 
     useEffect(() => {
         checkViewable()
-        })
+    })
+    
+        useEffect(() => {
+            let interval = null
+            if (timeActive && time !== 0 ){
+              interval = setInterval(() => {
+                setTime((time) => time - 1)
+              }, 1000)
+            } else if(time === 0){
+              setTimeActive(false)
+              setTime(60)
+              clearInterval(interval)
+            }
+            return () => clearInterval(interval);
+          }, [timeActive, time, setTimeActive])
+    
+          useEffect(() => {
+            const interval = setInterval(() => {
+              currentUser?.reload()
+              .then(() => {
+                clearInterval(interval)
+                // if(currentUser?.password){
+                //   clearInterval(interval)
+                //     navigate('/profile')
+                // }
+              })
+              .catch((err) => {
+                alert(err.message)
+              })
+            }, 1000)
+          }, [navigate, currentUser])
 
-    const handleSubmit = async(e) => 
-    {
+    const handleSubmit = async(e) => {
         e.preventDefault()
         if(validate())
         {
@@ -81,12 +117,10 @@ export default function ResetPassword()
               let temp= {...errors}
               const errorCode = error.code;
               const errorMessage = error.message;
-              if(errorCode=="auth/user-not-found")
-              {
+              if(errorCode === "auth/user-not-found") {
                 temp.email="This email address is not registered."
               }
-              else
-              {
+              else {
                 temp.email=errorCode;
               }
               setErrors({
@@ -99,34 +133,61 @@ export default function ResetPassword()
     
     const theme = createTheme();
     return(
-        <ThemeProvider theme={theme}>
-            <div>Please verify your email</div>
-            <Form onSubmit={handleSubmit}>
-            <Controls.Input
-                    label = "Email"
-                    name="email"
-                    value={values.email}
-                    onChange = {handleInputChange}
-                    error={errors.email}
-                    fullWidth = {false}
-                    style = {{width: '350px'}}
-                    required
-                />
-            <Controls.Button 
-                    type="submit"
-                    variant = "contained"
-                    size = "large"
-                    style={{
-                        backgroundColor: loadingStatus.loading?true: "#4f6b80",
-                        backgroundColor: loadingStatus.loading?false: "#001b2e"
-                    }}
-                    text = "Send Reset Email"
-                    onClick = {handleSubmit}
-                    />
-                <textarea value={values.message}/>
-                    
-                </Form>
-            </ThemeProvider>        
+        <div className = {styles.container}>
+            <div className = {styles.columnContainer}>
+            <div className = {styles.verificationTitle}>Hello {currentUser.displayName}!</div>
+            <div className = {styles.verificationSubtitle}>Reset your password by pressing the button below — a link will be sent to your 
+            email address for you to reset your password.</div>
+             <div className = {styles.buttonContainer}>
+            <Button 
+                variant = "contained"
+                size = "large"
+                onClick = {handleSubmit}
+                disabled={timeActive}
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '12px',
+                    backgroundColor: '#F0F5FF',
+                    borderRadius: '7px',
+                    padding: '0px 32px',
+                    width: 'fit-content',
+                    bottom: '5px',
+                    transitionDuration: '500ms',
+                    "&.MuiButton-contained": {
+                      color: '#0B63E5',
+                      fontFamily: "Lexend Regular",
+                      fontSize: 'clamp(10px, 0.9vw, 18px)',
+                      fontWeight: '500',
+                      letterSpacing: '0',
+                      lineHeight: '56px',
+                      marginTop: '-2px',
+                      whiteSpace: 'nowrap',
+                      width: 'fit-content'
+                    },
+                    "&:hover": {
+                      background: "#d9e6ff",
+                      boxShadow: '5px 5px 5px #02142e8e',
+                      transitionDuration: '500ms'
+                    },
+                }}
+                >
+                Send Reset Password Email {timeActive && time}
+            </Button>
+            </div>
+            </div>
+            <Snackbar open={openSuccess} autoCloseDuration={5000} onClose={() => setOpenSuccess(false)}>
+                <Alert severity="success" sx={{ width: '100%' }} onClose={() => setOpenSuccess(false)}>
+                    Email sent!
+                </Alert>
+            </Snackbar>
+            <Snackbar open={openError} autoCloseDuration={5000} onClose={() => setOpenError(false)}>
+                <Alert onClose={() => setOpenError(false)} severity="error" sx={{ width: '100%' }}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
+        </div>     
         );
     
 }

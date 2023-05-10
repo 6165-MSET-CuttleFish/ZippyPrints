@@ -29,7 +29,7 @@ export default function Popup(props) {
             <DialogContent dividers>
             <div style = {{display: 'flex'}}>
            <DialogContentText>
-               <Typography variant="h6" component="div" style={{flexGrow: 12}}>
+               <Typography variant="h6" component="div" style={{flexGrow: 12, width: 90}}>
                    {title}
                 </Typography>
            </DialogContentText>

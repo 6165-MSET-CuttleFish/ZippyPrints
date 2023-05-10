@@ -1,14 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Location from './Location'
 import Account from './Account'
+import Printer from './Printer'
 import { Paper, Button } from '@mui/material'
 import styles from './dashboard.module.css'
 import Controls from '../../components/actions/Controls'
+import { AuthContext } from "../Auth/Auth";
+
 function Dashboard() {
     const [active, setActive] = useState("Location");
     const [locationColor, setLocationColor] = useState('#717B8C');
     const [accountColor, setAccountColor] = useState('#717B8C');
     const [printerColor, setPrinterColor] = useState('#717B8C');
+    const {currentUser} = useContext(AuthContext);
 
     useEffect(() => {    
         const handleColor = () => {
@@ -34,7 +38,10 @@ function Dashboard() {
        handleColor();
     }, [active])
     return (
-        <div className={styles.container}>
+        <div className={styles.entireContainer}>
+                <div className={styles.dashboardTitle}>Welcome to your dashboard, {currentUser.displayName}</div>
+            <div className={styles.container}>
+
             <Paper 
                 sx={{
                     backgroundColor: "#F0F5FF",
@@ -46,7 +53,7 @@ function Dashboard() {
                     borderRadius: '5px',
                     gap: '32px',
                     width: '75vw',
-                    height: '60vh',
+                    height: 'clamp:(700px, 65vh, 2000px)',
                     marginRight: '2.25vw',
                 }}            
             >
@@ -89,9 +96,9 @@ function Dashboard() {
                 </div>
                 {active === "Location" && <Location/>}
                 {active === "Account Settings" && <Account/>}
-                {active === "Your Printer" && <Location/>}
-
+                {active === "Your Printer" && <Printer/>}
             </Paper>
+        </div>
         </div>
     );
 }

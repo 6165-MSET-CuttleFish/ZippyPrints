@@ -35,7 +35,7 @@ function App()  {
               <Route exact path="/" element = {<Home />} />
               <Route exact path="/Login" element={<LoginExport />} />
               <Route exact path="/Discover" element={<Map />} />
-              <Route exact path="/Profile" element={<Dashboard />} />
+              <Route exact path="/Dashboard" element={<Dashboard />} />
               <Route exact path="/Register" element={<RegisterExport />} />
               <Route exact path="/Logout" element={<Logout />} />
               <Route exact path="/AuthError" element={<AuthenticationError />} />
