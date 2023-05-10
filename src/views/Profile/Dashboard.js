@@ -41,7 +41,6 @@ function Dashboard() {
         <div className={styles.entireContainer}>
                 <div className={styles.dashboardTitle}>Welcome to your dashboard, {currentUser.displayName}</div>
             <div className={styles.container}>
-
             <Paper 
                 sx={{
                     backgroundColor: "#F0F5FF",

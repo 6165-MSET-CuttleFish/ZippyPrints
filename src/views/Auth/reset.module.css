@@ -33,3 +33,25 @@
     width: 45vw;
     margin-bottom: 10vw;
 }
+
+.paperContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+.singleContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 10px;
+}
+.entireContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 1vw;
+    gap: 2vw;
+}
+.textbox {
+    width: 20vw;
+}

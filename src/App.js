@@ -7,6 +7,7 @@ import LoginExport from './views/Auth/LoginExport';
 import { Map } from './views/Discover'
 import Dashboard from "./views/Profile/Dashboard"
 import RegisterExport from "./views/Auth/RegisterExport"
+import ResetEmail from "./views/Auth/ResetEmail"
 import Logout from "./views/Auth/Logout"
 import { AuthProvider } from './views/Auth/Auth'
 import AuthenticationError from './views/Error/AuthenticationError'
@@ -40,6 +41,7 @@ function App()  {
               <Route exact path="/Logout" element={<Logout />} />
               <Route exact path="/AuthError" element={<AuthenticationError />} />
               <Route exact path="/Verification" element={<Verification />} />
+              <Route exact path="/reset_email" element={<ResetEmail />} />
               <Route exact path="/VerSuccess" element={<VerifySuccess />} />
               <Route exact path="/Reset" element={<ResetPassword />} />
               <Route exact path="/404" element={<PageNotFound />} />

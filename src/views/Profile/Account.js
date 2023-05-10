@@ -348,7 +348,7 @@ function Account() {
                                         },
                                     }}
                                     size = "large"
-                                    text = "Update Printer Preference"
+                                    text = "Update Printer Status"
                                     onClick = {handlePrinter}
                                 />
                             </div>    
