@@ -1,0 +1,43 @@
+.entireContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 4.5vw;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.dashboardNav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-left: 2.5vw;
+    margin-top: 2vw;
+    gap: 25px;
+    border-bottom: 1.5px solid #E0E4EC;
+}
+.dashboardButtonText {
+    font-family: "Lexend Light";
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 20px;
+    margin-top: -1px;
+    font-size: 16pt;
+    text-align: center;
+    white-space: nowrap;
+    width: fit-content;
+  }
+
+
+  .dashboardTitle {
+    color: #F0F5FF;
+    font-family: "Lexend SemiBold";
+    font-size: 28pt;
+    font-weight: 100;
+    text-align: center;
+    margin-bottom: 3vw;
+}

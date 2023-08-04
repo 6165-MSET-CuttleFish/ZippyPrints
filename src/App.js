@@ -5,6 +5,7 @@ import './App.css';
 import NavBar from './components/NavBar/NavBar.js';
 import LoginExport from './views/Auth/LoginExport';
 import { Map } from './views/Discover'
+import Requests from './views/Requests/Requests'
 import Dashboard from "./views/Profile/Dashboard"
 import RegisterExport from "./views/Auth/RegisterExport"
 import ResetEmail from "./views/Auth/ResetEmail"
@@ -36,6 +37,7 @@ function App()  {
               <Route exact path="/" element = {<Home />} />
               <Route exact path="/Login" element={<LoginExport />} />
               <Route exact path="/Discover" element={<Map />} />
+              <Route exact path="/requests" element={<Requests />} />
               <Route exact path="/Dashboard" element={<Dashboard />} />
               <Route exact path="/Register" element={<RegisterExport />} />
               <Route exact path="/Logout" element={<Logout />} />

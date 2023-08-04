@@ -1,44 +1,48 @@
 import React, { useState, useEffect, useContext } from 'react';
-import Location from './Location'
-import Account from './Account'
-import Printer from './Printer'
 import { Paper, Button } from '@mui/material'
-import styles from './dashboard.module.css'
+import styles from './requests.module.css'
 import { AuthContext } from "../Auth/Auth";
+import CNC from './CNC'
+import Printer from './Printer'
+import LaserCutter from './LaserCutter'
 
-function Dashboard() {
-    const [active, setActive] = useState("Location");
-    const [locationColor, setLocationColor] = useState('#717B8C');
-    const [accountColor, setAccountColor] = useState('#717B8C');
-    const [printerColor, setPrinterColor] = useState('#717B8C');
+
+
+
+function Requests() {
+    const [active, setActive] = useState("CNC");
+    const [printer, setPrinter] = useState('#717B8C');
+    const [laserCutter, setLaserCutter] = useState('#717B8C');
+    const [cnc, setCNC] = useState('#717B8C');
     const {currentUser} = useContext(AuthContext);
 
     useEffect(() => {    
         const handleColor = () => {
             switch(active) {
-                case "Location":
-                    setLocationColor("#094FB7");
-                    setAccountColor("#717B8C");
-                    setPrinterColor("#717B8C");
+                case "3D Printer":
+                    setPrinter("#094FB7");
+                    setLaserCutter("#717B8C");
+                    setCNC("#717B8C");
                     break;
-                case "Account Settings":
-                    setAccountColor("#094FB7");
-                    setPrinterColor("#717B8C");
-                    setLocationColor("#717B8C");
+                case "Laser Cutter":
+                    setPrinter("#717B8C");
+                    setLaserCutter("#094FB7");
+                    setCNC("#717B8C");
                     break;
-                case "Your Printer":
-                    setPrinterColor("#094FB7");
-                    setAccountColor("#717B8C");
-                    setLocationColor("#717B8C");
+                case "CNC":
+                    setPrinter("#717B8C");
+                    setLaserCutter("#717B8C");
+                    setCNC("#094FB7");
                     break;
                 default:
             }
         }
        handleColor();
     }, [active])
+    
     return (
         <div className={styles.entireContainer}>
-                <div className={styles.dashboardTitle}>Welcome to your dashboard, {currentUser.displayName}</div>
+            <div className={styles.dashboardTitle}>Need something? Choose a service</div>
             <div className={styles.container}>
             <Paper 
                 sx={{
@@ -58,46 +62,46 @@ function Dashboard() {
                 <div className={styles.dashboardNav}>
                     <Button 
                         variant="text"
-                        text="Location"
+                        text="3D Printer"
                         sx={{
                             border: 0,
                             textTransform: 'none',
-                            color: locationColor
+                            color: printer
                         }}
-                        onClick={() => setActive("Location")}
+                        onClick={() => setActive("3D Printer")}
                     >
-                        <div className={styles.dashboardButtonText}>Location</div>
+                        <div className={styles.dashboardButtonText}>3D Printer</div>
                     </Button>
                     <Button 
                         variant="text"
                         sx={{
                             border: 0,
                             textTransform: 'none',
-                            color: accountColor,
+                            color: laserCutter,
                             
                         }}
-                        onClick={() => setActive("Account Settings")}
+                        onClick={() => setActive("Laser Cutter")}
                     >
-                        <div className={styles.dashboardButtonText}>Account Settings</div>
+                        <div className={styles.dashboardButtonText}>Laser Cutter</div>
                     </Button>
                     <Button 
                         variant="text"
                         sx={{
                             border: 0,
                             textTransform: 'none',
-                            color: printerColor,
+                            color: cnc,
                         }}
-                        onClick={() => setActive("Your Printer")}
+                        onClick={() => setActive("CNC")}
                     >
-                        <div className={styles.dashboardButtonText}>Your Printer</div>
+                        <div className={styles.dashboardButtonText}>CNC</div>
                     </Button>
                 </div>
-                {active === "Location" && <Location/>}
-                {active === "Account Settings" && <Account/>}
-                {active === "Your Printer" && <Printer/>}
+                {active === "3D Printer" && <Printer/>}
+                {active === "Laser Cutter" && <LaserCutter/>}
+                {active === "CNC" && <CNC/>}
             </Paper>
         </div>
         </div>
     );
-}
-export default Dashboard
+} 
+export default Requests
