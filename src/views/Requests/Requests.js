@@ -10,7 +10,7 @@ import LaserCutter from './LaserCutter'
 
 
 function Requests() {
-    const [active, setActive] = useState("CNC");
+    const [active, setActive] = useState("");
     const [printer, setPrinter] = useState('#717B8C');
     const [laserCutter, setLaserCutter] = useState('#717B8C');
     const [cnc, setCNC] = useState('#717B8C');
@@ -49,7 +49,7 @@ function Requests() {
                     backgroundColor: "#F0F5FF",
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'flex-start',
+                    alignItems: 'center',
                     border: '1px solid',
                     borderColor: 'rgba(230, 232, 236, 0.502)',
                     borderRadius: '5px',
