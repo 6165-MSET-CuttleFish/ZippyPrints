@@ -1,21 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { Grid} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
-import {makeStyles} from '@mui/styles'
-import { getAuth, updateProfile, onAuthStateChanged, currentUser } from "firebase/auth";
-import {Paper} from '@mui/material'
 import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint } from 'firebase/firestore/lite';
-import axios from 'axios'
-import { useHistory } from 'react-router-dom'
-import { Avatar, ThemeProvider, createTheme, Box, Select, OutlinedInput, MenuItem, Button } from '@mui/material'
-import { query, collection, getDocs, where } from "firebase/firestore";
-import { API_KEY } from '../../api/firebaseConfig'
+import { Box, Select, MenuItem, Button, Snackbar, Alert } from '@mui/material'
 import { AuthContext } from "../Auth/Auth";
 import styles from './printer.module.css'
 import {useNavigate} from "react-router-dom"
 import { v4 } from 'uuid';
 import { getStorage, ref, uploadBytes } from 'firebase/storage'
+
 
 
 const materials = [
@@ -49,7 +42,7 @@ const materials = [
 
   const initalFValues = {
     material: '',
-    color: '',
+    color: [''],
     width: '',
     length: '',
     height: '',
@@ -66,6 +59,10 @@ function Printer() {
     const [file, setFile] = useState(null);
     const [fileName, setFileName] = useState("No file selected");
 
+    const [success, setSuccess] = useState(false);
+    const [errorOpen, setErrorOpen] = useState(false);
+
+
     let id = v4();
     const storage = getStorage();
     let username = null;
@@ -77,7 +74,7 @@ function Printer() {
         db = (getFirestore());
         colRef = (doc(db, 'requests', "" + id))
     }
-
+    console.log(material);
     const uploadData = async () => {
         await setDoc(colRef, {
              material: material,
@@ -93,18 +90,24 @@ function Printer() {
 
     const handleSubmit = async(e) => {        
         e.preventDefault()
-        if(validate()) {
+        if(validate() && validateSelect() && file != null) {
             uploadData(); 
             handleFile();
             resetForm();
-        }  
+            setSuccess(true);
+        } else {
+            setErrorOpen(true);
+        }
     }
 
     const handleFile = () => {
-        if (file == null) return;
+        if (file == null) {
+            alert("Select a file!")
+            return;
+        }
         const fileRef = ref(storage, `prints/${id}`);
         uploadBytes(fileRef, file).then(() => {
-            alert("Success!")
+            setSuccess(true);
         })
     }
 
@@ -116,6 +119,7 @@ function Printer() {
           // On autofill we get a stringified value.
           typeof value === 'string' ? value.split(',') : value,
         );
+        
       };
       const handleColor = (event) => {
         const {
@@ -135,17 +139,21 @@ function Printer() {
           typeof value === 'string' ? value.split(',') : value,
         );
       };
-    
+      
+    const validateSelect = () => {
+        if (!color || !material || !unit) {
+            return false;
+        } else return true;
+    }
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
-        if ('printers' in fieldValues)
-            temp.printers = (/.../).test(fieldValues.printers)?"":"Please enter at least three characters."
-        if ('filament' in fieldValues)
-            temp.address2 = (/.../).test(fieldValues.address2)?"":"Please enter at least three characters."
-        if ('price' in fieldValues)
-            temp.price = (/.../).test(fieldValues.price)?"":"Please enter at least three characters."
-        if ('bio' in fieldValues)
-            temp.bio = (/.../).test(fieldValues.bio)?"":"Please enter at least three characters."
+    
+        if ('height' in fieldValues)
+            temp.height = (/^[0-9\b]+$/).test(fieldValues.height)?"":"Please enter valid information (at least one number)."
+        if ('length' in fieldValues)
+            temp.length = (/^[0-9\b]+$/).test(fieldValues.length)?"":"Please enter valid information (at least one number)."
+        if ('width' in fieldValues)
+            temp.width = (/^[0-9\b]+$/).test(fieldValues.width)?"":"Please enter valid information (at least one number)."
                 
         setErrors({
             ...temp
@@ -175,6 +183,7 @@ function Printer() {
                         placeholder="material"
                         single
                         value={material}
+                        error={errors.material}
                         onChange={handleMaterial}
                         required
                         sx={{width: '34vw'}}>
@@ -196,6 +205,7 @@ function Printer() {
                         placeholder="color"
                         single
                         value={color}
+                        error={errors.color}
                         onChange={handleColor}
                         required
                         sx={{width: '34vw'}}>
@@ -258,7 +268,8 @@ function Printer() {
                     <Select
                         placeholder="units"
                         single
-                        value={units}
+                        value={unit}
+                        error={errors.unit}
                         onChange={handleUnit}
                         required
                         sx={{width: '34vw'}}>
@@ -275,7 +286,7 @@ function Printer() {
                     </Select>
                 </div>
                 <div className={styles.singleContainer}>
-                    <div className={styles.label}>Additional Information*</div>
+                    <div className={styles.label}>Additional Information</div>
                     <Controls.Input
                         placeholder="Enter additional information about your request"
                         name="info"
@@ -350,6 +361,16 @@ function Printer() {
                         text = "Submit"
                         onClick = {handleSubmit}
                     />
+                <Snackbar open={success} autoCloseDuration={5000} onClose={() => setSuccess(false)}>
+                    <Alert severity="success" sx={{ width: '100%' }} onClose={() => setSuccess(false)}>
+                        Success!
+                    </Alert>
+                </Snackbar>
+                <Snackbar open={errorOpen} autoCloseDuration={5000} onClose={() => setErrorOpen(false)}>
+                    <Alert onClose={() => setErrorOpen(false)} severity="error" sx={{ width: '100%' }}>
+                        Please fill in all the required fields!
+                    </Alert>
+                </Snackbar>
                 </div>
             </Box>
           </div>

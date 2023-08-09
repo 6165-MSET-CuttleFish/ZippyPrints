@@ -67,7 +67,7 @@ export default function ResetPassword()
     }
 
     useEffect(() => {
-        checkViewable()
+        // checkViewable()
     })
     
         useEffect(() => {
@@ -135,7 +135,7 @@ export default function ResetPassword()
     return(
         <div className = {styles.container}>
             <div className = {styles.columnContainer}>
-            <div className = {styles.verificationTitle}>Hello {currentUser.displayName}!</div>
+            <div className = {styles.verificationTitle}>Hello!</div>
             <div className = {styles.verificationSubtitle}>Reset your password by pressing the button below — a link will be sent to your 
             email address for you to reset your password.</div>
              <div className = {styles.buttonContainer}>
