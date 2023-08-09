@@ -57,10 +57,13 @@ function Printer() {
     const [color, setColor] = useState();
     const [unit, setUnit] = useState();
     const [file, setFile] = useState(null);
-    const [fileName, setFileName] = useState("No file selected");
+    const [fileName, setFileName] = useState("No file selected (.STL, .OBJ, and .AMF are accepted).");
+    const pieces = fileName.split(".")
+    const last = pieces[pieces.length - 1]
 
     const [success, setSuccess] = useState(false);
     const [errorOpen, setErrorOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("Error!");
 
 
     let id = v4();
@@ -74,7 +77,6 @@ function Printer() {
         db = (getFirestore());
         colRef = (doc(db, 'requests', "" + id))
     }
-    console.log(material);
     const uploadData = async () => {
         await setDoc(colRef, {
              material: material,
@@ -87,28 +89,37 @@ function Printer() {
              file: {id}
         })
     }
-
     const handleSubmit = async(e) => {        
         e.preventDefault()
-        if(validate() && validateSelect() && file != null) {
+        if(validate() && validateSelect() && file != null && validateFile()) {
             uploadData(); 
             handleFile();
             resetForm();
             setSuccess(true);
         } else {
+            if (!validateFile())
+            setErrorMessage("Please select a valid file format (only .STL, .OBJ, and .AMF are accepted).")
+            if (!validate() || !validateSelect())
+            setErrorMessage("Please fill in all the required fields!")
             setErrorOpen(true);
         }
     }
 
     const handleFile = () => {
         if (file == null) {
-            alert("Select a file!")
             return;
-        }
+        } 
         const fileRef = ref(storage, `prints/${id}`);
-        uploadBytes(fileRef, file).then(() => {
+            uploadBytes(fileRef, file).then(() => {
             setSuccess(true);
         })
+    }
+    console.log(last)
+    function validateFile() {
+        if (last == "STL" || last == "OBJ" || last == "AMF") {
+            return true;
+        }
+        else return false;
     }
 
     const handleMaterial = (event) => {
@@ -142,6 +153,7 @@ function Printer() {
       
     const validateSelect = () => {
         if (!color || !material || !unit) {
+            setErrorMessage("Please fill in all the required fields!")
             return false;
         } else return true;
     }
@@ -173,7 +185,6 @@ function Printer() {
     } = useForm(initalFValues, true, validate);
 
     return (
-        //Material Color Size Additional Info
         <div>
            <Box component="form" noValidate >    
                 <Form onSubmit={handleSubmit} className={styles.textboxContainer}>
@@ -368,7 +379,7 @@ function Printer() {
                 </Snackbar>
                 <Snackbar open={errorOpen} autoCloseDuration={5000} onClose={() => setErrorOpen(false)}>
                     <Alert onClose={() => setErrorOpen(false)} severity="error" sx={{ width: '100%' }}>
-                        Please fill in all the required fields!
+                        {errorMessage}
                     </Alert>
                 </Snackbar>
                 </div>

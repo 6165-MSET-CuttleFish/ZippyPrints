@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 
 function CNC() {
     return (
-        <div></div>
+        <div>CNC</div>
     )
 }
 export default CNC
