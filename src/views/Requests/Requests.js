@@ -42,7 +42,7 @@ function Requests() {
     
     return (
         <div className={styles.entireContainer}>
-            <div className={styles.dashboardTitle}>Need something? Choose a service</div>
+            <div className={styles.dashboardTitle}>Need something? Choose a service below!</div>
             <div className={styles.container}>
             <Paper 
                 sx={{

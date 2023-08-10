@@ -27,6 +27,7 @@ const materials = [
     'Blue',
     'Purple',
     'Brown',
+    'Not Applicable',
     'Other'
   ];
   const units = [
@@ -35,7 +36,7 @@ const materials = [
   ];
   const initalFValues = {
     material: '',
-    color: [''],
+    color: '',
     width: '',
     length: '',
     thickness: '',
@@ -69,7 +70,7 @@ function LaserCutter() {
         db = (getFirestore());
         colRef = (doc(db, 'requests', "" + id))
     }
-    console.log(material);
+
     const uploadData = async () => {
         await setDoc(colRef, {
              material: material,

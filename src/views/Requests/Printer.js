@@ -86,7 +86,7 @@ function Printer() {
              height: values.height,
              unit: unit,
              info: values.info,
-             file: {id}
+             file: id
         })
     }
     const handleSubmit = async(e) => {        
@@ -116,7 +116,7 @@ function Printer() {
     }
     console.log(last)
     function validateFile() {
-        if (last == "STL" || last == "OBJ" || last == "AMF") {
+        if (last === "STL" || last === "OBJ" || last === "AMF") {
             return true;
         }
         else return false;
