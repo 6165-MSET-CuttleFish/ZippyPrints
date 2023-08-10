@@ -55,3 +55,8 @@
 .textbox {
     width: 20vw;
 }
+.textContainer{
+    display: flex;
+    flex-direction: column;
+    margin-left: 30%;
+}

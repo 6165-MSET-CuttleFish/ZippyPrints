@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
-import { Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
+import { Avatar, ThemeProvider, createTheme, Box, TextField, } from '@mui/material'
 import {useNavigate} from "react-router-dom"
 import {AuthContext} from "../../views/Auth/Auth"
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
@@ -138,6 +138,24 @@ export default function ResetPassword()
             <div className = {styles.verificationTitle}>Hello!</div>
             <div className = {styles.verificationSubtitle}>Reset your password by pressing the button below — a link will be sent to your 
             email address for you to reset your password.</div>
+            <div className = {styles.textContainer}>
+            <TextField
+                    label = "Email"
+                    name="email"
+                    value={values.email}
+                    onChange = {handleInputChange}
+                    error={errors.email}
+                    fullWidth = {false}
+                    style = {{width: '275px'}}
+                    required
+                    id = "margin-normal"
+                    margin = "normal"
+                    sx={{
+                      borderRadius: '7px',
+                      backgroundColor: '#F0F5FF'
+                  }}
+                />
+              </div>
              <div className = {styles.buttonContainer}>
             <Button 
                 variant = "contained"
