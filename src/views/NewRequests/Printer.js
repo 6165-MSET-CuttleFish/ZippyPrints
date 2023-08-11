@@ -4,22 +4,23 @@ import Controls from '../../components/actions/Controls'
 import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint } from 'firebase/firestore/lite';
 import { Box, Select, MenuItem, Button, Snackbar, Alert } from '@mui/material'
 import { AuthContext } from "../Auth/Auth";
-import styles from './lasercutter.module.css'
+import styles from './printer.module.css'
 import {useNavigate} from "react-router-dom"
 import { v4 } from 'uuid';
 import { getStorage, ref, uploadBytes } from 'firebase/storage'
 
+
+
 const materials = [
-    'Aluminum',
-    'Acrylic',
-    'Polycarbonate',
-    'HDPE',
-    'Delrin',
-    'Steel',
-    'Brass',
-    'Carbon Fiber',
+    'PLA',
+    'ABS',
+    'PETG',
+    'TPU',
+    'Nylon',
+    'PC',
     'Other (specify below)'
   ];
+
   const colors = [
     'White',
     'Black',
@@ -31,41 +32,44 @@ const materials = [
     'Blue',
     'Purple',
     'Brown',
-    'Not Applicable',
     'Other'
   ];
+
   const units = [
     'in',
     'mm',
   ];
+
   const initalFValues = {
     material: '',
-    color: '',
+    color: [''],
     width: '',
     length: '',
-    thickness: '',
+    height: '',
     unit: '',
     info: '',
     file: '',
-  }
-
-function CNC() {
+}
+function Printer() {
     const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
     const [material, setMaterial] = useState();
     const [color, setColor] = useState();
     const [unit, setUnit] = useState();
-    const [file, setFile] = useState(null);    
-    const [fileName, setFileName] = useState("No file selected (.STP, .STL, .ZPR, .ZTL, and .DXF are accepted).");
+    const [file, setFile] = useState(null);
+    const [fileName, setFileName] = useState("No file selected (.STL, .OBJ, and .AMF are accepted).");
     const pieces = fileName.split(".")
     const last = pieces[pieces.length - 1]
+
+
 
     const [success, setSuccess] = useState(false);
     const [errorOpen, setErrorOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState("Error!");
 
-    let id = v4();
+
     const storage = getStorage();
+    let id = v4();
     let username = null;
     let db = null;
     let colRef = null;
@@ -75,20 +79,18 @@ function CNC() {
         db = (getFirestore());
         colRef = (doc(db, 'requests', "" + id))
     }
-
     const uploadData = async () => {
         await setDoc(colRef, {
              material: material,
              color: color,
              width: values.width,
              length: values.length,
-             thickness: values.thickness,
+             height: values.height,
              unit: unit,
              info: values.info,
-             file: {id}
+             file: id + "." + last
         })
     }
-
     const handleSubmit = async(e) => {        
         e.preventDefault()
         if(validate() && validateSelect() && file != null && validateFile()) {
@@ -98,35 +100,28 @@ function CNC() {
             setSuccess(true);
         } else {
             if (!validateFile())
-            setErrorMessage("Please select a valid file format (only .STP, .STL, .ZPR, .ZTL, and .DXF are accepted).")
+            setErrorMessage("Please select a valid file format (only .STL, .OBJ, and .AMF are accepted).")
             if (!validate() || !validateSelect())
             setErrorMessage("Please fill in all the required fields!")
             setErrorOpen(true);
         }
     }
 
-    const validateSelect = () => {
-        if (!material || !unit) {
-            return false;
-        } else return true;
-    }
-
     const handleFile = () => {
         if (file == null) {
-            alert("Select a file!")
             return;
-        }
-        const fileRef = ref(storage, `prints/${id}`);
-        uploadBytes(fileRef, file).then(() => {
+        } 
+        const fileRef = ref(storage, `prints/${id}.${last}`);
+            uploadBytes(fileRef, file).then(() => {
             setSuccess(true);
         })
     }
-
-    const validateFile = () => {
-        if (last != "STP" || last != "STL" || last != "ZPR" || last != "ZTL" || last != "DXF") {
-            return false;
+    console.log(last)
+    function validateFile() {
+        if (last === "STL" || last === "OBJ" || last === "AMF") {
+            return true;
         }
-        else return true;
+        else return false;
     }
 
     const handleMaterial = (event) => {
@@ -157,11 +152,18 @@ function CNC() {
           typeof value === 'string' ? value.split(',') : value,
         );
       };
-
-      const validate=(fieldValues = values)=>{
+      
+    const validateSelect = () => {
+        if (!color || !material || !unit) {
+            setErrorMessage("Please fill in all the required fields!")
+            return false;
+        } else return true;
+    }
+    const validate=(fieldValues = values)=>{
         let temp = {...errors}
-        if ('thickness' in fieldValues)
-            temp.thickness = (/^[0-9\b]+$/).test(fieldValues.thickness)?"":"Please enter valid information (at least one number)."
+    
+        if ('height' in fieldValues)
+            temp.height = (/^[0-9\b]+$/).test(fieldValues.height)?"":"Please enter valid information (at least one number)."
         if ('length' in fieldValues)
             temp.length = (/^[0-9\b]+$/).test(fieldValues.length)?"":"Please enter valid information (at least one number)."
         if ('width' in fieldValues)
@@ -211,7 +213,7 @@ function CNC() {
                     </Select>
                 </div>
                 <div className={styles.singleContainer}>
-                    <div className={styles.label}>Color</div>
+                    <div className={styles.label}>Color*</div>
                     <Select
                         placeholder="color"
                         single
@@ -235,7 +237,7 @@ function CNC() {
                 <div className={styles.singleContainer}>
                     <div className={styles.label}>Length*</div>
                     <Controls.Input
-                        placeholder="Enter the length of your file in appropriate units"
+                        placeholder="Enter the length of your print in appropriate units"
                         name="length"
                         value={values.length}
                         onChange = {handleInputChange}
@@ -249,7 +251,7 @@ function CNC() {
                 <div className={styles.singleContainer}>
                     <div className={styles.label}>Width*</div>
                     <Controls.Input
-                        placeholder="Enter the width of your file in appropriate units"
+                        placeholder="Enter the width of your print in appropriate units"
                         name="width"
                         value={values.width}
                         onChange = {handleInputChange}
@@ -261,13 +263,13 @@ function CNC() {
                     />
                 </div>
                 <div className={styles.singleContainer}>
-                    <div className={styles.label}>Thickness*</div>
+                    <div className={styles.label}>Height*</div>
                     <Controls.Input
-                        placeholder="Enter the thickness of your file in appropriate units"
-                        name="thickness"
-                        value={values.thickness}
+                        placeholder="Enter the height of your print in appropriate units"
+                        name="height"
+                        value={values.height}
                         onChange = {handleInputChange}
-                        error={errors.thickness}
+                        error={errors.height}
                         InputProps={{
                             className: styles.textbox,
                         }}
@@ -387,4 +389,4 @@ function CNC() {
           </div>
     )
 }
-export default CNC
+export default Printer
