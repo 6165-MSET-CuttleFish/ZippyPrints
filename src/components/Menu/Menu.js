@@ -60,6 +60,8 @@ export const Menu = () => {
 
     return(
         <div className = {styles.menuScreen}>
+
+          {/* header */}
             <Autocomplete>
                 <div className = {styles.searchContainer}>
                     <SearchIcon 
@@ -82,6 +84,8 @@ export const Menu = () => {
                     </Select>
                 </FormControl>
             </div>
+
+            {/* list of printers */}
             <div className = {styles.printerContainer}> 
               <Grid container spacing = {3} className = {styles.printerList}>
                   {places?.map((place,i) =>(

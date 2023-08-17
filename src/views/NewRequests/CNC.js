@@ -4,16 +4,20 @@ import Controls from '../../components/actions/Controls'
 import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint } from 'firebase/firestore/lite';
 import { Box, Select, MenuItem, Button, Snackbar, Alert } from '@mui/material'
 import { AuthContext } from "../Auth/Auth";
-import styles from './lasercutter.module.css'
+import styles from './cnc.module.css'
 import {useNavigate} from "react-router-dom"
 import { v4 } from 'uuid';
 import { getStorage, ref, uploadBytes } from 'firebase/storage'
 
 const materials = [
+    'Aluminum',
     'Acrylic',
+    'Polycarbonate',
+    'HDPE',
     'Delrin',
-    'MDF (Draftboard)',
-    'Plywood',
+    'Steel',
+    'Brass',
+    'Carbon Fiber',
     'Other (specify below)'
   ];
   const colors = [
@@ -27,6 +31,7 @@ const materials = [
     'Blue',
     'Purple',
     'Brown',
+    'Not Applicable',
     'Other'
   ];
   const units = [
@@ -35,7 +40,7 @@ const materials = [
   ];
   const initalFValues = {
     material: '',
-    color: [''],
+    color: '',
     width: '',
     length: '',
     thickness: '',
@@ -43,14 +48,15 @@ const materials = [
     info: '',
     file: '',
   }
-function LaserCutter() {
+
+function CNC() {
     const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
     const [material, setMaterial] = useState();
     const [color, setColor] = useState();
     const [unit, setUnit] = useState();
     const [file, setFile] = useState(null);    
-    const [fileName, setFileName] = useState("No file selected (.DXF, .BMP, and .SVG are accepted).");
+    const [fileName, setFileName] = useState("No file selected (.STP, .STL, .ZPR, .ZTL, and .DXF are accepted).");
     const pieces = fileName.split(".")
     const last = pieces[pieces.length - 1]
 
@@ -69,7 +75,7 @@ function LaserCutter() {
         db = (getFirestore());
         colRef = (doc(db, 'requests', "" + id))
     }
-    console.log(material);
+
     const uploadData = async () => {
         await setDoc(colRef, {
              material: material,
@@ -92,7 +98,7 @@ function LaserCutter() {
             setSuccess(true);
         } else {
             if (!validateFile())
-            setErrorMessage("Please select a valid file format (only .DXF, .SVG, and .BMP are accepted).")
+            setErrorMessage("Please select a valid file format (only .STP, .STL, .ZPR, .ZTL, and .DXF are accepted).")
             if (!validate() || !validateSelect())
             setErrorMessage("Please fill in all the required fields!")
             setErrorOpen(true);
@@ -117,7 +123,7 @@ function LaserCutter() {
     }
 
     const validateFile = () => {
-        if (last != "DXF" || last != "SVG" || last != "BMP") {
+        if (last != "STP" || last != "STL" || last != "ZPR" || last != "ZTL" || last != "DXF") {
             return false;
         }
         else return true;
@@ -381,4 +387,4 @@ function LaserCutter() {
           </div>
     )
 }
-export default LaserCutter
+export default CNC

@@ -15,6 +15,8 @@ render () {
         <div className="Elements">
         <a href="home">Zippyprints </a>
         <a href="discover">Map</a>
+        <a href="requests">Requests</a>
+        <a href="new_requests">Make a Request</a>
         </div>
         <div className="Auth">
        <a href ="Logout" className={styles.loginButton}>            
@@ -35,6 +37,8 @@ render () {
         <div className="Elements">
           <a href="home">Zippyprints</a>
           <a href="discover">Map</a>
+          <a href="requests">Requests</a>
+          <a href="new_requests">Make a Request</a>
         </div>
 
         <div className="Auth">

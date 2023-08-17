@@ -9,7 +9,7 @@ import LaserCutter from './LaserCutter'
 
 
 
-function Requests() {
+function NewRequests() {
     const [active, setActive] = useState("");
     const [printer, setPrinter] = useState('#717B8C');
     const [laserCutter, setLaserCutter] = useState('#717B8C');
@@ -42,7 +42,7 @@ function Requests() {
     
     return (
         <div className={styles.entireContainer}>
-            <div className={styles.dashboardTitle}>Need something? Choose a service</div>
+            <div className={styles.dashboardTitle}>Need something? Choose a service below!</div>
             <div className={styles.container}>
             <Paper 
                 sx={{
@@ -104,4 +104,4 @@ function Requests() {
         </div>
     );
 } 
-export default Requests
+export default NewRequests

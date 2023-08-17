@@ -4,23 +4,18 @@ import Controls from '../../components/actions/Controls'
 import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint } from 'firebase/firestore/lite';
 import { Box, Select, MenuItem, Button, Snackbar, Alert } from '@mui/material'
 import { AuthContext } from "../Auth/Auth";
-import styles from './printer.module.css'
+import styles from './lasercutter.module.css'
 import {useNavigate} from "react-router-dom"
 import { v4 } from 'uuid';
 import { getStorage, ref, uploadBytes } from 'firebase/storage'
 
-
-
 const materials = [
-    'PLA',
-    'ABS',
-    'PETG',
-    'TPU',
-    'Nylon',
-    'PC',
+    'Acrylic',
+    'Delrin',
+    'MDF (Draftboard)',
+    'Plywood',
     'Other (specify below)'
   ];
-
   const colors = [
     'White',
     'Black',
@@ -32,39 +27,37 @@ const materials = [
     'Blue',
     'Purple',
     'Brown',
+    'Not Applicable',
     'Other'
   ];
-
   const units = [
     'in',
     'mm',
   ];
-
   const initalFValues = {
     material: '',
-    color: [''],
+    color: '',
     width: '',
     length: '',
-    height: '',
+    thickness: '',
     unit: '',
     info: '',
     file: '',
-}
-function Printer() {
+  }
+function LaserCutter() {
     const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
     const [material, setMaterial] = useState();
     const [color, setColor] = useState();
     const [unit, setUnit] = useState();
-    const [file, setFile] = useState(null);
-    const [fileName, setFileName] = useState("No file selected (.STL, .OBJ, and .AMF are accepted).");
+    const [file, setFile] = useState(null);    
+    const [fileName, setFileName] = useState("No file selected (.DXF, .BMP, and .SVG are accepted).");
     const pieces = fileName.split(".")
     const last = pieces[pieces.length - 1]
 
     const [success, setSuccess] = useState(false);
     const [errorOpen, setErrorOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState("Error!");
-
 
     let id = v4();
     const storage = getStorage();
@@ -77,18 +70,20 @@ function Printer() {
         db = (getFirestore());
         colRef = (doc(db, 'requests', "" + id))
     }
+
     const uploadData = async () => {
         await setDoc(colRef, {
              material: material,
              color: color,
              width: values.width,
              length: values.length,
-             height: values.height,
+             thickness: values.thickness,
              unit: unit,
              info: values.info,
              file: {id}
         })
     }
+
     const handleSubmit = async(e) => {        
         e.preventDefault()
         if(validate() && validateSelect() && file != null && validateFile()) {
@@ -98,28 +93,35 @@ function Printer() {
             setSuccess(true);
         } else {
             if (!validateFile())
-            setErrorMessage("Please select a valid file format (only .STL, .OBJ, and .AMF are accepted).")
+            setErrorMessage("Please select a valid file format (only .DXF, .SVG, and .BMP are accepted).")
             if (!validate() || !validateSelect())
             setErrorMessage("Please fill in all the required fields!")
             setErrorOpen(true);
         }
     }
 
+    const validateSelect = () => {
+        if (!material || !unit) {
+            return false;
+        } else return true;
+    }
+
     const handleFile = () => {
         if (file == null) {
+            alert("Select a file!")
             return;
-        } 
+        }
         const fileRef = ref(storage, `prints/${id}`);
-            uploadBytes(fileRef, file).then(() => {
+        uploadBytes(fileRef, file).then(() => {
             setSuccess(true);
         })
     }
-    console.log(last)
-    function validateFile() {
-        if (last == "STL" || last == "OBJ" || last == "AMF") {
-            return true;
+
+    const validateFile = () => {
+        if (last != "DXF" || last != "SVG" || last != "BMP") {
+            return false;
         }
-        else return false;
+        else return true;
     }
 
     const handleMaterial = (event) => {
@@ -150,18 +152,11 @@ function Printer() {
           typeof value === 'string' ? value.split(',') : value,
         );
       };
-      
-    const validateSelect = () => {
-        if (!color || !material || !unit) {
-            setErrorMessage("Please fill in all the required fields!")
-            return false;
-        } else return true;
-    }
-    const validate=(fieldValues = values)=>{
+
+      const validate=(fieldValues = values)=>{
         let temp = {...errors}
-    
-        if ('height' in fieldValues)
-            temp.height = (/^[0-9\b]+$/).test(fieldValues.height)?"":"Please enter valid information (at least one number)."
+        if ('thickness' in fieldValues)
+            temp.thickness = (/^[0-9\b]+$/).test(fieldValues.thickness)?"":"Please enter valid information (at least one number)."
         if ('length' in fieldValues)
             temp.length = (/^[0-9\b]+$/).test(fieldValues.length)?"":"Please enter valid information (at least one number)."
         if ('width' in fieldValues)
@@ -211,7 +206,7 @@ function Printer() {
                     </Select>
                 </div>
                 <div className={styles.singleContainer}>
-                    <div className={styles.label}>Color*</div>
+                    <div className={styles.label}>Color</div>
                     <Select
                         placeholder="color"
                         single
@@ -235,7 +230,7 @@ function Printer() {
                 <div className={styles.singleContainer}>
                     <div className={styles.label}>Length*</div>
                     <Controls.Input
-                        placeholder="Enter the length of your print in appropriate units"
+                        placeholder="Enter the length of your file in appropriate units"
                         name="length"
                         value={values.length}
                         onChange = {handleInputChange}
@@ -249,7 +244,7 @@ function Printer() {
                 <div className={styles.singleContainer}>
                     <div className={styles.label}>Width*</div>
                     <Controls.Input
-                        placeholder="Enter the width of your print in appropriate units"
+                        placeholder="Enter the width of your file in appropriate units"
                         name="width"
                         value={values.width}
                         onChange = {handleInputChange}
@@ -261,13 +256,13 @@ function Printer() {
                     />
                 </div>
                 <div className={styles.singleContainer}>
-                    <div className={styles.label}>Height*</div>
+                    <div className={styles.label}>Thickness*</div>
                     <Controls.Input
-                        placeholder="Enter the height of your print in appropriate units"
-                        name="height"
-                        value={values.height}
+                        placeholder="Enter the thickness of your file in appropriate units"
+                        name="thickness"
+                        value={values.thickness}
                         onChange = {handleInputChange}
-                        error={errors.height}
+                        error={errors.thickness}
                         InputProps={{
                             className: styles.textbox,
                         }}
@@ -387,4 +382,4 @@ function Printer() {
           </div>
     )
 }
-export default Printer
+export default LaserCutter
