@@ -90,7 +90,7 @@ export default function Verification() {
           .then(() => {
             if(currentUser?.emailVerified){
               clearInterval(interval)
-                navigate('/profile')
+                navigate('/dashboard')
             }
           })
           .catch((err) => {

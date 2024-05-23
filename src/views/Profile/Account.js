@@ -8,7 +8,7 @@ import {Paper} from '@mui/material'
 import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint } from 'firebase/firestore/lite';
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
-import { Avatar, ThemeProvider, createTheme, Box, Button } from '@mui/material'
+import { Avatar, ThemeProvider, createTheme, Box, Button, Snackbar, Alert } from '@mui/material'
 import { query, collection, getDocs, where } from "firebase/firestore";
 import { API_KEY } from '../../api/firebaseConfig'
 import { AuthContext } from "../Auth/Auth";
@@ -58,15 +58,21 @@ function Account() {
         setOpen(true);
         }
     }
+    useEffect(() => {
+        checkViewable()
+    })
+
     const [geoLocationData, setGeoLocationData] = useState(null);
     const [name, setName] = useState("Update your username");
     const [teamnumber, setTeamnumber] = useState("Please enter your team number");
     const [printer, setPrinter] = useState();
+    const [errorOpen, setErrorOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("Error!");
 
     useEffect(() => {
         const fetchData = async () => {
             const docSnap = await getDoc(colRef);
-            if (docSnap.data().address != null) {
+            if ((await docSnap).data()?.address != null) {
             setName(((await docSnap).data().username) !== undefined? ((await docSnap).data().username) : "Update your username");  
             setTeamnumber(((await docSnap).data().teamnumber) !== undefined? ((await docSnap).data().teamnumber) : "Please enter your team number");
             setPrinter(((await docSnap).data().printer))  
@@ -116,10 +122,7 @@ function Account() {
       }
   }
     
-      useEffect(() => {
-          checkViewable()
-      })
-  
+      
   
 
    const uploadData = async () => {
@@ -164,20 +167,31 @@ function Account() {
         resetForm
     } = useForm(initalFValues, true, validate);
 
-    const handleDelete = async(password) => {
-        const credential = EmailAuthProvider.credential(
-            currentUser.email,
-            password
-          )
+    const handleDelete = async() => {
+        try {
+            const credential = EmailAuthProvider.credential(
+                currentUser.email,
+                values.password
+              )
+              console.log(values.password)
+              console.log(credential)
+            
+              const result = reauthenticateWithCredential(
+                currentUser,
+                credential
+              )
+              console.log(result)
+            
+              // Pass result.user here
+            await deleteUser((await result)?.user)
+                navigate('/home')
+                window.location.reload();
+        } catch (error) {
+            setErrorMessage("Request Failed: check that you've entered the correct password, contact support if needed.")
+            setErrorOpen(true);
+        }
         
-          const result = await reauthenticateWithCredential(
-            currentUser,
-            credential
-          )
-        
-          // Pass result.user here
-          await deleteUser(result.user)
-    }
+    } 
 
     const handleEmail = () => {
         navigate("/reset_email");
@@ -425,8 +439,13 @@ function Account() {
                             }}
                             size = "large"
                             text = "Delete Account"
-                            onClick = {handleDelete(values.password)}
-                                />
+                            onClick = {handleDelete}
+                        />
+                        <Snackbar open={errorOpen} autoCloseDuration={5000} onClose={() => setErrorOpen(false)}>
+                    <Alert onClose={() => setErrorOpen(false)} severity="error" sx={{ width: '100%' }}>
+                        {errorMessage}
+                    </Alert>
+                </Snackbar>
                     </div>
             </Popup>
           </div>

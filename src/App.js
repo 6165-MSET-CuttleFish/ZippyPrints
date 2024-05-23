@@ -51,7 +51,7 @@ function App()  {
               <Route exact path="/404" element={<PageNotFound />} />
               <Route path='*' element={<PageNotFound />}/>
             </Routes>
-          </RedirectCheckProvider>
+          </RedirectCheckProvider>  
         </BrowserRouter>
       </AuthProvider>
       </body>

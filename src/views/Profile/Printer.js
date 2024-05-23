@@ -76,7 +76,7 @@ function Printer() {
     useEffect(() => {
         const fetchData = async () => {
             const docSnap = await getDoc(colRef);
-            if (docSnap.data().address != null) {
+            if ((await docSnap).data()?.address != null) {
             setPrinterInfo(((await docSnap).data().printers) !== undefined? ((await docSnap).data().printers) : "Please enter your information about your printer");  
             setFilament(((await docSnap).data().filament) !== undefined? ((await docSnap).data().filament) : "Please enter information about the type of filament you offer");   
             setPrice(((await docSnap).data().price) !== undefined? ((await docSnap).data().price) : "Please enter an estimate price range for your service");

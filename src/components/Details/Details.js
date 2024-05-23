@@ -132,6 +132,7 @@ const Details = ({place}) => {
 
     return(
         <div>
+          <div className={styles.sidebarContainer}>
             <div className={styles.titleContainer}>
                 <div className={styles.printerTitle}>Team {place?.team} {place.username}</div>
             </div>
@@ -140,7 +141,7 @@ const Details = ({place}) => {
                     <div className={styles.printerSubtitle}>{place?.email}</div>
                     <br></br>
                     <div className={styles.printerHeading}>General Location:</div>
-                    {place.location.split(",")[1]}, {place.location.split(",")[2]}
+                    {place.location.split(",")[1]}, {(place.location.split(",")[2]).split(" ")[1]}
             </div>
 
             <div className={styles.buttonContainer}>
@@ -212,9 +213,9 @@ const Details = ({place}) => {
                       Request a Print
                   </Button>   
             </div>
-            
-            <Popup
-                title = "Request"
+          </div>
+        <Popup
+        title = "Request"
         children =  {
         <Form onSubmit={handleSubmit}>
           <Controls.Input

@@ -34,6 +34,9 @@ function DisplayRequests() {
                       unit: doc.data()?.unit,
                       width: doc.data()?.width,
                       file: doc.data()?.file,
+                      teamnumber: doc.data()?.teamnumber,
+                      location: doc.data()?.location, 
+                      email: doc.data()?.email
                     },
                   ]);
                 }

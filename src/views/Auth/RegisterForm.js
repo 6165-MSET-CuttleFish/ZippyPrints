@@ -139,7 +139,7 @@ export default function RegisterForm() {
         const printer = values.printer;
         const auth = getAuth();
         await createUserWithEmailAndPassword(auth, userEmail, userPassword)
-        .then(async (userCredential) => {
+        .then(async () => {
           // Signed in 
           const db = getFirestore();
           const colRef = doc(db, "users", "" + auth.currentUser.uid)
@@ -150,8 +150,7 @@ export default function RegisterForm() {
           }).then(() => {
             setLoading({loading: false})
             setTimeActive(true)
-            navigate('../Verification', { replace: true })
-            //sendEmailVerification(auth.currentUser)
+            navigate('/verification')
           }).catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;

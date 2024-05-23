@@ -44,7 +44,7 @@ function Location() {
     let markerColRef=null;
     if(currentUser!=null){
         username = (currentUser?.displayName)
-        db = (getFirestore());
+        db = getFirestore();
         colRef = (doc(db, 'users', "" + currentUser?.uid))
         markerColRef = (doc(db, 'markers', "" + currentUser?.uid))
     }
@@ -70,7 +70,7 @@ function Location() {
     useEffect(() => {
         const fetchData = async () => {
             const docSnap = await getDoc(colRef);
-            if (docSnap.data().address != null) {
+            if ((await docSnap).data()?.address != null) {
             setStreet1(((await docSnap).data().address) !== undefined? ((await docSnap).data().address) : "Please enter your address");  
             setStreet2(((await docSnap).data().address2) !== undefined? ((await docSnap).data().address2) : "Please enter your address (if applicable)");      
             setZipcode(((await docSnap).data().zipcode) !== undefined? ((await docSnap).data().zipcode) : "Please enter your zipcode");

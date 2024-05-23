@@ -92,7 +92,7 @@ function Discover() {
   let libRef = React.useRef(libraries)
   const mapContainerStyle = {
     width: '100vw',
-    height: '100vh'
+    height: '87.5vh'
   }
   const [center, setCenter]= useState({
     lat: 36.7783, lng: -96.4179

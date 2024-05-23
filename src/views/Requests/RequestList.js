@@ -80,6 +80,7 @@ const RequestList = ({request}) => {
         handleInputChange,
         resetForm
     } = useForm(initalFValues, true, validate);
+
     const {currentUser} = useContext(AuthContext);
     const [download, setDownload] = useState();
     const storage = getStorage();
@@ -145,13 +146,13 @@ const RequestList = ({request}) => {
     return(
         <div>
             <div className={styles.titleContainer}>
-                <div className={styles.printerTitle}>Team {request?.material} {request.color}</div>
+                <div className={styles.printerTitle}>Team {request?.teamnumber}</div>
             </div>
             <div className={styles.infoContainer}>
                     <div className={styles.printerHeading}>Contact Info:</div>
-                    <div className={styles.printerSubtitle}>{request?.width}</div>
+                    <div className={styles.printerSubtitle}>{request?.email}</div>
                     <br></br>
-                    <div className={styles.printerHeading}>General Location: {request?.file}</div>
+                    <div className={styles.printerHeading}>General Location: {request?.location}</div>
             </div>
 
             <div className={styles.buttonContainer}> 

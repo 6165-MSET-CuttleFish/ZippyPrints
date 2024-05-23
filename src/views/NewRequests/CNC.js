@@ -63,18 +63,28 @@ function CNC() {
     const [success, setSuccess] = useState(false);
     const [errorOpen, setErrorOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState("Error!");
+    const [team, setTeam] = useState();
+    const [location, setLocation] = useState();
 
     let id = v4();
     const storage = getStorage();
-    let username = null;
-    let db = null;
+    const db = getFirestore();
     let colRef = null;
-    let markerColRef = null;
+    let userRef = null;
     if(currentUser != null) {
-        username = (currentUser?.displayName)
-        db = (getFirestore());
         colRef = (doc(db, 'requests', "" + id))
+        userRef = doc(db, 'users', "" + currentUser.uid)
     }
+    useEffect(() => {
+        const fetchData = async () => {
+            const docSnap = await getDoc(userRef);
+            setTeam(((await docSnap).data().teamnumber) !== undefined? ((await docSnap).data().teamnumber) : "MISSING!");
+            let state = ((await docSnap).data().formattedAddress.split((","))[2]).split(" ")[1];
+            let formatted = (await docSnap).data().formattedAddress.split((","))[1] + ", " + state + "," + (await docSnap).data().formattedAddress.split((","))[3];
+            setLocation(((await docSnap).data().formattedAddress) !== undefined? (formatted) : "MISSING!");
+        }
+        fetchData()
+    }, [colRef])
 
     const uploadData = async () => {
         await setDoc(colRef, {
@@ -85,7 +95,10 @@ function CNC() {
              thickness: values.thickness,
              unit: unit,
              info: values.info,
-             file: {id}
+             teamnumber: team,
+             location: location,
+             email: currentUser.email,
+             file: id + "." + last
         })
     }
 
@@ -123,10 +136,10 @@ function CNC() {
     }
 
     const validateFile = () => {
-        if (last != "STP" || last != "STL" || last != "ZPR" || last != "ZTL" || last != "DXF") {
-            return false;
+        if (last == "STP" || last == "STL" || last == "ZPR" || last == "ZTL" || last == "DXF") {
+            return true;
         }
-        else return true;
+        else return false;
     }
 
     const handleMaterial = (event) => {
