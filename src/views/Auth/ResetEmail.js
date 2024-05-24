@@ -1,11 +1,13 @@
 import React, { useContext, useState } from 'react'
-import { updateEmail } from "firebase/auth";
+import { updateEmail, EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification } from "firebase/auth";
+import { getFirestore, updateDoc, doc, getDocs, collection } from 'firebase/firestore/lite';
 import {AuthContext} from "../../views/Auth/Auth"
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import styles from '../Auth/reset.module.css'
 import { Button, Paper } from '@mui/material';
 import { Alert, Snackbar, Box } from '@mui/material'
+import { useNavigate } from 'react-router-dom';
 
 const initalFValues = {
     email: '',
@@ -14,10 +16,13 @@ const initalFValues = {
 //TODO: now u need to make sure user logins in with that email so they dont steal random peoples emails
 export default function ResetEmail() {
     const {currentUser} = useContext(AuthContext);
-    const {timeActive, setTimeActive} = useContext(AuthContext);
     const [openSuccess, setOpenSuccess] = useState(false);
     const [openError, setOpenError] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
+    const navigate = useNavigate();
+    const {setTimeActive} = useContext(AuthContext)
+    
+
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
         if ('email' in fieldValues)
@@ -44,15 +49,49 @@ export default function ResetEmail() {
     } = useForm(initalFValues, true, validate);
 
     const handleEmail = () => {
-        if (validate) {
-            updateEmail(currentUser, values.email).then(() => {
-                setOpenSuccess(true)
-                alert("yay")
-              }).catch((error) => {
-                setErrorMessage(error)
-                alert(error)
-              });
-        }
+        //Credential of current user
+        var credential = EmailAuthProvider.credential(
+            currentUser.email,
+            values.password
+          );
+        //
+        reauthenticateWithCredential(currentUser, credential).then(() => {
+            // User re-authenticated -> proceed with changing email
+            if (validate) {
+                updateEmail(currentUser, values.email).then(async() => {
+                    //Update database information as well
+                    const db = getFirestore();
+                    //updating user email in authentication
+                    const userRef = doc(db, "users", "" + currentUser.uid)
+                    await updateDoc(userRef, {
+                        email: currentUser.email,
+                      })
+                    //Update marker docs if it exists
+                    const querySnapshot = await getDocs(collection(db, "markers"))
+                    var markerExist = false;
+                    querySnapshot.forEach((doc) => {
+                        if (doc.id == "" + currentUser.uid)
+                            markerExist = true
+                      });
+
+                    if (markerExist) {
+                        const markerRef = doc(db, "markers", "" + currentUser.uid)
+                        await updateDoc(markerRef, {
+                            email: currentUser.email
+                        })
+                    }
+                    setOpenSuccess(true)
+                    sendEmailVerification(currentUser)
+                    setTimeActive(true);
+                    navigate("/verification")
+                  }).catch((error) => {
+                    setErrorMessage(error)
+                    alert(error)
+                  });
+            }
+        }).catch(function(error) {
+            alert("Error: " + error)
+        });            
     }
     return(
         <div className = {styles.container}>
@@ -98,6 +137,7 @@ export default function ResetEmail() {
                     placeholder="Password"
                     name="password"
                     variant="outlined"
+                    type="password"
                     value={values.password}
                     onChange = {handleInputChange}
                     error={errors.password}

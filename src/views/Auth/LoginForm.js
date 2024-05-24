@@ -69,7 +69,7 @@ export default function LoginForm() {
     {
         if(currentUser)
         {
-            navigate("/Profile")
+            navigate("/Dashboard")
             setOpen(true)
         }
     }

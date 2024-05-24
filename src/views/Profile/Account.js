@@ -155,6 +155,7 @@ function Account() {
         if(validate()) {
             uploadData(); 
             resetForm();
+            window.location.reload();
         }  
     }
 
