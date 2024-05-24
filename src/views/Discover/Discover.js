@@ -17,6 +17,9 @@ import { v4 as uuidv4 } from 'uuid';
 import styles from '../Discover/map.module.css'
 import {useNavigate} from "react-router-dom"
 import {Menu} from '../../components/Menu/Menu'
+import { CurrentCenterContext } from './CenterProvider.js'
+import { CurrentSelectedContext } from './SelectedProvider';
+
 const initalFValues = {
     id: 0,
     requester_email: '',
@@ -35,10 +38,12 @@ export function setOpen(children){
   open = children;
 }
 function Discover() {
+  const { center, setCenter } = useContext(CurrentCenterContext);
+  const {selected, setSelected} = useContext(CurrentSelectedContext);
+
   const {currentUser} = useContext(AuthContext);
   // const {redirect} = useContext(redirectCheck);
   const [markers, setMarkers] = useState([]);
-  const [selected, setSelected] = useState(null);
   const storage = getStorage();
   const db = getFirestore();
   const classes = useStyles();
@@ -94,9 +99,6 @@ function Discover() {
     width: '100vw',
     height: '87.5vh'
   }
-  const [center, setCenter]= useState({
-    lat: 36.7783, lng: -96.4179
-})
 
 const onSelect = (marker) => {
     setSelected(marker)

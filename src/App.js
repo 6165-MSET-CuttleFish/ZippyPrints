@@ -11,6 +11,8 @@ import RegisterExport from "./views/Auth/RegisterExport"
 import ResetEmail from "./views/Auth/ResetEmail"
 import Logout from "./views/Auth/Logout"
 import { AuthProvider } from './views/Auth/Auth'
+import { CenterProvider } from './views/Discover/CenterProvider';
+import { SelectedProvider } from './views/Discover/SelectedProvider';
 import AuthenticationError from './views/Error/AuthenticationError'
 import { Helmet } from 'react-helmet'
 import { RedirectCheckProvider } from './views/Auth/RedirectCheck';
@@ -26,6 +28,8 @@ function App()  {
     return (
       <body>
       <AuthProvider>
+      <CenterProvider>
+      <SelectedProvider>
       <Helmet>
         <title>ZippyPrints</title>
         <meta name="description" content="A fast, easy to use, and reliable way for printing custom designs through printers near you!!" />
@@ -53,6 +57,8 @@ function App()  {
             </Routes>
           </RedirectCheckProvider>  
         </BrowserRouter>
+        </SelectedProvider>
+        </CenterProvider>
       </AuthProvider>
       </body>
     );

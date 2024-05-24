@@ -18,7 +18,8 @@ import {useForm, Form} from '../../components/useForm'
 import { v4 as uuidv4 } from 'uuid';
 import {useNavigate} from "react-router-dom"
 import {Menu} from '../../components/Menu/Menu'
-
+import { CurrentCenterContext } from '../../views/Discover/CenterProvider';
+import { CurrentSelectedContext } from '../../views/Discover/SelectedProvider';
 
 const Details = ({place}) => {
     const useStyles = makeStyles(theme =>({ 
@@ -88,6 +89,8 @@ const Details = ({place}) => {
     const db = getFirestore();
     const [openRegisterPopup, setOpenRegisterPopup] = useState(false)
     const navigate = useNavigate();
+    const { center, setCenter } = useContext(CurrentCenterContext);
+    const {selected, setSelected} = useContext(CurrentSelectedContext);
 
     const getData = async () => {
         try {
@@ -121,14 +124,14 @@ const Details = ({place}) => {
         setOpenRegisterPopup(false)
         setValues(initalFValues);
       }
-    //TODO: make setCenter and a global variable, so I can set it from here as well
-    // const onSelect = (place) => {
-    //     setSelected(place)
-    //     setCenter({
-    //       lat: place.lat,
-    //       lng: place.lng
-    //   })
-    // }
+    // TODO: make setCenter and a global variable, so I can set it from here as well
+    const onSelect = (place) => {
+        setSelected(place)
+        setCenter({
+          lat: place.lat,
+          lng: place.lng
+      })
+    }
 
     return(
         <div>
@@ -174,7 +177,9 @@ const Details = ({place}) => {
                       transitionDuration: '500ms',                  
                     },
                   }}
-                    // onClick = {onSelect}
+                  onClick={() => {
+                    onSelect(place)
+                    }}
                   >
                       Find on Map
                   </Button>   
