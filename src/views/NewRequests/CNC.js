@@ -56,9 +56,9 @@ function CNC() {
     const [color, setColor] = useState();
     const [unit, setUnit] = useState();
     const [file, setFile] = useState(null);    
-    const [fileName, setFileName] = useState("No file selected (.STP, .STL, .ZPR, .ZTL, and .DXF are accepted).");
+    const [fileName, setFileName] = useState("No file selected (.dxf, and .svg are accepted).");
     const pieces = fileName.split(".")
-    const last = pieces[pieces.length - 1]
+    const ext = pieces[pieces.length - 1].toLowerCase();
 
     const [success, setSuccess] = useState(false);
     const [errorOpen, setErrorOpen] = useState(false);
@@ -98,7 +98,7 @@ function CNC() {
              teamnumber: team,
              location: location,
              email: currentUser.email,
-             file: id + "." + last
+             file: id + "." + ext
         })
     }
 
@@ -111,7 +111,7 @@ function CNC() {
             setSuccess(true);
         } else {
             if (!validateFile())
-            setErrorMessage("Please select a valid file format (only .STP, .STL, .ZPR, .ZTL, and .DXF are accepted).")
+            setErrorMessage("Please select a valid file format (only .svg and .dxf file types are accepted).")
             if (!validate() || !validateSelect())
             setErrorMessage("Please fill in all the required fields!")
             setErrorOpen(true);
@@ -126,17 +126,18 @@ function CNC() {
 
     const handleFile = () => {
         if (file == null) {
-            alert("Select a file!")
+            setErrorMessage("Please upload a file")
+            setErrorOpen(true);
             return;
         }
-        const fileRef = ref(storage, `prints/${id}`);
+        const fileRef = ref(storage, `prints/${id}.${ext}`);
         uploadBytes(fileRef, file).then(() => {
             setSuccess(true);
         })
     }
 
     const validateFile = () => {
-        if (last == "STP" || last == "STL" || last == "ZPR" || last == "ZTL" || last == "DXF") {
+        if (ext == "svg" || ext == "stl") {
             return true;
         }
         else return false;

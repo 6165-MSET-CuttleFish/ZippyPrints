@@ -57,9 +57,9 @@ function Printer() {
     const [color, setColor] = useState();
     const [unit, setUnit] = useState();
     const [file, setFile] = useState(null);
-    const [fileName, setFileName] = useState("No file selected (.STL, .OBJ, and .AMF are accepted).");
+    const [fileName, setFileName] = useState("No file selected (.stl is accepted).");
     const pieces = fileName.split(".")
-    const last = pieces[pieces.length - 1]
+    const ext = pieces[pieces.length - 1].toLowerCase();
 
 
 
@@ -102,7 +102,7 @@ function Printer() {
              teamnumber: team,
              location: location,
              email: currentUser.email,
-             file: id + "." + last
+             file: id + "." + ext
         })
     }
     const handleSubmit = async(e) => {        
@@ -114,7 +114,7 @@ function Printer() {
             setSuccess(true);
         } else {
             if (!validateFile())
-            setErrorMessage("Please select a valid file format (only .STL, .OBJ, and .AMF are accepted).")
+            setErrorMessage("Please select a valid file format (only the .stl file type is accepted).")
             if (!validate() || !validateSelect())
             setErrorMessage("Please fill in all the required fields!")
             setErrorOpen(true);
@@ -123,16 +123,17 @@ function Printer() {
 
     const handleFile = () => {
         if (file == null) {
+            setErrorMessage("Please upload a file")
+            setErrorOpen(true);
             return;
         } 
-        const fileRef = ref(storage, `prints/${id}.${last}`);
+        const fileRef = ref(storage, `prints/${id}.${ext}`);
             uploadBytes(fileRef, file).then(() => {
             setSuccess(true);
         })
     }
-    console.log(last)
     function validateFile() {
-        if (last === "STL" || last === "OBJ" || last === "AMF") {
+        if (ext === "stl") {
             return true;
         }
         else return false;

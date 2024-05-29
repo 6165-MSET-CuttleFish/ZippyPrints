@@ -51,9 +51,9 @@ function LaserCutter() {
     const [color, setColor] = useState();
     const [unit, setUnit] = useState();
     const [file, setFile] = useState(null);    
-    const [fileName, setFileName] = useState("No file selected (.DXF, .BMP, and .SVG are accepted).");
+    const [fileName, setFileName] = useState("No file selected (.dxf and .svg are accepted).");
     const pieces = fileName.split(".")
-    const last = pieces[pieces.length - 1]
+    const ext = pieces[pieces.length - 1].toLowerCase()
 
     const [success, setSuccess] = useState(false);
     const [errorOpen, setErrorOpen] = useState(false);
@@ -93,7 +93,7 @@ function LaserCutter() {
              teamnumber: team,       
              location: location,
              email: currentUser.email,      
-             file: id + "." + last
+             file: id + "." + ext
         })
     }
 
@@ -106,7 +106,7 @@ function LaserCutter() {
             setSuccess(true);
         } else {
             if (!validateFile())
-            setErrorMessage("Please select a valid file format (only .DXF, .SVG, and .BMP are accepted).")
+            setErrorMessage("Please select a valid file format (only .svg and .dxf file types are accepted).")
             if (!validate() || !validateSelect())
             setErrorMessage("Please fill in all the required fields!")
             setErrorOpen(true);
@@ -121,17 +121,18 @@ function LaserCutter() {
 
     const handleFile = () => {
         if (file == null) {
-            alert("Select a file!")
+            setErrorMessage("Please upload a file")
+            setErrorOpen(true);
             return;
         }
-        const fileRef = ref(storage, `prints/${id}`);
+        const fileRef = ref(storage, `prints/${id}.${ext}`);
         uploadBytes(fileRef, file).then(() => {
             setSuccess(true);
         })
     }
 
     const validateFile = () => {
-        if (last == "DXF" || last == "SVG" || last == "BMP") {
+        if (ext == "svg" || ext == "dxf") {
             return true;
         }
         else return false;
