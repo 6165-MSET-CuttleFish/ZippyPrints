@@ -16,12 +16,14 @@ import { SelectedProvider } from './views/Discover/SelectedProvider';
 import AuthenticationError from './views/Error/AuthenticationError'
 import { Helmet } from 'react-helmet'
 import { RedirectCheckProvider } from './views/Auth/RedirectCheck';
-import styles from './App.css'
+import { DetailsProvider } from './views/Requests/DetailsContext';
+import { RequestProvider } from './views/Requests/RequestContext';
 import Verification from './views/Auth/Verification';
 import VerifySuccess from './views/Auth/VerifySuccess';
 import ResetPassword from './views/Auth/ResetPassword';
 import PageNotFound from './views/Error/PageNotFound'
 import DisplayRequest from './views/Requests/DisplayRequests'
+import Details from './views/Requests/Details';
 function App()  {
 
 
@@ -30,6 +32,8 @@ function App()  {
       <AuthProvider>
       <CenterProvider>
       <SelectedProvider>
+      <DetailsProvider>
+      <RequestProvider>
       <Helmet>
         <title>ZippyPrints</title>
         <meta name="description" content="A fast, easy to use, and reliable way for printing custom designs through printers near you!!" />
@@ -44,6 +48,7 @@ function App()  {
               <Route exact path="/Discover" element={<Map />} />
               <Route exact path="/new_requests" element={<NewRequests />} />
               <Route exact path="/requests" element={<DisplayRequest />} />
+              <Route exact path="/details" element={<Details />} />
               <Route exact path="/Dashboard" element={<Dashboard />} />
               <Route exact path="/Register" element={<RegisterExport />} />
               <Route exact path="/Logout" element={<Logout />} />
@@ -57,6 +62,8 @@ function App()  {
             </Routes>
           </RedirectCheckProvider>  
         </BrowserRouter>
+        </RequestProvider>
+        </DetailsProvider>
         </SelectedProvider>
         </CenterProvider>
       </AuthProvider>

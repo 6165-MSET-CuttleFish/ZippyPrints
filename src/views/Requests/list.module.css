@@ -2,18 +2,31 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    margin-top: 1vw;
-    margin-bottom: 1vw;
+    margin-top: 1.5vh;
     margin-left: 1vw;
 }
 
+.line{
+    background-color: #094fb723;
+    height: 1px;
+    width: 47.5vw;
+    margin-top: 1vh;
+  }
+
 .infoContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 5vw;
+    margin-top: 0.5vw;
+}
+
+.infoContainer2 {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    margin-top: 1vw;
-    margin-bottom: 1vw;
     margin-left: 1vw;
+
 }
 
 .printerTitle {
@@ -42,6 +55,8 @@
     flex-direction: row;
     justify-content: flex-start;
     margin-left: 1vw;
-    margin-top: 0.5vw;
+    margin-top: 1.5vw;
     gap: 1vw;
   }
+
+  

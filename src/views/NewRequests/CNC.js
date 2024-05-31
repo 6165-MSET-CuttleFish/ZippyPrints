@@ -98,7 +98,8 @@ function CNC() {
              teamnumber: team,
              location: location,
              email: currentUser.email,
-             file: id + "." + ext
+             file: id + "." + ext,
+             type: "CNCing"
         })
     }
 

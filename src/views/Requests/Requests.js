@@ -12,12 +12,14 @@ import {makeStyles} from '@mui/styles'
 import { Typography, Box } from '@mui/material'
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 import { API_KEY } from "../../api/firebaseConfig"
-import {AuthContext} from "../../views/Auth/Auth"
+import {AuthContext} from "../Auth/Auth"
 import Popup from "../../components/Popup";
 import {useForm, Form} from '../../components/useForm'
 import { v4 as uuidv4 } from 'uuid';
 import {useNavigate} from "react-router-dom"
-
+import { CurrentDetailsContext } from './DetailsContext';
+import Details from './Details';
+import { RequestContext } from './RequestContext';
 
 const RequestList = ({request}) => {
     const useStyles = makeStyles(theme =>({ 
@@ -82,10 +84,11 @@ const RequestList = ({request}) => {
     } = useForm(initalFValues, true, validate);
 
     const {currentUser} = useContext(AuthContext);
-    const [download, setDownload] = useState();
     const storage = getStorage();
     const db = getFirestore();
     const navigate = useNavigate();
+    const { details, setDetails } = useContext(CurrentDetailsContext);
+    const { req, setReq } = useContext(RequestContext);
 
     const getData = async () => {
         try {
@@ -111,7 +114,7 @@ const RequestList = ({request}) => {
           }
     }
 
-    const handleClick = async(e) => {
+    const handleDownload = async() => {
         getDownloadURL(ref(storage, `prints/${request.file}`))
         .then((url) => {
             // `url` is the download URL for 'images/stars.jpg'
@@ -134,27 +137,28 @@ const RequestList = ({request}) => {
         getData();
         setValues(initalFValues);
       }
-    //TODO: make setCenter and a global variable, so I can set it from here as well
-    // const onSelect = (place) => {
-    //     setSelected(place)
-    //     setCenter({
-    //       lat: place.lat,
-    //       lng: place.lng
-    //   })
-    // }
 
     return(
         <div>
             <div className={styles.titleContainer}>
-                <div className={styles.printerTitle}>Team {request?.teamnumber}</div>
+                <div className={styles.printerTitle}>Team {request?.teamnumber} - {request?.type}
+                    <div className={styles.line}></div>
+                </div>
             </div>
             <div className={styles.infoContainer}>
+                <div className={styles.infoContainer2}>
+                    <div className={styles.printerHeading}>Material:</div>
+                    <div className={styles.printerSubtitle}>{request?.material}</div>
+                </div>
+                <div className={styles.infoContainer2}>
+                    <div className={styles.printerHeading}>General Location:</div>
+                    <div className={styles.printerSubtitle}>{request?.location}</div>
+                </div>
+                <div className={styles.infoContainer2}>
                     <div className={styles.printerHeading}>Contact Info:</div>
                     <div className={styles.printerSubtitle}>{request?.email}</div>
-                    <br></br>
-                    <div className={styles.printerHeading}>General Location: {request?.location}</div>
+                </div>
             </div>
-
             <div className={styles.buttonContainer}> 
                   <Button
                   variant = "contained"
@@ -185,7 +189,10 @@ const RequestList = ({request}) => {
                       transitionDuration: '500ms'
                     },
                   }}
-                    onClick = {handleClick}
+                    onClick = {() => {
+                        setReq(request)
+                        setDetails(true)
+                    }}
                   >
                       View Details
                   </Button>   

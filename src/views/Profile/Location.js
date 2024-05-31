@@ -145,8 +145,6 @@ function Location() {
         let temp = {...errors}
         if ('address' in fieldValues)
             temp.address = (/..../).test(fieldValues.address)?"":"Street is not valid."
-        if ('address2' in fieldValues)
-            temp.address2 = (/./).test(fieldValues.address2)?"":"Street 2 is not valid."
         if ('city' in fieldValues)
             temp.city = (/..../).test(fieldValues.city)?"":"City is not valid."
         if ('country' in fieldValues)
