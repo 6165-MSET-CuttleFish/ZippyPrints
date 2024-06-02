@@ -16,7 +16,7 @@ import {useForm, Form} from '../../components/useForm'
 import { v4 as uuidv4 } from 'uuid';
 import styles from '../Discover/map.module.css'
 import {useNavigate} from "react-router-dom"
-import {Menu} from '../../components/Menu/Menu'
+import { Menu } from '../../components/Menu/Menu'
 import { CurrentCenterContext } from './CenterProvider.js'
 import { CurrentSelectedContext } from './SelectedProvider';
 

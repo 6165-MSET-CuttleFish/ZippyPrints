@@ -94,8 +94,27 @@ function LaserCutter() {
              location: location,
              email: currentUser.email,      
              file: id + "." + ext,
-             type: "Laser Cutting"
+             type: "Laser Cutting",
+             accepted: false
         })
+
+        await updateDoc(userRef, {
+            request: {
+                material: material,
+                color: color,
+                width: values.width,
+                length: values.length,
+                thickness: values.thickness,
+                unit: unit,
+                info: values.info,
+                teamnumber: team,       
+                location: location,
+                email: currentUser.email,      
+                file: id + "." + ext,
+                type: "Laser Cutting",
+                accepted: false
+            }
+       })
     }
 
     const handleSubmit = async(e) => {        

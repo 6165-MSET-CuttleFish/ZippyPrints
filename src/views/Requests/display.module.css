@@ -1,9 +1,7 @@
 .container {
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    margin-top: 7.5vh;
-    
+    justify-content: space-around;    
 }
 .menuContainer {
     display: flex;
@@ -65,8 +63,9 @@
     transition-duration: 500ms;
 }
 
-
-
+.accepted {
+    margin: 2vh;
+}
 .menuTitle {
     color: rgba(6, 28, 61, 1);
     font-family: "Lexend SemiBold";
@@ -76,6 +75,19 @@
     width: 45vw;
     margin-top: 2vw;
     margin-bottom: 2vw;
+}
+
+.listTitle {
+    color: #F0F5FF;
+    font-family: "Lexend SemiBold";
+    font-size: 24pt;
+    font-weight: 100;
+    line-height: 2vh;
+    width: 45vw;
+    margin-bottom: 5vh;
+    margin-top: 3vh;
+    padding-left: 22.5vw;
+    text-align: left;
 }
 
 .menuSubtitle {

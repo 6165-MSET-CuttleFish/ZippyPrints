@@ -142,7 +142,8 @@ export default function RegisterForm() {
         .then(async () => {
           // Signed in 
           const db = getFirestore();
-          const colRef = doc(db, "users", "" + auth.currentUser.uid)
+          const userRef = doc(db, "users", "" + auth.currentUser.uid)
+          const printerRef = doc(db, "printers", "" + auth.currentUser.uid)
           sendEmailVerification(auth.currentUser)
           await updateProfile(await auth.currentUser, {
             displayName: userName,
@@ -156,11 +157,20 @@ export default function RegisterForm() {
             const errorMessage = error.message;
             window.alert("Error: " + errorCode + ", " + errorMessage)
           });
-          await setDoc(colRef, {
-            username: userName,
-            email: userEmail,
-            printer: printer,
-          })
+          if (printer) {
+            await setDoc(printerRef, {
+              username: userName,
+              email: userEmail,
+              printer: printer,
+            })
+          } else {
+            await setDoc(userRef, {
+              username: userName,
+              email: userEmail,
+              printer: printer,
+            })
+          }
+          
           })
           .catch((error) => {
             setLoading({loading: false})

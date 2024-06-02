@@ -103,8 +103,27 @@ function Printer() {
              location: location,
              email: currentUser.email,
              file: id + "." + ext,
-             type: "3D Printing"
+             type: "3D Printing",
+             accepted: false
         })
+
+        await updateDoc(userRef, {
+            request: {
+                material: material,
+                color: color,
+                width: values.width,
+                length: values.length,
+                height: values.height,
+                unit: unit,
+                info: values.info,
+                teamnumber: team,
+                location: location,
+                email: currentUser.email,
+                file: id + "." + ext,
+                type: "3D Printing",
+                accepted: false
+            }
+       })
     }
     const handleSubmit = async(e) => {        
         e.preventDefault()

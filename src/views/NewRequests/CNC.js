@@ -99,8 +99,26 @@ function CNC() {
              location: location,
              email: currentUser.email,
              file: id + "." + ext,
-             type: "CNCing"
+             type: "CNCing",
+             accepted: false
         })
+        await updateDoc(userRef, {
+            request: {
+                material: material,
+                color: color,
+                width: values.width,
+                length: values.length,
+                thickness: values.thickness,
+                unit: unit,
+                info: values.info,
+                teamnumber: team,
+                location: location,
+                email: currentUser.email,
+                file: id + "." + ext,
+                type: "CNCing",
+                accepted: false,
+            }
+       })
     }
 
     const handleSubmit = async(e) => {        
@@ -138,7 +156,7 @@ function CNC() {
     }
 
     const validateFile = () => {
-        if (ext == "svg" || ext == "stl") {
+        if (ext == "svg" || ext == "dxf") {
             return true;
         }
         else return false;

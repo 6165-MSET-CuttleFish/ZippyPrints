@@ -19,6 +19,11 @@ function DisplayRequests() {
     const storage = getStorage();
     const [req, setReq] = useState([]);
     const { details, setDetails } = useContext(CurrentDetailsContext);
+    const db = getFirestore();
+    const printerRef = doc(db, "printers", currentUser.uid)
+    const [ acceptedReq, setAcceptedReq ] = useState();
+    const [ activeReq, setActiveReq ] = useState(false);
+
 
     useEffect(() => {
         const getRequests = async () => {
@@ -41,7 +46,10 @@ function DisplayRequests() {
                       teamnumber: doc.data()?.teamnumber,
                       location: doc.data()?.location, 
                       email: doc.data()?.email,
-                      type: doc.data()?.type
+                      type: doc.data()?.type,
+                      thickness: doc.data()?.thickness,
+                      accepted: doc.data()?.accepted,
+                      acceptedBy: doc.data()?.acceptedBy,
                     },
                   ]);
                 }
@@ -55,6 +63,16 @@ function DisplayRequests() {
       }
       getRequests()
       }, [currentUser?.username, storage])
+
+      useEffect(() => {
+        const fetchData = async () => {
+            const docSnap = await getDoc(printerRef);
+            setAcceptedReq((await docSnap).data()?.request)
+            if (acceptedReq != undefined)
+              setActiveReq(true);
+        } 
+        fetchData()
+      }, [printerRef])
 
       useEffect(() => {
         setElRefs((refs) => Array(req.length).fill().map((_, i) => refs[i] || createRef()));
@@ -103,6 +121,30 @@ function DisplayRequests() {
           </Paper>
 
           <div className = {styles.container}> 
+          { activeReq &&
+          <div> 
+              <div className={styles.listTitle}>Your Accepted Requests </div>
+              <Grid container spacing = {3} className = {styles.printerList}>
+                  <Paper 
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      border: '1px solid',
+                      borderColor: 'rgba(230, 232, 236, 0.502)',
+                      borderRadius: '20px',
+                      gap: '32px',
+                      width: '50vw',
+                      height: '12vw',
+                      marginRight: '2.25vw',
+                    }}
+                    className={styles.paper}>
+                      {<RequestList request = {acceptedReq}/>}
+                    </Paper>
+              </Grid>
+            </div>
+          }
+
+          <div className={styles.listTitle}>Active Requests </div>
           <Grid container spacing = {3} className = {styles.printerList}>
             {req?.map((request, i) =>(
               <Paper 

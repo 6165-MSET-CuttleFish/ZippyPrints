@@ -5,7 +5,7 @@ import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
 import { getAuth, updateProfile, onAuthStateChanged, currentUser, deleteUser, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 import {Paper} from '@mui/material'
-import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint } from 'firebase/firestore/lite';
+import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint, addDoc } from 'firebase/firestore/lite';
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { Avatar, ThemeProvider, createTheme, Box, Button, Snackbar, Alert } from '@mui/material'
@@ -36,17 +36,14 @@ export function setOpen(children){
 function Account() {
     const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
-    let username=null;
-    let db=null;
-    let colRef=null;
-    let markerColRef=null;
+    const db = getFirestore();
+    const userRef = doc(db, 'users', "" + currentUser?.uid);
+    const markerColRef = doc(db, 'markers', "" + currentUser?.uid);
+    const printerRef = doc(db, 'printers', "" + currentUser?.uid);
     const [openDeletePopup, setOpenDeletePopup] = useState(false);
-    if(currentUser!=null){
-        username = (currentUser?.displayName)
-        db = (getFirestore());
-        colRef = (doc(db, 'users', "" + currentUser?.uid))
-        markerColRef = (doc(db, 'markers', "" + currentUser?.uid))
-    }
+    const [ userInfo, setUserInfo ] = useState();
+    const [ info, setInfo ] = useState();
+    
     
     const checkViewable= ()=> {
         if(!currentUser) {
@@ -71,17 +68,16 @@ function Account() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const docSnap = await getDoc(colRef);
+            const docSnap = await getDoc(userRef);
             if ((await docSnap).data()?.address != null) {
             setName(((await docSnap).data().username) !== undefined? ((await docSnap).data().username) : "Update your username");  
             setTeamnumber(((await docSnap).data().teamnumber) !== undefined? ((await docSnap).data().teamnumber) : "Please enter your team number");
             setPrinter(((await docSnap).data().printer))  
             }
+            setUserInfo((await docSnap).data())
         }
         fetchData()
-    }, [colRef])
-
-    console.log(printer)
+    }, [userRef])
 
     const getGeoLocation = async (address) => {
         try {
@@ -93,7 +89,7 @@ function Account() {
       }
     
     const getData = async () => {
-        const docSnap = await getDoc(colRef);
+        const docSnap = await getDoc(userRef);
         const street = (await docSnap).data().address;
         const city = (await docSnap).data().city;
         const state = (await docSnap).data().state;
@@ -102,8 +98,7 @@ function Account() {
       try {
           const {data} = await getGeoLocation(formattedAddress);
           await setGeoLocationData(data);
-          console.log(data);
-          await updateDoc(colRef, {
+          await updateDoc(userRef, {
               formattedAddress: data.results[0]?.formatted_address,
               geoPoint: new GeoPoint(await (data.results[0]?.geometry?.location?.lat), await (data.results[0]?.geometry?.location?.lng))
           })
@@ -126,7 +121,7 @@ function Account() {
   
 
    const uploadData = async () => {
-           await updateDoc(colRef, {
+           await updateDoc(userRef, {
             username: values.name,
             teamnumber: values.teamnumber,
            })
@@ -206,16 +201,31 @@ function Account() {
       const handlePrinter = async () => {
         if (printer) {
             try {
-                await updateDoc(colRef, {
-                    printer: false
-                  })
-        
+                await setDoc(printerRef, {
+                    address: userInfo?.address,
+                    address2: userInfo?.address2,
+                    bio: userInfo?.bio,
+                    city: userInfo?.city,
+                    country: userInfo?.country,
+                    email: userInfo?.email,
+                    filament: userInfo?.filament,
+                    formattedAddress: userInfo?.formattedAddress,
+                    geoPoint: userInfo?.geoPoint,
+                    price: userInfo?.price,
+                    printer: userInfo?.printer,
+                    printers: userInfo?.printers,
+                    service: userInfo?.service,
+                    state: userInfo?.state,
+                    teamnumber: userInfo?.teamnumber,
+                    username: userInfo?.username,
+                    zipcode: userInfo?.zipcode
+                })
             }catch(error) {
                 console.log(error.message);
             }
         } else if (!printer) {
             try {
-                await updateDoc(colRef, {
+                await updateDoc(userRef, {
                     printer: true
                   })
         
@@ -228,7 +238,7 @@ function Account() {
     return(
         <div>
             {/* <Box className={styles.topBox}>
-                <h3 className={styles.text}> Edit {username}'s Profile </h3>
+                <h3 className={styles.text}> Edit {currentUser.displayName}'s Profile </h3>
             <Avatar sx={{ m: 0, bgcolor: '#e0c699', fontSize: 2, marginTop: 1}}/>
             </Box> */}
 
