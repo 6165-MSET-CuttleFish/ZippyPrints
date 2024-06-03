@@ -72,9 +72,9 @@ function Account() {
             if ((await docSnap).data()?.address != null) {
             setName(((await docSnap).data().username) !== undefined? ((await docSnap).data().username) : "Update your username");  
             setTeamnumber(((await docSnap).data().teamnumber) !== undefined? ((await docSnap).data().teamnumber) : "Please enter your team number");
-            setPrinter(((await docSnap).data().printer))  
+            setPrinter(((await docSnap).data()?.printer))  
             }
-            setUserInfo((await docSnap).data())
+            setUserInfo((await docSnap)?.data())
         }
         fetchData()
     }, [userRef])
@@ -90,10 +90,10 @@ function Account() {
     
     const getData = async () => {
         const docSnap = await getDoc(userRef);
-        const street = (await docSnap).data().address;
-        const city = (await docSnap).data().city;
-        const state = (await docSnap).data().state;
-        const country = (await docSnap).data().country;
+        const street = (await docSnap).data()?.address;
+        const city = (await docSnap).data()?.city;
+        const state = (await docSnap).data()?.state;
+        const country = (await docSnap).data()?.country;
         const formattedAddress = street + ", " + city + ", " + state + ", " + country;
       try {
           const {data} = await getGeoLocation(formattedAddress);

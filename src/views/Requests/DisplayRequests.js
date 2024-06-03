@@ -11,6 +11,7 @@ import RequestList from './Requests';
 import Details from './Details';
 import { CurrentDetailsContext } from './DetailsContext';
 import { Menu } from '../../components/Menu/Menu'
+import { RequestContext } from './RequestContext';
 
 function DisplayRequests() {
     const [type, setType] = useState("3D Printing");
@@ -22,54 +23,53 @@ function DisplayRequests() {
     const db = getFirestore();
     const printerRef = doc(db, "printers", currentUser.uid)
     const [ acceptedReq, setAcceptedReq ] = useState();
-    const [ activeReq, setActiveReq ] = useState(false);
+    const [ activeReq, setActiveReq ] = useState();
+    const q = query(collection(db, "requests"));
 
 
     useEffect(() => {
-        const getRequests = async () => {
-          const db = getFirestore();
-          const q = query(collection(db, "requests"));
-          try {
-              const querySnapshot = await getDocs(q);
-              querySnapshot.forEach((doc) => {
-                setReq((current) => [...current,
-                    {
-                      color: doc.data()?.color,
-                      height: doc.data()?.height,
-                      info: doc.data()?.info,
-                      length: doc.data()?.length,
-                      email:doc.data()?.email,
-                      material: doc.data()?.material,
-                      unit: doc.data()?.unit,
-                      width: doc.data()?.width,
-                      file: doc.data()?.file,
-                      teamnumber: doc.data()?.teamnumber,
-                      location: doc.data()?.location, 
-                      email: doc.data()?.email,
-                      type: doc.data()?.type,
-                      thickness: doc.data()?.thickness,
-                      accepted: doc.data()?.accepted,
-                      acceptedBy: doc.data()?.acceptedBy,
-                    },
-                  ]);
-                }
-          );
-          } catch (error){
-            // window.alert(error) //We want to use a snackbar instead of a popup so this is commmented out
-            console.log(error)
-            // console.log(redirect)
-
-          }
+      const getRequests = async () => {
+        try {
+          const querySnapshot = await getDocs(q);
+          setReq([])
+          querySnapshot.forEach((doc) => {
+            setReq((current) => [...current, {
+              color: doc.data()?.color,
+              height: doc.data()?.height,
+              info: doc.data()?.info,
+              length: doc.data()?.length,
+              email:doc.data()?.email,
+              material: doc.data()?.material,
+              unit: doc.data()?.unit,
+              width: doc.data()?.width,
+              file: doc.data()?.file,
+              teamnumber: doc.data()?.teamnumber,
+              location: doc.data()?.location, 
+              email: doc.data()?.email,
+              type: doc.data()?.type,
+              thickness: doc.data()?.thickness,
+              accepted: doc.data()?.accepted,
+              acceptedBy: doc.data()?.acceptedBy,
+            },]);
+          });
+        } catch (error){
+          // window.alert(error) //We want to use a snackbar instead of a popup so this is commmented out
+          console.log(error)
+          // console.log(redirect)
+        }
       }
       getRequests()
-      }, [currentUser?.username, storage])
+    }, [details])
 
-      useEffect(() => {
-        const fetchData = async () => {
+    useEffect(() => {
+      const fetchData = async () => {
             const docSnap = await getDoc(printerRef);
             setAcceptedReq((await docSnap).data()?.request)
-            if (acceptedReq != undefined)
+            if (acceptedReq != undefined) {
               setActiveReq(true);
+            } else {
+              setActiveReq(false)
+            }
         } 
         fetchData()
       }, [printerRef])
@@ -77,7 +77,6 @@ function DisplayRequests() {
       useEffect(() => {
         setElRefs((refs) => Array(req.length).fill().map((_, i) => refs[i] || createRef()));
       }, [req]);
-    
     
     const handleInputChange = (event) => {
         setType(event?.target.value);
@@ -124,7 +123,7 @@ function DisplayRequests() {
           { activeReq &&
           <div> 
               <div className={styles.listTitle}>Your Accepted Requests </div>
-              <Grid container spacing = {3} className = {styles.printerList}>
+              <Grid className = {styles.printerList}>
                   <Paper 
                     sx={{
                       display: 'flex',

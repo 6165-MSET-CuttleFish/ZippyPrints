@@ -22,25 +22,6 @@ import Details from './Details';
 import { RequestContext } from './RequestContext';
 
 const RequestList = ({request}) => {
-    const useStyles = makeStyles(theme =>({ 
-        requestButton: {
-            border: 0,
-            borderRadius: 3,
-            boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-            height: 48,
-            width: 220,
-          },
-          submitButton:{
-          right: -3,
-          top: 7,
-          width:350,
-          },
-          textbox:{
-          right:5
-          }
-        
-      }))
-    const classes = useStyles();
     const initalFValues = {
         requester_email: '',
         teamnumber: '',

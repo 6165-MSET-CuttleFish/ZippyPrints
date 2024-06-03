@@ -82,10 +82,10 @@ function Printer() {
     useEffect(() => {
         const fetchData = async () => {
             const docSnap = await getDoc(userRef);
-            setTeam(((await docSnap).data().teamnumber) !== undefined? ((await docSnap).data().teamnumber) : "MISSING!");
-            let state = ((await docSnap).data().formattedAddress.split((","))[2]).split(" ")[1];
-            let formatted = (await docSnap).data().formattedAddress.split((","))[1] + ", " + state + "," + (await docSnap).data().formattedAddress.split((","))[3];
-            setLocation(((await docSnap).data().formattedAddress) !== undefined? (formatted) : "MISSING!");
+            setTeam(((await docSnap).data()?.teamnumber) !== undefined? ((await docSnap).data()?.teamnumber) : "MISSING!");
+            let state = ((await docSnap).data()?.formattedAddress.split((","))[2]).split(" ")[1];
+            let formatted = (await docSnap).data()?.formattedAddress.split((","))[1] + ", " + state + "," + (await docSnap).data()?.formattedAddress.split((","))[3];
+            setLocation(((await docSnap).data()?.formattedAddress) !== undefined? (formatted) : "MISSING!");
         }
         fetchData()
     }, [colRef])

@@ -97,10 +97,10 @@ function Printer() {
     
     const getData = async () => {
         const docSnap = await getDoc(colRef);
-        const street = (await docSnap).data().address;
-        const city = (await docSnap).data().city;
-        const state = (await docSnap).data().state;
-        const country = (await docSnap).data().country;
+        const street = (await docSnap).data()?.address;
+        const city = (await docSnap).data()?.city;
+        const state = (await docSnap).data()?.state;
+        const country = (await docSnap).data()?.country;
         const formattedAddress = street + ", " + city + ", " + state + ", " + country;
       try {
           const {data} = await getGeoLocation(formattedAddress);
