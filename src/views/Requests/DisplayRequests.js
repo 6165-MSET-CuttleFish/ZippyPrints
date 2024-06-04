@@ -123,7 +123,7 @@ function DisplayRequests() {
           { activeReq &&
           <div> 
               <div className={styles.listTitle}>Your Accepted Requests </div>
-              <Grid className = {styles.printerList}>
+              <Grid container spacing = {3} className = {styles.printerList}>
                   <Paper 
                     sx={{
                       display: 'flex',

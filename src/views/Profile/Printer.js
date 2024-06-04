@@ -8,7 +8,7 @@ import {Paper} from '@mui/material'
 import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint } from 'firebase/firestore/lite';
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
-import { Avatar, ThemeProvider, createTheme, Box, Select, OutlinedInput, MenuItem } from '@mui/material'
+import { Snackbar, Alert, Box, Select, MenuItem } from '@mui/material'
 import { query, collection, getDocs, where } from "firebase/firestore";
 import { API_KEY } from '../../api/firebaseConfig'
 import { AuthContext } from "../Auth/Auth";
@@ -44,16 +44,16 @@ export function setOpen(children){
 function Printer() {
     const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
-    let username=null;
-    let db=null;
-    let colRef=null;
-    let markerColRef=null;
-    if(currentUser!=null){
-        username = (currentUser?.displayName)
-        db = (getFirestore());
-        colRef = (doc(db, 'users', "" + currentUser?.uid))
-        markerColRef = (doc(db, 'markers', "" + currentUser?.uid))
-    }
+    const db = getFirestore();
+    const printerRef = doc(db, 'printers', `${currentUser.uid}`)
+    const sharedRef = doc(db, 'shared', `${currentUser.uid}`)
+    const [printerInfo, setPrinterInfo] = useState("Please enter your information about your printer");
+    const [filament, setFilament] = useState("Please enter information about the type of filament you offer");
+    const [price, setPrice] = useState("Please enter an estimate price range for your service");
+    const [service, setService] = useState([]);
+    const [bio, setBio] = useState("Write a short bio about the service(s) you provide");
+    const [error, setError] = useState(false)
+    const [success, setSuccess] = useState(false)
     
     const checkViewable= ()=> {
         if(!currentUser) {
@@ -61,82 +61,68 @@ function Printer() {
             setOpen(true)
         }
         else if(!currentUser.emailVerified) {
-        navigate("/Verification");
-        setOpen(true);
+            navigate("/Verification");
+            setOpen(true);
         }
     }
-    const [geoLocationData, setGeoLocationData] = useState(null);
-    const [printerInfo, setPrinterInfo] = useState("Please enter your information about your printer");
-    const [filament, setFilament] = useState("Please enter information about the type of filament you offer");
-    const [price, setPrice] = useState("Please enter an estimate price range for your service");
-    const [service, setService] = useState([]);
-    const [bio, setBio] = useState("Write a short bio about the service(s) you provide");
-
-
+    
     useEffect(() => {
-        const fetchData = async () => {
-            const docSnap = await getDoc(colRef);
-            if ((await docSnap).data()?.address != null) {
-            setPrinterInfo(((await docSnap).data().printers) !== undefined? ((await docSnap).data().printers) : "Please enter your information about your printer");  
-            setFilament(((await docSnap).data().filament) !== undefined? ((await docSnap).data().filament) : "Please enter information about the type of filament you offer");   
-            setPrice(((await docSnap).data().price) !== undefined? ((await docSnap).data().price) : "Please enter an estimate price range for your service");
-            setBio(((await docSnap).data().bio) !== undefined? ((await docSnap).data().bio) : "Write a short bio about the service(s) you provide");
+        const getRef = async () => {
+          try {
+            const docSnap = await getDoc(sharedRef);
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              if (data?.printer) {
+                return
+              } else {
+                navigate("/404")
+                alert("You cannot access this page because you are not a registered printer")
+              }
+            } else {
+              console.log("No such document!");
             }
+          } catch (error) {
+            setError(true)
+          }
+        };
+    
+        if (sharedRef) {
+          getRef();
         }
-        fetchData()
-    }, [colRef])
-    
-    const getGeoLocation = async (address) => {
-        try {
-            const data = await axios.get(baseUrl + `${address}&key=${apiKey}`);
-            return data;
-        } catch(error) {
-            throw error;
-        }
-      }
-    
-    const getData = async () => {
-        const docSnap = await getDoc(colRef);
-        const street = (await docSnap).data()?.address;
-        const city = (await docSnap).data()?.city;
-        const state = (await docSnap).data()?.state;
-        const country = (await docSnap).data()?.country;
-        const formattedAddress = street + ", " + city + ", " + state + ", " + country;
-      try {
-          const {data} = await getGeoLocation(formattedAddress);
-          await updateDoc(colRef, {
-              formattedAddress: data.results[0]?.formatted_address,
-              geoPoint: new GeoPoint(await (data.results[0]?.geometry?.location?.lat), await (data.results[0]?.geometry?.location?.lng))
-          })
-          await setDoc(markerColRef, {
-              username: currentUser.displayName,
-              lat: await (data.results[0]?.geometry?.location?.lat),
-              lng: await (data.results[0]?.geometry?.location?.lng),
-              formattedAddress: data.results[0]?.formatted_address,
-              uid: currentUser.uid,
-              email: currentUser.email,
-            })
-  
-      }catch(error) {
-          alert(error.message);
-      }
-  }
-    
+      }, []);
+
       useEffect(() => {
           checkViewable()
       })
   
-  
+      useEffect(() => {
+        const getUser = async () => {
+            try {
+                const docSnap = await getDoc(printerRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    setPrinterInfo(data.printers !== ""? data.printers : "Please enter your information about your printer")
+                    setFilament(data.filament !== ""? data.filament : "Please enter information about the type of filament you offer")
+                    setPrice(data.price !== ""? data.price : "Please enter an estimate price range for your service")
+                    setBio(data.bio !== ""? data.bio : "Write a short bio about the service(s) you provide")
+                }
+            } catch (error) {
+                setError(true)
+            }
+        }
+        if (printerRef) {
+            getUser();
+        }
+    }, [printerRef])
 
    const uploadData = async () => {
-           await updateDoc(colRef, {
+           await updateDoc(printerRef, {
                 printers: values.printers,
                 price: values.price,
                 filament: values.filament,
                 service: service,
                 bio: values.bio,
            })
-           await getData();
        }
 
     
@@ -160,12 +146,17 @@ function Printer() {
         if (fieldValues === values)
         return Object.values(temp).every(x => x === "")
     }
-    const handleSubmit = async(e) => {        
-        e.preventDefault()
-        if(validate()) {
-            uploadData();  
-            resetForm();
-        }  
+    const handleSubmit = async(e) => {      
+        try {
+            e.preventDefault()
+            if(validate()) {
+                uploadData();  
+                resetForm();
+                setSuccess(true)
+            }  
+        } catch (error) {
+            setError(true)
+        }
     }
     const handleChange = (event) => {
         const {
@@ -305,6 +296,16 @@ function Printer() {
                     />
                 </Form>
             </Box>
+            <Snackbar open={success} autoCloseDuration={5000} onClose={() => setSuccess(false)}>
+                <Alert onClose={() => setSuccess(false)} severity="success" sx={{ width: '100%' }}>
+                    Success!
+                </Alert>
+            </Snackbar>
+            <Snackbar open={error} autoCloseDuration={5000} onClose={() => setError(false)}>
+                <Alert onClose={() => setError(false)} severity="success" sx={{ width: '100%' }}>
+                    We've encounted an error, please try again later
+                </Alert>
+            </Snackbar>
           </div>
         )
 }

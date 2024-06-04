@@ -5,7 +5,7 @@ import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
 import { getAuth, updateProfile, onAuthStateChanged, currentUser, deleteUser, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 import {Paper} from '@mui/material'
-import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint, addDoc } from 'firebase/firestore/lite';
+import { getFirestore, setDoc, updateDoc, doc, getDoc, deleteDoc } from 'firebase/firestore/lite';
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
 import { Avatar, ThemeProvider, createTheme, Box, Button, Snackbar, Alert } from '@mui/material'
@@ -36,13 +36,18 @@ export function setOpen(children){
 function Account() {
     const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
-    const db = getFirestore();
-    const userRef = doc(db, 'users', "" + currentUser?.uid);
-    const markerColRef = doc(db, 'markers', "" + currentUser?.uid);
-    const printerRef = doc(db, 'printers', "" + currentUser?.uid);
     const [openDeletePopup, setOpenDeletePopup] = useState(false);
     const [ userInfo, setUserInfo ] = useState();
-    const [ info, setInfo ] = useState();
+    const [name, setName] = useState("Update your username");
+    const [teamnumber, setTeamnumber] = useState("Please enter your team number");
+    const [printer, setPrinter] = useState();
+    const [errorOpen, setErrorOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("Error!");
+    const db = getFirestore();
+    const userRef = doc(db, 'users', `${currentUser?.uid}`);
+    const printerRef = doc(db, 'printers', `${currentUser?.uid}`);
+    const sharedRef = doc(db, 'shared', `${currentUser?.uid}`)
+    const [ ref, setRef ] = useState(null);
     
     
     const checkViewable= ()=> {
@@ -59,76 +64,64 @@ function Account() {
         checkViewable()
     })
 
-    const [geoLocationData, setGeoLocationData] = useState(null);
-    const [name, setName] = useState("Update your username");
-    const [teamnumber, setTeamnumber] = useState("Please enter your team number");
-    const [printer, setPrinter] = useState();
-    const [errorOpen, setErrorOpen] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("Error!");
+    
+    useEffect(() => {
+        const getRef = async () => {
+          try {
+            const docSnap = await getDoc(sharedRef);
+    
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              if (data?.printer) {
+                setPrinter(true);
+                setRef(doc(db, 'printers', `${currentUser?.uid}`));
+              } else {
+                setPrinter(false);
+                setRef(doc(db, 'users', `${currentUser?.uid}`));
+              }
+            } else {
+              console.log("No such document!");
+            }
+          } catch (error) {
+            console.error("Error getting document:", error);
+          }
+        };
+    
+        if (sharedRef) {
+          getRef();
+        }
+      }, [sharedRef, currentUser]);
 
     useEffect(() => {
         const fetchData = async () => {
-            const docSnap = await getDoc(userRef);
-            if ((await docSnap).data()?.address != null) {
-            setName(((await docSnap).data().username) !== undefined? ((await docSnap).data().username) : "Update your username");  
-            setTeamnumber(((await docSnap).data().teamnumber) !== undefined? ((await docSnap).data().teamnumber) : "Please enter your team number");
-            setPrinter(((await docSnap).data()?.printer))  
+          try {
+            if (ref) {
+              const docSnap = await getDoc(ref);
+              if (docSnap.exists()) {
+                const data = docSnap.data();
+                setName(data.username || "Update your username");
+                setTeamnumber(data.teamnumber || "Please enter your team number");
+                setUserInfo(data);
+              } else {
+                console.log("No such document!");
+              }
             }
-            setUserInfo((await docSnap)?.data())
-        }
-        fetchData()
-    }, [userRef])
-
-    const getGeoLocation = async (address) => {
-        try {
-            const data = await axios.get(baseUrl + `${address}&key=${apiKey}`);
-            return data;
-        } catch(error) {
-            throw error;
-        }
-      }
+          } catch (error) {
+            console.error("Error fetching document:", error);
+          }
+        };
     
-    const getData = async () => {
-        const docSnap = await getDoc(userRef);
-        const street = (await docSnap).data()?.address;
-        const city = (await docSnap).data()?.city;
-        const state = (await docSnap).data()?.state;
-        const country = (await docSnap).data()?.country;
-        const formattedAddress = street + ", " + city + ", " + state + ", " + country;
-      try {
-          const {data} = await getGeoLocation(formattedAddress);
-          await setGeoLocationData(data);
-          await updateDoc(userRef, {
-              formattedAddress: data.results[0]?.formatted_address,
-              geoPoint: new GeoPoint(await (data.results[0]?.geometry?.location?.lat), await (data.results[0]?.geometry?.location?.lng))
-          })
-          await setDoc(markerColRef, {
-              username: values.name,
-              teamnumber: values.teamnumber,
-              uid: currentUser.uid,
-              email: currentUser.email,
-              lat: await (data.results[0]?.geometry?.location?.lat),
-              lng: await (data.results[0]?.geometry?.location?.lng),
-              formattedAddress: data.results[0]?.formatted_address,
-            })
-  
-      }catch(error) {
-          console.log(error.message);
-      }
-  }
+        fetchData();
+      }, [ref, printer]);
     
-      
-  
-
    const uploadData = async () => {
-           await updateDoc(userRef, {
+           await updateDoc(ref, {
             username: values.name,
             teamnumber: values.teamnumber,
            })
            await updateProfile(await currentUser, {
             displayName: values.name,
           })
-           await getData();
     }
 
     const validate=(fieldValues = values)=>{
@@ -198,43 +191,70 @@ function Account() {
     const handleDeletePopup = () => {
         setOpenDeletePopup(true)
       }
-      const handlePrinter = async () => {
-        if (printer) {
-            try {
-                await setDoc(printerRef, {
-                    address: userInfo?.address,
-                    address2: userInfo?.address2,
-                    bio: userInfo?.bio,
-                    city: userInfo?.city,
-                    country: userInfo?.country,
-                    email: userInfo?.email,
-                    filament: userInfo?.filament,
-                    formattedAddress: userInfo?.formattedAddress,
-                    geoPoint: userInfo?.geoPoint,
-                    price: userInfo?.price,
-                    printer: userInfo?.printer,
-                    printers: userInfo?.printers,
-                    service: userInfo?.service,
-                    state: userInfo?.state,
-                    teamnumber: userInfo?.teamnumber,
-                    username: userInfo?.username,
-                    zipcode: userInfo?.zipcode
+    const handlePrinter = async () => {
+        try {
+            //changing account type from printer to user
+            if (printer) {
+                await updateDoc(sharedRef, {
+                    printer: false
                 })
-            }catch(error) {
-                console.log(error.message);
-            }
-        } else if (!printer) {
-            try {
-                await updateDoc(userRef, {
+                //update userDoc and then delete the current printer doc
+                await setDoc(userRef, {
+                    address: userInfo?.address || "",
+                    address2: userInfo?.address2 || "",
+                    bio: userInfo?.bio || "",
+                    city: userInfo?.city || "",
+                    country: userInfo?.country || "",
+                    email: userInfo?.email || "",
+                    filament: userInfo?.filament || "",
+                    formattedAddress: userInfo?.formattedAddress || "",
+                    geoPoint: userInfo?.geoPoint || "",
+                    price: userInfo?.price || "",
+                    printer: userInfo?.printer || "",
+                    printers: userInfo?.printers || "",
+                    service: userInfo?.service || "",
+                    state: userInfo?.state || "",
+                    teamnumber: userInfo?.teamnumber || "",
+                    username: userInfo?.username || "",
+                    zipcode: userInfo?.zipcode || ""
+                })
+
+                await deleteDoc(printerRef);
+
+            //changing account type from user to printer
+            } else if (!printer) {
+                await updateDoc(sharedRef, {
                     printer: true
-                  })
-        
-            }catch(error) {
-                console.log(error.message);
+                })
+
+                //update printer doc and delete the current userDoc
+                await setDoc(printerRef, {
+                    address: userInfo?.address || "",
+                    address2: userInfo?.address2 || "",
+                    bio: userInfo?.bio || "",
+                    city: userInfo?.city || "",
+                    country: userInfo?.country || "",
+                    email: userInfo?.email || "",
+                    filament: userInfo?.filament || "",
+                    formattedAddress: userInfo?.formattedAddress || "",
+                    geoPoint: userInfo?.geoPoint || "",
+                    price: userInfo?.price || "",
+                    printer: userInfo?.printer || "",
+                    printers: userInfo?.printers || "",
+                    service: userInfo?.service || "",
+                    state: userInfo?.state || "",
+                    teamnumber: userInfo?.teamnumber || "",
+                    username: userInfo?.username || "",
+                    zipcode: userInfo?.zipcode || ""
+                })
+
+                await deleteDoc(userRef);
             }
+        } catch (error) {
+            console.log(error)
         }
-        
-      }
+    }
+
     return(
         <div>
             {/* <Box className={styles.topBox}>

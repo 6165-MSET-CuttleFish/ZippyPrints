@@ -8,7 +8,7 @@ import {Paper} from '@mui/material'
 import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint } from 'firebase/firestore/lite';
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
-import { Avatar, ThemeProvider, createTheme, Box, Button } from '@mui/material'
+import { Box, Snackbar, Alert } from '@mui/material'
 import { query, collection, getDocs, where } from "firebase/firestore";
 import { API_KEY } from '../../api/firebaseConfig'
 import { AuthContext } from "../Auth/Auth";
@@ -38,16 +38,13 @@ export function setOpen(children){
 function Location() {
     const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
-    let username=null;
-    let db=null;
-    let colRef=null;
-    let markerColRef=null;
-    if(currentUser!=null){
-        username = (currentUser?.displayName)
-        db = getFirestore();
-        colRef = (doc(db, 'users', "" + currentUser?.uid))
-        markerColRef = (doc(db, 'markers', "" + currentUser?.uid))
-    }
+    const db = getFirestore();
+    const userRef = doc(db, 'users', `${currentUser?.uid}`);
+    const [ printer, setPrinter ] = useState();
+    const printerRef = doc(db, 'printers', `${currentUser?.uid}`)
+    const markerRef = (doc(db, 'markers', `${currentUser?.uid}`))
+    const sharedRef = doc(db, 'shared', `${currentUser?.uid}`)
+    const [ ref, setRef ] = useState(null);
     
     const checkViewable= ()=> {
         if(!currentUser) {
@@ -66,45 +63,84 @@ function Location() {
     const [city, setCity] = useState("Please enter your city");
     const [state, setState] = useState("Please enter your state");
     const [country, setCountry] = useState("Please enter your country");
+    const [ success, setSuccess ] = useState(false)
+    const [ error, setError ] = useState(false)
+
 
     useEffect(() => {
-        const fetchData = async () => {
-            const docSnap = await getDoc(colRef);
-            if ((await docSnap).data()?.address != null) {
-            setStreet1(((await docSnap).data().address) !== undefined? ((await docSnap).data().address) : "Please enter your address");  
-            setStreet2(((await docSnap).data().address2) !== undefined? ((await docSnap).data().address2) : "Please enter your address (if applicable)");      
-            setZipcode(((await docSnap).data().zipcode) !== undefined? ((await docSnap).data().zipcode) : "Please enter your zipcode");
-            setCity(((await docSnap).data().city) !== undefined? ((await docSnap).data().city) : "Please enter your city");
-            setState(((await docSnap).data().state) !== undefined? ((await docSnap).data().state) : "Please enter your state");
-            setCountry(((await docSnap).data().country) !== undefined? ((await docSnap).data().country) : "Please enter your country");
+        const getRef = async () => {
+          try {
+            const docSnap = await getDoc(sharedRef);
+    
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              if (data?.printer) {
+                setPrinter(true);
+                setRef(doc(db, 'printers', `${currentUser?.uid}`));
+              } else {
+                setPrinter(false);
+                setRef(doc(db, 'users', `${currentUser?.uid}`));
+              }
+            } else {
+              console.log("No such document!");
+            }
+          } catch (error) {
+            setError(true)
+          }
+        };
+    
+        if (sharedRef) {
+          getRef();
+        }
+      }, [success]);
+
+    useEffect(() => {
+        const getUser = async () => {
+            try {
+                const docSnap = await getDoc(ref);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    setStreet1(data.address !== ""? data.address : "Please enter your address")
+                    setStreet2(data.address2 !== ""? data.address2 : "Please enter your address (if applicable)")
+                    setZipcode(data.zipcode !== " "? data.zipcode : "Please enter your zipcode")
+                    setCity(data.city !== ""? data.city : "Please enter your city")
+                    setState(data.state !== ""? data.state : "Please enter your state")
+                    setCountry(data.country !== ""? data.country : "Please enter your country")
+                }
+            } catch (error) {
+                setError(true)
             }
         }
-        fetchData()
-    }, [colRef])
+        if (ref) {
+            getUser();
+        }
+    }, [ref, success])
+
     
     const getGeoLocation = async (address) => {
         try {
             const data = await axios.get(baseUrl + `${address}&key=${apiKey}`);
             return data;
         } catch(error) {
-            throw error;
+            setError(true)
         }
       }
     
     const getData = async () => {
-        const docSnap = await getDoc(colRef);
+        const docSnap = await getDoc(ref);
         const street = (await docSnap).data()?.address;
         const city = (await docSnap).data()?.city;
         const state = (await docSnap).data()?.state;
         const country = (await docSnap).data()?.country;
         const formattedAddress = street + ", " + city + ", " + state + ", " + country;
+        setStreet1(street)
       try {
           const {data} = await getGeoLocation(formattedAddress);
-          await updateDoc(colRef, {
+          await updateDoc(ref, {
               formattedAddress: data.results[0]?.formatted_address,
               geoPoint: new GeoPoint(await (data.results[0]?.geometry?.location?.lat), await (data.results[0]?.geometry?.location?.lng))
           })
-          await setDoc(markerColRef, {
+          await setDoc(markerRef, {
               username: currentUser.displayName,
               lat: await (data.results[0]?.geometry?.location?.lat),
               lng: await (data.results[0]?.geometry?.location?.lng),
@@ -114,7 +150,7 @@ function Location() {
             })
   
       }catch(error) {
-          alert(error.message);
+        setError(true)
       }
   }
     
@@ -124,9 +160,10 @@ function Location() {
   
   
 
-   const uploadData = async () => {
-           await updateDoc(colRef, {
-                username: username,
+    const uploadData = async () => {
+        try {
+            await updateDoc(ref, {
+                username: currentUser.displayName,
                 email: currentUser?.email,
                 address: values.address,
                 address2: values.address2,
@@ -135,8 +172,12 @@ function Location() {
                 country: values.country,
                 zipcode: values.zipcode,
            })
-           await getData();
-       }
+            await getData();
+            setSuccess(true)
+        } catch (error) {
+            setError(true)
+        }
+    }
 
     
 
@@ -306,6 +347,16 @@ function Location() {
                     />
                 </Form>
             </Box>
+            <Snackbar open={success} autoCloseDuration={5000} onClose={() => setSuccess(false)}>
+                <Alert onClose={() => setSuccess(false)} severity="success" sx={{ width: '100%' }}>
+                    Success!
+                </Alert>
+            </Snackbar>
+            <Snackbar open={error} autoCloseDuration={5000} onClose={() => setError(false)}>
+                <Alert onClose={() => setError(false)} severity="success" sx={{ width: '100%' }}>
+                    We've encounted an error, please try again later
+                </Alert>
+            </Snackbar>
           </div>
         )
 }

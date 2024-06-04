@@ -144,6 +144,7 @@ export default function RegisterForm() {
           const db = getFirestore();
           const userRef = doc(db, "users", "" + auth.currentUser.uid)
           const printerRef = doc(db, "printers", "" + auth.currentUser.uid)
+          const sharedRef = doc(db, "shared", "" + auth.currentUser.uid)
           sendEmailVerification(auth.currentUser)
           await updateProfile(await auth.currentUser, {
             displayName: userName,
@@ -157,6 +158,12 @@ export default function RegisterForm() {
             const errorMessage = error.message;
             window.alert("Error: " + errorCode + ", " + errorMessage)
           });
+
+          await setDoc(sharedRef, {
+            uid: auth.currentUser.uid,
+            printer: printer,
+          })
+
           if (printer) {
             await setDoc(printerRef, {
               username: userName,
