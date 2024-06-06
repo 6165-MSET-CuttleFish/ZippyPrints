@@ -7,7 +7,7 @@ import { AuthContext } from "../Auth/Auth";
 import styles from './printer.module.css'
 import {useNavigate} from "react-router-dom"
 import { v4 } from 'uuid';
-import { getStorage, ref, uploadBytes } from 'firebase/storage'
+import { getStorage, ref as storageRef, uploadBytes } from 'firebase/storage'
 
 
 
@@ -56,10 +56,10 @@ function Printer() {
     const [material, setMaterial] = useState();
     const [color, setColor] = useState();
     const [unit, setUnit] = useState();
-    const [file, setFile] = useState(null);
-    const [fileName, setFileName] = useState("No file selected (.stl is accepted).");
-    const pieces = fileName.split(".")
-    const ext = pieces[pieces.length - 1].toLowerCase();
+    const fileName = useState("No file selected (.stl is accepted). You may upload up to three files per request.");
+    const [files, setFiles] = useState([])
+    const [exts, setExts] = useState([])
+    const [uploaded, setUploaded] = useState()
 
 
 
@@ -71,44 +71,118 @@ function Printer() {
 
 
     const storage = getStorage();
-    let id = v4();
+    let id1 = v4();
+    let id2 = v4();
+    let id3 = v4();
+    let id = [id1, id2, id3]
     const db = getFirestore();
-    let colRef = null;
-    let userRef = null;
-    if(currentUser != null) {
-        colRef = (doc(db, 'requests', "" + id))
-        userRef = doc(db, 'users', "" + currentUser.uid)
-    }
+    const reqRef = doc(db, 'requests', `${currentUser?.uid}`)
+    const userRef = doc(db, 'users', `${currentUser?.uid}`)
+    const printerRef = doc(db, 'printers', `${currentUser?.uid}`)
+    const sharedRef = doc(db, 'shared', `${currentUser?.uid}`)
+    const [ref, setRef] = useState();
+    const [printer, setPrinter] = useState()
+    
+    useEffect(() => {
+        const getRef = async () => {
+          try {
+            const docSnap = await getDoc(sharedRef);
+            if (docSnap.exists()) {
+              const data = docSnap.data();
+              if (data?.printer) {
+                setPrinter(true);
+                setRef(printerRef);
+              } else {
+                setPrinter(false);
+                setRef(userRef);
+              }
+            } else {
+              console.log("No such document!");
+            }
+          } catch (error) {
+            setErrorMessage("Error: having trouble fetching user information, please try again later")
+            setErrorOpen(true)
+          }
+        };
+    
+        if (sharedRef) {
+          getRef();
+        }
+      }, [success]);
+
+
     useEffect(() => {
         const fetchData = async () => {
-            const docSnap = await getDoc(userRef);
-            setTeam(((await docSnap).data()?.teamnumber) !== undefined? ((await docSnap).data()?.teamnumber) : "MISSING!");
-            let state = ((await docSnap).data()?.formattedAddress.split((","))[2]).split(" ")[1];
-            let formatted = (await docSnap).data()?.formattedAddress.split((","))[1] + ", " + state + "," + (await docSnap).data()?.formattedAddress.split((","))[3];
-            setLocation(((await docSnap).data()?.formattedAddress) !== undefined? (formatted) : "MISSING!");
+          try {
+            if (ref) {
+              const docSnap = await getDoc(ref);
+              if (docSnap.exists()) {
+                const data = docSnap.data();
+                setTeam((data.teamnumber == "" || data.teamnumber == undefined)? "MISSING!" : data.teamnumber)
+                let state = data.formattedAddress?.split((","))[2].split(" ")[1];
+                let formatted = (await docSnap).data().formattedAddress?.split((","))[1] + ", " + state + "," + (await docSnap).data().formattedAddress.split((","))[3];
+                setLocation(formatted)
+                console.log(location)
+              } else {
+                console.log("No such document!");
+                setErrorMessage("Error: having trouble fetching user information, please try again later")
+                setErrorOpen(true)
+              }
+            }
+          } catch (error) {
+            console.error("Error fetching document:", error);
+            setErrorMessage("Error: having trouble fetching user information, please try again later")
+            setErrorOpen(true)
+          }
+        };
+        if (ref) {
+            fetchData();
         }
-        fetchData()
-    }, [colRef])
+      }, [ref, success, printer]);
+
+      useEffect(() => {
+        const getExt = () => {
+            for (let i = 0; i < files.length; i++) {
+                let pieces = files[i].name.split(".")
+                let ext = pieces[pieces.length - 1].toLowerCase();
+                setExts(prev => [...prev, ext])
+            }
+        }
+        getExt();
+      }, [files])
+      
+  
+      const validateFile = () => {
+          //check if only three files have been uploaded
+          try {
+              if (files.length > 3) {
+                  setErrorMessage("You can only upload up to three files!")
+                  setErrorOpen(true)
+                  return false
+              }
+      
+              let valid = true;
+              //check extensions of files
+              for (let i = 0; i < files.length; i++) {
+                  if (exts[i] == "stl") {
+                    valid = valid;
+                  } else {
+                    valid = false
+                    setErrorMessage("Please select a valid file format (only .stl file type is accepted).")
+                    setErrorOpen(true)
+                  }
+              }
+              return valid;
+          } catch (error) {
+            setErrorMessage("Please make sure to fill in required fields!")
+            setErrorOpen(true)
+          }
+          
+      }
 
     const uploadData = async () => {
-        await setDoc(colRef, {
-             material: material,
-             color: color,
-             width: values.width,
-             length: values.length,
-             height: values.height,
-             unit: unit,
-             info: values.info,
-             teamnumber: team,
-             location: location,
-             email: currentUser.email,
-             file: id + "." + ext,
-             type: "3D Printing",
-             accepted: false
-        })
-
-        await updateDoc(userRef, {
-            request: {
+        try {
+            await setDoc(reqRef, {
                 material: material,
                 color: color,
                 width: values.width,
@@ -119,44 +193,77 @@ function Printer() {
                 teamnumber: team,
                 location: location,
                 email: currentUser.email,
-                file: id + "." + ext,
+                files: {
+                   file1: id1 + "." + exts[0],
+                   file2: id2 + "." + exts[1],
+                   file3: id3 + "." + exts[2],
+               },
                 type: "3D Printing",
                 accepted: false
-            }
-       })
+           })
+   
+           await updateDoc(ref, {
+               request: {
+                   material: material,
+                   color: color,
+                   width: values.width,
+                   length: values.length,
+                   height: values.height,
+                   unit: unit,
+                   info: values.info,
+                   teamnumber: team,
+                   location: location,
+                   email: currentUser.email,
+                   files: {
+                       file1: id1 + "." + exts[0],
+                       file2: id2 + "." + exts[1],
+                       file3: id3 + "." + exts[2],
+                   },
+                   type: "3D Printing",
+                   accepted: false
+               }
+          })
+        } catch (error) {
+            setErrorMessage("Error: unable to process this request, please try again later")
+            setErrorOpen(true)
+        }
+        
     }
-    const handleSubmit = async(e) => {        
-        e.preventDefault()
-        if(validate() && validateSelect() && file != null && validateFile()) {
-            uploadData(); 
-            handleFile();
-            resetForm();
-            setSuccess(true);
-        } else {
-            if (!validateFile())
-            setErrorMessage("Please select a valid file format (only the .stl file type is accepted).")
-            if (!validate() || !validateSelect())
-            setErrorMessage("Please fill in all the required fields!")
-            setErrorOpen(true);
+    const handleSubmit = () => {        
+        try {
+            if(validate() && validateSelect() && files != null && validateFile()) {
+                uploadData(); 
+                handleFile();
+                resetForm();
+                setSuccess(true);
+            } else {
+                if (!validateFile())
+                if (!validate() || !validateSelect())
+                setErrorMessage("Please fill in all of the required fields!")
+                setErrorOpen(true);
+            }
+        } catch (error) {
+            setErrorMessage("Error: unable to upload your request, please try again later")
+            setErrorOpen(true)
         }
     }
 
     const handleFile = () => {
-        if (file == null) {
+        if (files == null) {
             setErrorMessage("Please upload a file")
             setErrorOpen(true);
             return;
-        } 
-        const fileRef = ref(storage, `prints/${id}.${ext}`);
-            uploadBytes(fileRef, file).then(() => {
-            setSuccess(true);
-        })
-    }
-    function validateFile() {
-        if (ext === "stl") {
-            return true;
         }
-        else return false;
+        for (let i = 0; i < files.length; i++) {
+            //each file is stored under prints/uid
+            const fileRef = storageRef(storage, `prints/${currentUser?.uid}/${id[i]}.${exts[i]}`);
+            uploadBytes(fileRef, files[i]).then(() => {
+                setSuccess(true);
+            }).catch((error) => {
+                setErrorMessage("Error: " + error)
+                setErrorOpen(true)
+            })
+        }
     }
 
     const handleMaterial = (event) => {
@@ -373,15 +480,19 @@ function Printer() {
                             <input 
                                 type="file" 
                                 hidden
+                                multiple
                                 onChange={(event) => {
-                                    setFile(event.target.files[0])
-                                    setFileName(event.target.files[0].name)
+                                    setFiles(event.target.files)
+                                    setUploaded(true)
                                 }}
                                 />
                         </Button>
-                        <div className={styles.uploadText}>
+                        { !uploaded && <div className={styles.uploadText}>
                             {fileName}
-                    </div>
+                        </div> }
+                        { uploaded && <div className={styles.uploadText}>
+                            {files[0]?.name}, {files[1]?.name}, {files[2]?.name}  
+                        </div>}
                 </div>
 
                 <div className={styles.submitContainer}>

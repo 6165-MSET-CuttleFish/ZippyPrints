@@ -100,12 +100,12 @@ function Location() {
                 const docSnap = await getDoc(ref);
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    setStreet1(data.address !== ""? data.address : "Please enter your address")
-                    setStreet2(data.address2 !== ""? data.address2 : "Please enter your address (if applicable)")
-                    setZipcode(data.zipcode !== " "? data.zipcode : "Please enter your zipcode")
-                    setCity(data.city !== ""? data.city : "Please enter your city")
-                    setState(data.state !== ""? data.state : "Please enter your state")
-                    setCountry(data.country !== ""? data.country : "Please enter your country")
+                    setStreet1((data.address == "" || data?.address == undefined)? "Please enter your address" : data.address)
+                    setStreet2((data.address2 == "" || data?.address2 == undefined)? "Please enter your address (if applicable)" : data.address2)
+                    setZipcode((data.zipcode == "" || data.zipcode == undefined)? "Please enter your zipcode" : data.zipcode)
+                    setCity((data.city == "" || data?.city == undefined)? "Please enter your city" : data.city)
+                    setState((data.state == "" || data.state == undefined)? "Please enter your state" : data.state)
+                    setCountry((data.country == "" || data.country == undefined)? "Please enter your country" : data.country)
                 }
             } catch (error) {
                 setError(true)
@@ -178,9 +178,6 @@ function Location() {
             setError(true)
         }
     }
-
-    
-
 
     const validate=(fieldValues = values)=>{
         let temp = {...errors}

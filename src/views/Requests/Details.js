@@ -26,8 +26,10 @@ export default function Details() {
     const [ rerender, setRerender ] = useState(1);
     const storage = getStorage();
     const db = getFirestore();
-    const fileName = req?.file.split(".")[0]
-    const reqRef = doc(db, 'requests', "" + fileName)
+    const reqRef = doc(db, 'requests', `${req?.uid}`)
+    const fileNames = Object.keys(req?.files).map(i => {
+        return {name: req?.files[i]} 
+    });
     const printerRef = doc(db, 'printers', "" + currentUser.uid)
 
     useEffect(() => {
@@ -68,31 +70,30 @@ export default function Details() {
     }, [printerRef])
 
 
+    
+
     const handleDownload = async() => {
-        getDownloadURL(ref(storage, `prints/${req?.file}`))
-        .then((url) => {
-            // This can be downloaded directly:
-            const xhr = new XMLHttpRequest();
-            xhr.responseType = 'blob';
-            xhr.onload = (event) => {
-            const blob = xhr.response;
-            };
-            xhr.open('GET', url);
-            xhr.send();
-            window.open(url)
-        })
-        .catch((error) => {
+        for (let i = 0; i < fileNames.length; i++) {
+            getDownloadURL(ref(storage, `prints/${req?.uid}/${fileNames[i].name}`)).then((url) => {
+                // This can be downloaded directly:
+                const xhr = new XMLHttpRequest();
+                xhr.responseType = 'blob';
+                xhr.onload = (event) => {
+                const blob = xhr.response;
+                };
+                xhr.open('GET', url);
+                xhr.send();
+                window.open(url)
+                console.log("SUCCESS " + i)
+            }).catch((error) => {
             alert(error.message)
-        });
+            });
+        }
       }
 
     const handleAccept = async() => {
         try {
             if (!requestStatus) {
-                await updateDoc(reqRef, {
-                    accepted: true,
-                    acceptedBy: await currentUser.uid
-                })
                 await updateDoc(printerRef, {
                     request: {
                         material: req?.material,
@@ -111,7 +112,10 @@ export default function Details() {
                         accepted: true,
                     }
                })
-        
+                await updateDoc(reqRef, {
+                    accepted: true,
+                    acceptedBy: await currentUser.uid
+                })
                await deleteDoc(reqRef);
 
                setSuccess(true);

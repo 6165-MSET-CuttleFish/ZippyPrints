@@ -50,6 +50,7 @@ function DisplayRequests() {
               thickness: doc.data()?.thickness,
               accepted: doc.data()?.accepted,
               acceptedBy: doc.data()?.acceptedBy,
+              uid: doc.data()?.uid
             },]);
           });
         } catch (error){

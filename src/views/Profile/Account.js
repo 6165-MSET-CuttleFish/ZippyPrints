@@ -41,14 +41,17 @@ function Account() {
     const [name, setName] = useState("Update your username");
     const [teamnumber, setTeamnumber] = useState("Please enter your team number");
     const [printer, setPrinter] = useState();
-    const [errorOpen, setErrorOpen] = useState(false);
     const [errorMessage, setErrorMessage] = useState("Error!");
+    const [successMessage, setSuccessMessage] = useState("Success!");
     const db = getFirestore();
     const userRef = doc(db, 'users', `${currentUser?.uid}`);
     const printerRef = doc(db, 'printers', `${currentUser?.uid}`);
     const sharedRef = doc(db, 'shared', `${currentUser?.uid}`)
     const [ ref, setRef ] = useState(null);
-    
+    const [ activeReq, setActiveReq ] = useState(false);
+    const [ success, setSuccess ] = useState(false)
+    const [ error, setError ] = useState(false)
+
     
     const checkViewable= ()=> {
         if(!currentUser) {
@@ -69,18 +72,18 @@ function Account() {
         const getRef = async () => {
           try {
             const docSnap = await getDoc(sharedRef);
-    
             if (docSnap.exists()) {
               const data = docSnap.data();
               if (data?.printer) {
-                setPrinter(true);
                 setRef(doc(db, 'printers', `${currentUser?.uid}`));
+                setPrinter(true);
               } else {
-                setPrinter(false);
                 setRef(doc(db, 'users', `${currentUser?.uid}`));
+                setPrinter(false);
               }
             } else {
-              console.log("No such document!");
+                console.log("No such document!");
+              setError(true)
             }
           } catch (error) {
             console.error("Error getting document:", error);
@@ -90,8 +93,9 @@ function Account() {
         if (sharedRef) {
           getRef();
         }
-      }, [sharedRef, currentUser]);
+      }, [success, printer]);
 
+      
     useEffect(() => {
         const fetchData = async () => {
           try {
@@ -102,18 +106,24 @@ function Account() {
                 setName(data.username || "Update your username");
                 setTeamnumber(data.teamnumber || "Please enter your team number");
                 setUserInfo(data);
+                if (printer && data.request != undefined) {
+                    setActiveReq(true)
+                }
               } else {
                 console.log("No such document!");
+                setError(true)
               }
             }
           } catch (error) {
             console.error("Error fetching document:", error);
           }
         };
-    
-        fetchData();
-      }, [ref, printer]);
-    
+        if (ref) {
+            fetchData();
+        }
+      }, [ref, success, printer]);
+
+
    const uploadData = async () => {
            await updateDoc(ref, {
             username: values.name,
@@ -123,6 +133,7 @@ function Account() {
             displayName: values.name,
           })
     }
+
 
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
@@ -143,7 +154,6 @@ function Account() {
         if(validate()) {
             uploadData(); 
             resetForm();
-            window.location.reload();
         }  
     }
 
@@ -158,26 +168,20 @@ function Account() {
 
     const handleDelete = async() => {
         try {
-            const credential = EmailAuthProvider.credential(
-                currentUser.email,
-                values.password
-              )
-              console.log(values.password)
-              console.log(credential)
-            
-              const result = reauthenticateWithCredential(
-                currentUser,
-                credential
-              )
-              console.log(result)
-            
-              // Pass result.user here
-            await deleteUser((await result)?.user)
+            if (!activeReq) {
+                const credential = EmailAuthProvider.credential(currentUser.email, values.password)
+                const result = reauthenticateWithCredential(currentUser, credential)            
+                // Pass result.user here
+                await deleteUser((await result)?.user)
                 navigate('/home')
                 window.location.reload();
+            } else {
+                setErrorMessage("Request Failed: You currently have an unfilfilled acepted request, please complete the request or unassign it before deleting your account!")
+                setError(true);
+            }
         } catch (error) {
             setErrorMessage("Request Failed: check that you've entered the correct password, contact support if needed.")
-            setErrorOpen(true);
+            setError(true);
         }
         
     } 
@@ -195,34 +199,42 @@ function Account() {
         try {
             //changing account type from printer to user
             if (printer) {
-                await updateDoc(sharedRef, {
-                    printer: false
-                })
-                //update userDoc and then delete the current printer doc
-                await setDoc(userRef, {
-                    address: userInfo?.address || "",
-                    address2: userInfo?.address2 || "",
-                    bio: userInfo?.bio || "",
-                    city: userInfo?.city || "",
-                    country: userInfo?.country || "",
-                    email: userInfo?.email || "",
-                    filament: userInfo?.filament || "",
-                    formattedAddress: userInfo?.formattedAddress || "",
-                    geoPoint: userInfo?.geoPoint || "",
-                    price: userInfo?.price || "",
-                    printer: userInfo?.printer || "",
-                    printers: userInfo?.printers || "",
-                    service: userInfo?.service || "",
-                    state: userInfo?.state || "",
-                    teamnumber: userInfo?.teamnumber || "",
-                    username: userInfo?.username || "",
-                    zipcode: userInfo?.zipcode || ""
-                })
+                if (activeReq) {
+                    setErrorMessage("Error: You currently have an unfilfilled accepted request, please complete the request or unassign it before switching account types!")
+                    setError(true)
+                } else {
+                    await updateDoc(sharedRef, {
+                        printer: false
+                    })
+                    //update userDoc and then delete the current printer doc
+                    await setDoc(userRef, {
+                        address: userInfo?.address || "",
+                        address2: userInfo?.address2 || "",
+                        bio: userInfo?.bio || "",
+                        city: userInfo?.city || "",
+                        country: userInfo?.country || "",
+                        email: userInfo?.email || "",
+                        filament: userInfo?.filament || "",
+                        formattedAddress: userInfo?.formattedAddress || "",
+                        geoPoint: userInfo?.geoPoint || "",
+                        price: userInfo?.price || "",
+                        printer: userInfo?.printer || "",
+                        printers: userInfo?.printers || "",
+                        service: userInfo?.service || "",
+                        state: userInfo?.state || "",
+                        teamnumber: userInfo?.teamnumber || "",
+                        username: userInfo?.username || "",
+                        zipcode: userInfo?.zipcode || ""
+                    })
+    
+                    await deleteDoc(printerRef);
+                    setSuccess(true)
+                    setSuccessMessage("You are now a user!")
+                    setPrinter(false)
+                }
 
-                await deleteDoc(printerRef);
-
-            //changing account type from user to printer
-            } else if (!printer) {
+            }  //changing account type from user to printer
+            else if (!printer) {
                 await updateDoc(sharedRef, {
                     printer: true
                 })
@@ -249,9 +261,13 @@ function Account() {
                 })
 
                 await deleteDoc(userRef);
+                setSuccess(true)
+                setSuccessMessage("You are now a printer!")
+                setPrinter(true)
             }
         } catch (error) {
-            console.log(error)
+            setError(true)
+            setErrorMessage("Error: " + error)
         }
     }
 
@@ -472,13 +488,18 @@ function Account() {
                             text = "Delete Account"
                             onClick = {handleDelete}
                         />
-                        <Snackbar open={errorOpen} autoCloseDuration={5000} onClose={() => setErrorOpen(false)}>
-                    <Alert onClose={() => setErrorOpen(false)} severity="error" sx={{ width: '100%' }}>
-                        {errorMessage}
-                    </Alert>
-                </Snackbar>
                     </div>
-            </Popup>
+                </Popup>
+            <Snackbar open={success} autoCloseDuration={5000} onClose={() => setSuccess(false)}>
+                <Alert onClose={() => setSuccess(false)} severity="success" sx={{ width: '100%' }}>
+                    {successMessage}
+                </Alert>
+            </Snackbar>
+            <Snackbar open={error} autoCloseDuration={5000} onClose={() => setError(false)}>
+                <Alert onClose={() => setError(false)} severity="error" sx={{ width: '100%' }}>
+                    {errorMessage}
+                </Alert>
+            </Snackbar>
           </div>
         )
 }
