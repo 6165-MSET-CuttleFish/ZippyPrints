@@ -122,7 +122,6 @@ function Printer() {
                 let state = data.formattedAddress?.split((","))[2].split(" ")[1];
                 let formatted = (await docSnap).data().formattedAddress?.split((","))[1] + ", " + state + "," + (await docSnap).data().formattedAddress.split((","))[3];
                 setLocation(formatted)
-                console.log(location)
               } else {
                 console.log("No such document!");
                 setErrorMessage("Error: having trouble fetching user information, please try again later")
@@ -199,7 +198,8 @@ function Printer() {
                    file3: id3 + "." + exts[2],
                },
                 type: "3D Printing",
-                accepted: false
+                accepted: false,
+                uid: currentUser?.uid
            })
    
            await updateDoc(ref, {

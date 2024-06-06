@@ -190,7 +190,7 @@ function CNC() {
              email: currentUser.email,
              type: "CNCing",
              accepted: false,
-             uid: currentUser.uid
+             uid: currentUser?.uid
         })
         await updateDoc(ref, {
             request: {

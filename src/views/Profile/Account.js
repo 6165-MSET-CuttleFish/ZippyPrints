@@ -47,7 +47,7 @@ function Account() {
     const userRef = doc(db, 'users', `${currentUser?.uid}`);
     const printerRef = doc(db, 'printers', `${currentUser?.uid}`);
     const sharedRef = doc(db, 'shared', `${currentUser?.uid}`)
-    const [ ref, setRef ] = useState(null);
+    const [ ref, setRef ] = useState();
     const [ activeReq, setActiveReq ] = useState(false);
     const [ success, setSuccess ] = useState(false)
     const [ error, setError ] = useState(false)
@@ -110,7 +110,7 @@ function Account() {
                     setActiveReq(true)
                 }
               } else {
-                console.log("No such document!");
+                console.log("No such document!!!!");
                 setError(true)
               }
             }

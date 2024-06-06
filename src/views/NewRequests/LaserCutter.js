@@ -70,7 +70,7 @@ function LaserCutter() {
     const db = getFirestore();
     const reqRef = doc(db, 'requests', `${currentUser?.uid}`)
     const printerRef = doc(db, 'printers', `${currentUser?.uid}`)
-    const userRef = doc(db, 'user', `${currentUser?.uid}`)
+    const userRef = doc(db, 'users', `${currentUser?.uid}`)
     const sharedRef = doc(db, 'shared', `${currentUser?.uid}`)
     const [ref, setRef] = useState()
     const [printer, setPrinter] = useState();
@@ -89,7 +89,7 @@ function LaserCutter() {
                 setRef(userRef);
               }
             } else {
-              console.log("No such document!");
+              console.log("No such document!!!");
             }
           } catch (error) {
             setErrorMessage(error)
@@ -103,7 +103,7 @@ function LaserCutter() {
         }
       }, [success]);
 
-    useEffect(() => {
+      useEffect(() => {
         const fetchData = async () => {
           try {
             if (ref) {
@@ -116,11 +116,14 @@ function LaserCutter() {
                 setLocation(formatted)
               } else {
                 console.log("No such document!");
+                setErrorMessage("Error: having trouble fetching user information, please try again later")
                 setErrorOpen(true)
               }
             }
           } catch (error) {
             console.error("Error fetching document:", error);
+            setErrorMessage("Error: having trouble fetching user information, please try again later")
+            setErrorOpen(true)
           }
         };
         if (ref) {
@@ -186,7 +189,7 @@ function LaserCutter() {
              email: currentUser.email,
              type: "Laser Cutting",
              accepted: false,
-             uid: currentUser.uid
+             uid: currentUser?.uid
         })
         await updateDoc(ref, {
             request: {
