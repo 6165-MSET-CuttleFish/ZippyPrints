@@ -31,6 +31,7 @@
 }
 .title {
     color: #015F8F;
+    font-family: "Lexend SemiBold";
     font-size: clamp(18px, 3rem, 1000px);
     font-weight: 600;
     line-height: clamp(20px, 3.5rem, 200px);

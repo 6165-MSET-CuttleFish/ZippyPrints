@@ -197,7 +197,7 @@ export default function LoginForm() {
                 {/* Title and Subtitle */}
                 <div className={styles.titleContainer}>
                     <h1 className={styles.title}>Welcome back! <br /> Sign in to continue</h1>
-                    <div style={{ textAlign: 'center' }}>
+                    <div style={{ textAlign: 'left' }}>
                             <span style={{ fontSize: '0.875rem', color: '#001b2e' }}>
                                 Have a problem signing in? Don't hesitate and{" "}
                         </span>
@@ -228,7 +228,7 @@ export default function LoginForm() {
                             marginBottom: '1rem',
                             "& .MuiInputBase-root": {
                                 width: '25vw',
-                                height: '5vh',
+                                height: '2.75rem',
                                 borderRadius: '1',
                                 backgroundColor: '#FFFFFF',
                                 '&:hover .MuiOutlinedInput-notchedOutline': {
@@ -266,7 +266,7 @@ export default function LoginForm() {
                             marginBottom: '1rem',
                             "& .MuiInputBase-root": {
                                 width: '25vw',
-                                height: '5vh',
+                                height: '2.75rem',
                                 borderRadius: '1',
                                 backgroundColor: '#FFFFFF',
                                 '&:hover .MuiOutlinedInput-notchedOutline': {
