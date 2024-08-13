@@ -1,53 +1,68 @@
-.container {
+.columnContainer {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: clamp(75px, 5vw, 1000px);
+    flex-direction: row; /* Change from column to row to split the screen */
+    height: 87vh; /* Full height of the viewport */
+    width: 100%;
+    background-color: #F2F2F2;
 }
 
-.loginPaper {
-    width: 550px;
-    height: 550px; 
-    position: absolute;
-    border-radius: 10px;
-    background-color: #F0F5FF;
-}
-.MuiPaper-root {
-    border-radius: 10px;
-}
-
-.loginTitleContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: 2vw;
-    margin-bottom: 2vw;
-}
-
-.logoContainer {
+.leftContainer {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 5px;
+    justify-content: flex-start; /* Center content vertically */
+    align-items: flex-start; /* Align content to the left */
+    width: 50%; /* Take up half of the screen */
+    padding-left: 10vw; /* Padding for spacing from the left edge */
 }
 
-.loginTitle {
-    color: black;
-    font-family: "Lexend SemiBold";
-    font-size: 16pt;
-    font-weight: 100;
-    line-height: 20px;
-    width: fit-content;
+.rightContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Center content vertically */
+    align-items: flex-start; /* Center content horizontally */
+    width: 50%; /* Take up half of the screen */
+    /* Add any other styles for the right container, such as background images */
 }
 
-.subtitles {
-    color: black;
-    font-family: "Lexend Light";
-    font-size: 12pt;
+.titleContainer {
+    margin-top: 6rem;
+    margin-bottom: 2rem;
+    text-align: left;
+}
+.title {
+    color: #015F8F;
+    font-size: clamp(18px, 3rem, 1000px);
+    font-weight: 600;
+    line-height: clamp(20px, 3.5rem, 200px);
+    transition: 500ms;
+    opacity: 1;
+    margin-bottom: 1.25rem;
     
 }
 
-.SnackBar {
-    padding-top: 100px; 
+.loginButton {
+    width: 25vw;
+    height: 5vh;
+    background-color: #015F8F;
+    margin-top: 1.5rem;
 }
-/* change to dynamic */
+
+.linkContainer {
+    width: 25vw; /* Ensure it matches the width of the input and button */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center the links */
+    gap: 1.5rem;
+}
+
+.linkContainer a {
+    color: #001b2e;
+    text-align: center; /* Ensure text is centered */
+}
+
+.testimony {
+    margin-top: 10.5rem;
+    width: 30rem;
+    height: auto;
+    
+}

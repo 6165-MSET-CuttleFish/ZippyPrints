@@ -10,6 +10,7 @@
     font-size: 28pt;
     font-weight: 100;
     margin-top: 3vh;
+    text-align: center;
 }
 
 .subtitleText {
@@ -36,4 +37,11 @@
     font-size: 12pt;
     text-align: center;
     margin-top: 1vh;
+}
+
+.buttonContainer {
+    display: flex;
+    justify-content: center;
+    gap: 2vw;
+    margin-top: 5vh;
 }

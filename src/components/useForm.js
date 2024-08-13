@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
     const classes = useStyles();
     const { children, ...other } = props;
     return (
-        <form className={classes.root} autoComplete="off" {...other}>
+        <form  autoComplete="off" {...other}>
             {props.children}
         </form>
     )

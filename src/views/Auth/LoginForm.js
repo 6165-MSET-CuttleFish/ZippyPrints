@@ -7,12 +7,13 @@ import GoogleIcon from '@mui/icons-material/Google';
 import { firebaseConfig } from '../../api/firebaseConfig'
 import * as firebase from 'firebase/app';
 import { Typography, Snackbar, SnackbarContent, Link, Paper, Container, CssBaseline,
-         Progress, Alert, Item, Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
+         Progress, Alert, Item, Avatar, ThemeProvider, createTheme, Box, TextField, } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import { useNavigate } from 'react-router-dom';
 import styles from '../Auth/login.module.css'
 import { RedirectCheck, RedirectCheckProvider } from './RedirectCheck';
 import {AuthContext} from "../../views/Auth/Auth"
+import LoginTestimony from "../../res/Login_testimony.svg"
 
 const useStyles = makeStyles(e =>({ 
     loginButton: {
@@ -191,97 +192,180 @@ export default function LoginForm() {
     }
     //TODO: functionalize remember me switch
     return (
-        <div className = {styles.container}>
-            {/* <Snackbar className = {styles.SnackBar} anchorOrigin = {{vertical: "top", horizontal: "center"}} open={status} autoHideDuration={1} onClose={handleClose}>
-                <Alert onClose={handleClose} severity="error" sx={{ width: '100%' }}>
-                    Please login before trying to access the map!
-                </Alert>
-            </Snackbar>
-        <Box className={styles.topBox}> 
-        <Avatar sx={{ m: 1, bgcolor: '#00ff00' }}>
-            <LockOutlinedIcon />
-        </Avatar>
-        <h4>Sign in</h4> */}
-            <Paper root component="form" onSubmit={handleSubmit} noValidate className={styles.loginPaper} 
-            sx={{"&.MuiPaper-root": {borderRadius: "10px"}}}>
-                <div className = {styles.loginTitleContainer}>
-                    <div className = {styles.logoContainer}>
-                        <Avatar sx={{ m: 1, bgcolor: '#094FB7' }}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <div className = {styles.loginTitle}>Login</div>
-                    </div>
+        <div className = {styles.columnContainer}>
+            <div className = {styles.leftContainer}>
+                {/* Title and Subtitle */}
+                <div className={styles.titleContainer}>
+                    <h1 className={styles.title}>Welcome back! <br /> Sign in to continue</h1>
+                    <div style={{ textAlign: 'center' }}>
+                            <span style={{ fontSize: '0.875rem', color: '#001b2e' }}>
+                                Have a problem signing in? Don't hesitate and{" "}
+                        </span>
+                            <Link 
+                                href="support" 
+                                variant="body2" 
+                                style={{ 
+                                    color: '#FFC107', 
+                                    textDecoration: 'underline',
+                                    textDecorationColor: '#FFC107',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 'normal'
+                                }}>
+                                Contact Support
+                            </Link>
+                        </div>
                 </div>
+                {/* Login form */}
                 <Form onSubmit={handleSubmit}>
                     <Controls.Input
                         label = "Email"
                         name="email"
+                        size="small"
                         value={values.email}
                         onChange = {handleInputChange}
                         error={errors.email}
-                        className={classes.textbox}
-                        fullWidth = {false}
-                        style = {{width: '350px'}}
+                        sx = {{
+                            marginBottom: '1rem',
+                            "& .MuiInputBase-root": {
+                                width: '25vw',
+                                height: '5vh',
+                                borderRadius: '1',
+                                backgroundColor: '#FFFFFF',
+                                '&:hover .MuiOutlinedInput-notchedOutline': {
+                                    borderColor: '#FFC107',
+                                },
+                            },
+                            //label color
+                            '& label.Mui-focused': {
+                                color: '#FFC107',
+                            },
+                            //border color and background color
+                            '& .MuiOutlinedInput-root': {
+                                '& fieldset': {
+                                borderColor: '#FFFFFF',
+                                },
+                                '&.Mui-focused fieldset': {
+                                borderColor: '#FFC107',
+                                
+                                },
+                                
+                            },
+                        }}
                         required
                     />
                     <Controls.Input 
                         label = "Password"
+                        size="small"
                         name="password"
                         type = "password"
                         value={values.password}
                         onChange = {handleInputChange}
                         error={errors.password}
-                        className={classes.textbox}
-                        style = {{width: '350px'}}
+                        className = {styles.textbox}
+                        sx = {{
+                            marginBottom: '1rem',
+                            "& .MuiInputBase-root": {
+                                width: '25vw',
+                                height: '5vh',
+                                borderRadius: '1',
+                                backgroundColor: '#FFFFFF',
+                                '&:hover .MuiOutlinedInput-notchedOutline': {
+                                    borderColor: '#FFC107',
+                                },
+                            },
+                            //label color
+                            '& label.Mui-focused': {
+                                color: '#FFC107',
+                            },
+                            //border color and background color
+                            '& .MuiOutlinedInput-root': {
+                                '& fieldset': {
+                                borderColor: '#FFFFFF',
+                                },
+                                '&.Mui-focused fieldset': {
+                                borderColor: '#FFC107',
+                                
+                                },
+                                
+                            },
+                        }}
                         required
                         //add something to call handlesubmit when enter pressed in this box
                     />
-                    <Controls.Button 
-                        type="submit"
-                        className = {classes.loginButton}
-                        variant = "contained"
-                        size = "large"
-                        style={{
-                            backgroundColor: loadingStatus.loading?true: "#4f6b80",
-                            backgroundColor: loadingStatus.loading?false: "#001b2e",
-                        }}
-                        text = "Login"
-                        onClick = {handleSubmit}
-                    />
-                    <Controls.Button 
-                        className = {classes.googleButton}
-                        variant = "outlined"
-                        style={{
-                            borderColor: "#001b2e",
-                            color: "#001b2e"
-                        }}
-                        size = "large"
-                        text = "Login with Google"
-                        onClick ={handleGoogleLogin}
-                    />
-                    <Link href="register" variant="body2" sx={{
-                        marginTop: 4,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        marginRight: 3,
-                        color: '#001b2e'
-                    }}>
-                        {"Don't have an account? Sign Up"}
-                    </Link>
-                    <Link href="reset" variant="body2" sx={{
-                        marginTop: 1,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        marginRight: 3,
-                        color: '#001b2e'
-                    }}>
-                        {"Forgot your password?"}
-                    </Link>
+
+                    <div className={styles.linkContainer}>
+                        {/* reset password */}
+                        <div style={{ textAlign: 'center' }}>
+                            <span style={{ fontSize: '0.875rem', color: '#001b2e' }}>
+                                Forgot your password?{" "}
+                        </span>
+                            <Link 
+                                href="reset" 
+                                variant="body2" 
+                                style={{ 
+                                    color: '#FFC107', 
+                                    textDecoration: 'underline',
+                                    textDecorationColor: '#FFC107',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 'normal'
+                                }}>
+                                Reset your password
+                            </Link>
+                        </div>
+
+                        <Controls.Button 
+                            className = {styles.loginButton}
+                            variant = "contained"
+                            size = "large"
+                            style={{
+                                backgroundColor: loadingStatus.loading?true: "#015F8F",
+                                backgroundColor: loadingStatus.loading?false: "#015F8F",
+                                textTransform: "none",
+                                fontWeight: "600",
+                            }}
+                            text = "Sign in"
+                            onClick = {handleSubmit}
+                        />
+                    <div style={{ textAlign: 'center' }}>
+                        <span style={{ fontSize: '0.875rem', color: '#001b2e' }}>
+                            Don't have an account?{" "}
+                        </span>
+                            <Link 
+                                href="register" 
+                                variant="body2" 
+                                style={{ 
+                                    color: '#FFC107', 
+                                    textDecoration: 'underline',
+                                    textDecorationColor: '#FFC107',
+                                    fontSize: '0.875rem',
+                                    fontWeight: 'normal'
+                                }}>
+                                Create one
+                            </Link>
+                        </div>
+                    </div>
                 </Form>
-            </Paper>
-            {/* </Box> */}
-    </div>     
+                <Link 
+                    href="home" 
+                    variant="body2" 
+                    style={{ 
+                        marginTop: '4rem',
+                        color: 'black', 
+                        textDecoration: 'underline',
+                        textDecorationColor: 'black',
+                        fontSize: '0.875rem',
+                        fontWeight: 'normal' }}>
+                    <em>← Back home</em>
+                </Link>
+            </div>
+            <div className = {styles.rightContainer}>
+                <div className={styles.rightContainer}>
+                    <img 
+                        src={LoginTestimony} 
+                        className={styles.testimony}
+                        alt="Testimony" />
+                </div>
+            </div>
+        </div>     
     )
 }

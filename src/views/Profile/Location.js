@@ -140,15 +140,16 @@ function Location() {
               formattedAddress: data.results[0]?.formatted_address,
               geoPoint: new GeoPoint(await (data.results[0]?.geometry?.location?.lat), await (data.results[0]?.geometry?.location?.lng))
           })
-          await setDoc(markerRef, {
-              username: currentUser.displayName,
-              lat: await (data.results[0]?.geometry?.location?.lat),
-              lng: await (data.results[0]?.geometry?.location?.lng),
-              formattedAddress: data.results[0]?.formatted_address,
-              uid: currentUser.uid,
-              email: currentUser.email,
-            })
-  
+          if (printer) {
+            await setDoc(markerRef, {
+                username: currentUser.displayName,
+                lat: await (data.results[0]?.geometry?.location?.lat),
+                lng: await (data.results[0]?.geometry?.location?.lng),
+                formattedAddress: data.results[0]?.formatted_address,
+                uid: currentUser.uid,
+                email: currentUser.email,
+              })
+          }
       }catch(error) {
         setError(true)
       }
@@ -350,7 +351,7 @@ function Location() {
                 </Alert>
             </Snackbar>
             <Snackbar open={error} autoCloseDuration={5000} onClose={() => setError(false)}>
-                <Alert onClose={() => setError(false)} severity="success" sx={{ width: '100%' }}>
+                <Alert onClose={() => setError(false)} severity="error" sx={{ width: '100%' }}>
                     We've encounted an error, please try again later
                 </Alert>
             </Snackbar>

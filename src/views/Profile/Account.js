@@ -83,7 +83,6 @@ function Account() {
               }
             } else {
                 console.log("No such document!");
-              setError(true)
             }
           } catch (error) {
             console.error("Error getting document:", error);
@@ -111,7 +110,7 @@ function Account() {
                 }
               } else {
                 console.log("No such document!!!!");
-                setError(true)
+                // setError(true)
               }
             }
           } catch (error) {
@@ -224,7 +223,8 @@ function Account() {
                         state: userInfo?.state || "",
                         teamnumber: userInfo?.teamnumber || "",
                         username: userInfo?.username || "",
-                        zipcode: userInfo?.zipcode || ""
+                        zipcode: userInfo?.zipcode || "",
+                        userRequest: userInfo?.userRequest || ""
                     })
     
                     await deleteDoc(printerRef);
@@ -257,7 +257,8 @@ function Account() {
                     state: userInfo?.state || "",
                     teamnumber: userInfo?.teamnumber || "",
                     username: userInfo?.username || "",
-                    zipcode: userInfo?.zipcode || ""
+                    zipcode: userInfo?.zipcode || "",
+                    userRequest: userInfo?.userRequest || ""
                 })
 
                 await deleteDoc(userRef);

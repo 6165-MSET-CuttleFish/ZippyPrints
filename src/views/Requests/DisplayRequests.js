@@ -21,11 +21,47 @@ function DisplayRequests() {
     const [req, setReq] = useState([]);
     const { details, setDetails } = useContext(CurrentDetailsContext);
     const db = getFirestore();
-    const printerRef = doc(db, "printers", currentUser.uid)
+    const printerRef = doc(db, "printers", `${currentUser?.uid}`)
     const [ acceptedReq, setAcceptedReq ] = useState();
     const [ activeReq, setActiveReq ] = useState();
     const q = query(collection(db, "requests"));
+    const [ ref, setRef ] = useState();
+    const sharedRef = doc(db, 'shared', `${currentUser?.uid}`)
+    const userRef = doc(db, 'users', `${currentUser?.uid}`)
+    const [ printer, setPrinter ] = useState();
+    const [ error, setError ] = useState()
+    const [ userReq, setUserReq ] = useState();
+    const [ userReqInfo, setUserReqInfo ] = useState();
 
+
+    useEffect(() => {
+      setDetails(false)
+      const getRef = async () => {
+        try {
+          setError(true)
+          const docSnap = await getDoc(sharedRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            if (data?.printer) {
+              setPrinter(true);
+              setRef(printerRef);
+            } else {
+              setPrinter(false);
+              setRef(userRef);
+            }
+          } else {
+            console.log("No such document!");
+          }
+        } catch (error) {
+          console.log(error)
+          setError(true)
+        }
+      };
+  
+      if (sharedRef) {
+        getRef();
+      }
+    }, []);
 
     useEffect(() => {
       const getRequests = async () => {
@@ -42,14 +78,13 @@ function DisplayRequests() {
               material: doc.data()?.material,
               unit: doc.data()?.unit,
               width: doc.data()?.width,
-              file: doc.data()?.file,
+              files: doc.data()?.files,
               teamnumber: doc.data()?.teamnumber,
               location: doc.data()?.location, 
               email: doc.data()?.email,
               type: doc.data()?.type,
               thickness: doc.data()?.thickness,
               accepted: doc.data()?.accepted,
-              acceptedBy: doc.data()?.acceptedBy,
               uid: doc.data()?.uid
             },]);
           });
@@ -63,7 +98,7 @@ function DisplayRequests() {
     }, [details])
 
     useEffect(() => {
-      const fetchData = async () => {
+      const getAcceptedDocs = async () => {
             const docSnap = await getDoc(printerRef);
             setAcceptedReq((await docSnap).data()?.request)
             if (acceptedReq != undefined) {
@@ -72,8 +107,32 @@ function DisplayRequests() {
               setActiveReq(false)
             }
         } 
-        fetchData()
-      }, [printerRef])
+        getAcceptedDocs()
+      }, [req, details])
+
+      useEffect(() => {
+        const getRequestedDocs = async () => {
+          try {
+            console.log("getRequestedDocs")
+            const docSnap = await getDoc(ref);
+              if (docSnap.exists()) {
+                const data = docSnap.data()
+                setUserReqInfo(data.userRequest)
+                if (userReqInfo != null) {
+                  setUserReq(true);
+                } else {
+                  setUserReq(false);
+                }
+              }
+          } catch (error) {
+            console.log(error)
+          }
+        } 
+        if (ref) {
+          getRequestedDocs()
+        }
+      }, [req, userReq])
+      
 
       useEffect(() => {
         setElRefs((refs) => Array(req.length).fill().map((_, i) => refs[i] || createRef()));
@@ -121,6 +180,29 @@ function DisplayRequests() {
           </Paper>
 
           <div className = {styles.container}> 
+          { userReq &&
+          <div> 
+              <div className={styles.listTitle}>Your Request </div>
+              <Grid container spacing = {3} className = {styles.printerList}>
+                  <Paper 
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'flex-start',
+                      border: '1px solid',
+                      borderColor: 'rgba(230, 232, 236, 0.502)',
+                      borderRadius: '20px',
+                      gap: '32px',
+                      width: '50vw',
+                      height: '12vw',
+                      marginRight: '2.25vw',
+                    }}
+                    className={styles.paper}>
+                      {<RequestList request = {userReqInfo}/>}
+                    </Paper>
+              </Grid>
+            </div>
+          }
+
           { activeReq &&
           <div> 
               <div className={styles.listTitle}>Your Accepted Requests </div>

@@ -71,10 +71,7 @@ function Printer() {
 
 
     const storage = getStorage();
-    let id1 = v4();
-    let id2 = v4();
-    let id3 = v4();
-    let id = [id1, id2, id3]
+    const [ ids, setIDs ] = useState([])
     const db = getFirestore();
     const reqRef = doc(db, 'requests', `${currentUser?.uid}`)
     const userRef = doc(db, 'users', `${currentUser?.uid}`)
@@ -145,6 +142,7 @@ function Printer() {
                 let pieces = files[i].name.split(".")
                 let ext = pieces[pieces.length - 1].toLowerCase();
                 setExts(prev => [...prev, ext])
+                setIDs(prev => [...prev, v4()])
             }
         }
         getExt();
@@ -187,42 +185,46 @@ function Printer() {
                 width: values.width,
                 length: values.length,
                 height: values.height,
+                thickness: "-1",
                 unit: unit,
                 info: values.info,
                 teamnumber: team,
                 location: location,
                 email: currentUser.email,
                 files: {
-                   file1: id1 + "." + exts[0],
-                   file2: id2 + "." + exts[1],
-                   file3: id3 + "." + exts[2],
+                    file1: `${ids[0]}.${exts[0]}`,
+                    file2: (ids[1] == undefined)? "-1" : `${ids[1]}.${exts[1]}`,
+                    file3: (ids[2] == undefined)? "-1" : `${ids[2]}.${exts[2]}`,
+               },
+                type: "3D Printing",
+                accepted: false,
+                uid: currentUser?.uid,
+                printer: printer
+           })
+   
+        await updateDoc(ref, {
+            userRequest: {
+                material: material,
+                color: color,
+                width: values.width,
+                length: values.length,
+                height: values.height,
+                thickness: "-1",
+                unit: unit,
+                info: values.info,
+                teamnumber: team,
+                location: location,
+                email: currentUser.email,
+                files: {
+                    file1: `${ids[0]}.${exts[0]}`,
+                    file2: (ids[1] == undefined)? "-1" : `${ids[1]}.${exts[1]}`,
+                    file3: (ids[2] == undefined)? "-1" : `${ids[2]}.${exts[2]}`,
                },
                 type: "3D Printing",
                 accepted: false,
                 uid: currentUser?.uid
-           })
-   
-           await updateDoc(ref, {
-               request: {
-                   material: material,
-                   color: color,
-                   width: values.width,
-                   length: values.length,
-                   height: values.height,
-                   unit: unit,
-                   info: values.info,
-                   teamnumber: team,
-                   location: location,
-                   email: currentUser.email,
-                   files: {
-                       file1: id1 + "." + exts[0],
-                       file2: id2 + "." + exts[1],
-                       file3: id3 + "." + exts[2],
-                   },
-                   type: "3D Printing",
-                   accepted: false
-               }
-          })
+            }
+        })
         } catch (error) {
             setErrorMessage("Error: unable to process this request, please try again later")
             setErrorOpen(true)
@@ -256,7 +258,7 @@ function Printer() {
         }
         for (let i = 0; i < files.length; i++) {
             //each file is stored under prints/uid
-            const fileRef = storageRef(storage, `prints/${currentUser?.uid}/${id[i]}.${exts[i]}`);
+            const fileRef = storageRef(storage, `prints/${currentUser?.uid}/${ids[i]}.${exts[i]}`);
             uploadBytes(fileRef, files[i]).then(() => {
                 setSuccess(true);
             }).catch((error) => {

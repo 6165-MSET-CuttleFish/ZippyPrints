@@ -64,10 +64,7 @@ function CNC() {
     const [team, setTeam] = useState();
     const [location, setLocation] = useState();
 
-    let id1 = v4();
-    let id2 = v4();
-    let id3 = v4();
-    let id = [id1, id2, id3]
+    const [ ids, setIDs ] = useState([])
     const storage = getStorage();
     const db = getFirestore();
     const reqRef = doc(db, 'requests', `${currentUser?.uid}`);
@@ -137,6 +134,7 @@ function CNC() {
                 let pieces = files[i].name.split(".")
                 let ext = pieces[pieces.length - 1].toLowerCase();
                 setExts(prev => [...prev, ext])
+                setIDs(prev => [...prev, v4()])
             }
         }
         getExt();
@@ -174,15 +172,16 @@ function CNC() {
     const uploadData = async () => {
         await setDoc(reqRef, {
             files: {
-                file1: id1 + "." + exts[0],
-                file2: id2 + "." + exts[1],
-                file3: id3 + "." + exts[2],
+                file1: `${ids[0]}.${exts[0]}`,
+                file2: (ids[1] == undefined)? "-1" : `${ids[1]}.${exts[1]}`,
+                file3: (ids[2] == undefined)? "-1" : `${ids[2]}.${exts[2]}`,
             },
              material: material,
              color: color,
              width: values.width,
              length: values.length,
              thickness: values.thickness,
+             height: "-1",
              unit: unit,
              info: values.info,
              teamnumber: team,
@@ -190,24 +189,26 @@ function CNC() {
              email: currentUser.email,
              type: "CNCing",
              accepted: false,
-             uid: currentUser?.uid
+             uid: currentUser?.uid,
+             printer: printer
         })
         await updateDoc(ref, {
-            request: {
+            userRequest: {
                 material: material,
                 color: color,
                 width: values.width,
                 length: values.length,
                 thickness: values.thickness,
+                height: "-1",
                 unit: unit,
                 info: values.info,
                 teamnumber: team,
                 location: location,
                 email: currentUser.email,
                 files: {
-                    file1: id1 + "." + exts[0],
-                    file2: id2 + "." + exts[1],
-                    file3: id3 + "." + exts[2],
+                    file1: `${ids[0]}.${exts[0]}`,
+                    file2: (ids[1] == undefined)? "-1" : `${ids[1]}.${exts[1]}`,
+                    file3: (ids[2] == undefined)? "-1" : `${ids[2]}.${exts[2]}`,
                 },
                 type: "CNCing",
                 accepted: false,
@@ -244,7 +245,7 @@ function CNC() {
         }
         for (let i = 0; i < files.length; i++) {
             //each file is stored under prints/uid
-            const fileRef = storageRef(storage, `prints/${currentUser?.uid}/${id[i]}.${exts[i]}`);
+            const fileRef = storageRef(storage, `prints/${currentUser?.uid}/${ids[i]}.${exts[i]}`);
             uploadBytes(fileRef, files[i]).then(() => {
                 setSuccess(true);
             }).catch((error) => {
