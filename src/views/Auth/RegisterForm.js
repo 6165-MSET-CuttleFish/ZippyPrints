@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Grid, Paper} from '@mui/material'
+import { Link } from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import { makeStyles } from '@mui/styles'
@@ -9,9 +9,13 @@ import { useNavigate } from 'react-router-dom';
 import { getFirestore, setDoc, doc } from 'firebase/firestore/lite';
 import { Avatar, ThemeProvider, createTheme, Box, } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import '../Auth/Register.css'
+import '../Auth/AuthForm.css'
 import styles from '../Auth/register.module.css'
 import {AuthContext} from "../../views/Auth/Auth"
+import Progress1 from "../../res/progress1.svg"
+import Testiomny from "../../res/Login_testimony.svg"
+
+
 
 
 
@@ -97,9 +101,7 @@ export default function RegisterForm() {
             temp.email = (/.+@.+../).test(fieldValues.email)?"":"Email is not valid."
         if ('password' in fieldValues)
             temp.password = fieldValues.password.length>5?"":"Passwords should be at least 6 characters long."
-        if('reconfirmPassword' in fieldValues)
-            temp.reconfirmPassword={...values}.password===fieldValues.reconfirmPassword?"":"Passwords must match."
-        
+        console.log(temp)
         setErrors({
             ...temp
         })
@@ -122,10 +124,13 @@ export default function RegisterForm() {
     } = useForm(initalFValues, true, validate);
 
     const handleSubmit = async(e) => {    
-        e.preventDefault();    
+        e.preventDefault();   
+        console.log("handle submit") 
         if(validate()) {
+          console.log("validated") 
           setLoading({loading: true})
           await makeAccount();
+          console.log("acc made") 
         }  
     }
 
@@ -180,6 +185,7 @@ export default function RegisterForm() {
           
           })
           .catch((error) => {
+            window(error)
             setLoading({loading: false})
               let temp= {...errors}
               const errorCode = error.code;
@@ -206,86 +212,153 @@ export default function RegisterForm() {
     }
     
     return (
-      <div className = {styles.container}>
-        {/* <Box className={styles.topBox}> 
-        <Avatar sx={{ m: 1, bgcolor: '#00ff00' }}>
-            <LockOutlinedIcon />
-        </Avatar>
-        <h4>Sign up</h4> */}
-        <Paper component="form" onSubmit={handleSubmit} noValidate className={styles.registerPaper}
-        sx={{"&.MuiPaper-root": {borderRadius: "10px"}}}>
-          <div className = {styles.registerTitleContainer}>
-                    <div className = {styles.logoContainer}>
-                        <Avatar sx={{ marginLeft: 2.5, bgcolor: '#094FB7' }}>
-                            <LockOutlinedIcon />
-                        </Avatar>
-                        <div className = {styles.registerTitle}>Register</div>
-                    </div>
+      <div className = {styles.columnContainer}>
+        <div className = {styles.leftContainer}>
+            {/* Title and Subtitle */}
+            <div className={styles.titleContainer}>
+                    <h1 className={styles.title}>Welcome to ZippyPrints <br /> Sign up to continue</h1>
+                    <div className={styles.subtitle}>
+                            <span style={{ fontSize: '0.875rem', color: '#001b2e' }}>
+                Have a problem registering? Don't hesitate and{" "}
+                </span>
+                <Link 
+                  href="support" 
+                  variant="body2" 
+                  style={{ 
+                    color: '#FFC107', 
+                    textDecoration: 'underline',
+                    textDecorationColor: '#FFC107',
+                    fontSize: '0.875rem',
+                    fontWeight: 'normal'}}>
+                  Contact Support
+                </Link>
+              </div>
+            </div>
+            <Form onSubmit={handleSubmit}>
+            <div className={styles.textboxContainer}>
+              <Controls.Input
+                label = "Email"
+                name="email"
+                size="small"
+                value={values.email}
+                onChange = {handleInputChange}
+                error={errors.email}
+                fullWidth = {false}
+                required
+              />
+              {/* <Controls.Input
+                label = "Username"
+                name="userName"
+                value={values.userName}
+                onChange = {handleInputChange}
+                error={errors.userName}
+                className={classes.textbox}
+                style = {{width: '350px'}}
+                required
+              /> */}
+              <Controls.Input 
+                label = "Password"
+                name="password"
+                type = "password"
+                size="small"
+                value={values.password}
+                onChange = {handleInputChange}
+                error={errors.password}
+                required
+              />
+              <div className={styles.checkboxContainer}>
+                <Controls.Checkbox
+                    name="printer"
+                    label={
+                      <div style={{ textAlign: 'left' }}>
+                          <span style={{ fontSize: '0.875rem', color: '#001b2e' }}>
+                            Yes, I agree to the {" "}
+                          </span>
+                          <Link 
+                            href="terms-of-service" 
+                            variant="body2" 
+                            style={{ 
+                              color: '#FFC107', 
+                              textDecoration: 'underline',
+                              textDecorationColor: '#FFC107',
+                              fontSize: '0.875rem',
+                              fontWeight: 'normal', }}>
+                            Terms of Service
+                          </Link>
+                      </div>
+                    }
+                    values={values.printer}
+                    onChange={handleInputChange}
+                  />
                 </div>
-          <Form onSubmit={handleSubmit}>
-            <Controls.Input
-              label = "Email"
-              name="email"
-              value={values.email}
-              onChange = {handleInputChange}
-              error={errors.email}
-              className={classes.textbox}
-              fullWidth = {false}
-              style = {{width: '350px'}}
-              required
-            />
-            <Controls.Input
-              label = "Username"
-              name="userName"
-              value={values.userName}
-              onChange = {handleInputChange}
-              error={errors.userName}
-              className={classes.textbox}
-              style = {{width: '350px'}}
-              required
-            />
-            <Controls.Input 
-              label = "Password"
-              name="password"
-              type = "password"
-              value={values.password}
-              onChange = {handleInputChange}
-              error={errors.password}
-              className={classes.textbox}
-              style = {{width: '350px'}}
-              required
-            />
-            <Controls.Input 
-              label = "Reconfirm Password"
-              name="reconfirmPassword"
-              type = "password"
-              value={values.reconfirmPassword}
-              onChange = {handleInputChange}
-              error={errors.reconfirmPassword}
-              className={classes.textbox}
-              style = {{width: '350px'}}
-              required
-            />
-            <Controls.Checkbox
-              name="printer"
-              label="Are you a printer?"
-              values={values.printer}
-              onChange={handleInputChange}
-            />
-            <Controls.Button 
-              type="submit"
-              className = {classes.loginButton}
-              variant = "contained"
-              size = "large"
-              style={{
-                backgroundColor: loadingStatus.loading?true: "#4f6b80",
-                backgroundColor: loadingStatus.loading?false: "#001b2e"
-              }}
-              text = "Sign Up"
-              onClick = {handleSubmit}
-            />
+              </div>
+              {/* <Controls.Input 
+                label = "Reconfirm Password"
+                name="reconfirmPassword"
+                type = "password"
+                value={values.reconfirmPassword}
+                onChange = {handleInputChange}
+                error={errors.reconfirmPassword}
+                className={classes.textbox}
+                style = {{width: '350px'}}
+                required
+              /> */}
+              
+              
+              <div className={styles.linkContainer}>
+                <Controls.Button 
+                  type="submit"
+                  className = {styles.loginButton}
+                  variant = "contained"
+                  style={{
+                    backgroundColor: loadingStatus.loading?true: "#015F8F",
+                    backgroundColor: loadingStatus.loading?false: "#015F8F",
+                    textTransform: "none",
+                    fontWeight: "600",
+                  }}
+                  text = "Sign Up"
+                  onClick = {handleSubmit}
+                />
+                <div style={{ textAlign: 'center' }}>
+                  <span style={{ fontSize: '0.875rem', color: '#001b2e' }}>
+                    Already have an account?{" "}
+                  </span>
+                  <Link 
+                    href="login" 
+                    variant="body2" 
+                    style={{ 
+                      color: '#FFC107', 
+                      textDecoration: 'underline',
+                      textDecorationColor: '#FFC107',
+                      fontSize: '0.875rem',
+                      fontWeight: 'normal' }}>
+                    Log in
+                  </Link>
+                </div>
+              </div>
             </Form>
-          </Paper>
+            {/* Progress bar and back button */}
+            <img src={Progress1} className={styles.progress1} alt="Progress (1 of 3)" />
+                <div className={styles.backButton}>
+                    <Link 
+                        href="home" 
+                        variant="body2" 
+                        style={{ 
+                            marginTop: '4rem',
+                            color: 'black', 
+                            textDecoration: 'underline',
+                            textDecorationColor: 'black',
+                            fontSize: '0.875rem',
+                            fontWeight: 'normal' }}>
+                        <em>← Back home</em>
+                    </Link>
+                </div>
+          </div>
+          <div className={styles.rightContainer}>
+              <div className={styles.rightContainer}>
+                <img src={Testiomny} className={styles.testimony} alt="Testimony" />
+              </div>
+          </div>
         </div>
     )
 }

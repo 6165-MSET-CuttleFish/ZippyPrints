@@ -14,6 +14,7 @@ import styles from '../Auth/login.module.css'
 import { RedirectCheck, RedirectCheckProvider } from './RedirectCheck';
 import {AuthContext} from "../../views/Auth/Auth"
 import LoginTestimony from "../../res/Login_testimony.svg"
+import '../Auth/AuthForm.css'
 
 const useStyles = makeStyles(e =>({ 
     loginButton: {
@@ -197,7 +198,7 @@ export default function LoginForm() {
                 {/* Title and Subtitle */}
                 <div className={styles.titleContainer}>
                     <h1 className={styles.title}>Welcome back! <br /> Sign in to continue</h1>
-                    <div style={{ textAlign: 'left' }}>
+                    <div className={styles.subtitle}>
                             <span style={{ fontSize: '0.875rem', color: '#001b2e' }}>
                                 Have a problem signing in? Don't hesitate and{" "}
                         </span>
@@ -217,82 +218,29 @@ export default function LoginForm() {
                 </div>
                 {/* Login form */}
                 <Form onSubmit={handleSubmit}>
-                    <Controls.Input
-                        label = "Email"
-                        name="email"
-                        size="small"
-                        value={values.email}
-                        onChange = {handleInputChange}
-                        error={errors.email}
-                        sx = {{
-                            marginBottom: '1rem',
-                            "& .MuiInputBase-root": {
-                                width: '25vw',
-                                height: '2.75rem',
-                                borderRadius: '1',
-                                backgroundColor: '#FFFFFF',
-                                '&:hover .MuiOutlinedInput-notchedOutline': {
-                                    borderColor: '#FFC107',
-                                },
-                            },
-                            //label color
-                            '& label.Mui-focused': {
-                                color: '#FFC107',
-                            },
-                            //border color and background color
-                            '& .MuiOutlinedInput-root': {
-                                '& fieldset': {
-                                borderColor: '#FFFFFF',
-                                },
-                                '&.Mui-focused fieldset': {
-                                borderColor: '#FFC107',
-                                
-                                },
-                                
-                            },
-                        }}
-                        required
-                    />
-                    <Controls.Input 
-                        label = "Password"
-                        size="small"
-                        name="password"
-                        type = "password"
-                        value={values.password}
-                        onChange = {handleInputChange}
-                        error={errors.password}
-                        className = {styles.textbox}
-                        sx = {{
-                            marginBottom: '1rem',
-                            "& .MuiInputBase-root": {
-                                width: '25vw',
-                                height: '2.75rem',
-                                borderRadius: '1',
-                                backgroundColor: '#FFFFFF',
-                                '&:hover .MuiOutlinedInput-notchedOutline': {
-                                    borderColor: '#FFC107',
-                                },
-                            },
-                            //label color
-                            '& label.Mui-focused': {
-                                color: '#FFC107',
-                            },
-                            //border color and background color
-                            '& .MuiOutlinedInput-root': {
-                                '& fieldset': {
-                                borderColor: '#FFFFFF',
-                                },
-                                '&.Mui-focused fieldset': {
-                                borderColor: '#FFC107',
-                                
-                                },
-                                
-                            },
-                        }}
-                        required
-                        //add something to call handlesubmit when enter pressed in this box
-                    />
-
+                    <div className={styles.textboxContainer}>
+                        <Controls.Input
+                            label = "Email"
+                            name="email"
+                            size="small"
+                            value={values.email}
+                            onChange = {handleInputChange}
+                            error={errors.email}
+                            required
+                        />
+                        <Controls.Input 
+                            label = "Password"
+                            size="small"
+                            name="password"
+                            type = "password"
+                            value={values.password}
+                            onChange = {handleInputChange}
+                            error={errors.password}
+                            className = {styles.textbox}
+                            required
+                            //add something to call handlesubmit when enter pressed in this box
+                        />
+                    </div>
                     <div className={styles.linkContainer}>
                         {/* reset password */}
                         <div style={{ textAlign: 'center' }}>
@@ -326,10 +274,10 @@ export default function LoginForm() {
                             text = "Sign in"
                             onClick = {handleSubmit}
                         />
-                    <div style={{ textAlign: 'center' }}>
-                        <span style={{ fontSize: '0.875rem', color: '#001b2e' }}>
-                            Don't have an account?{" "}
-                        </span>
+                        <div style={{ textAlign: 'center' }}>
+                            <span style={{ fontSize: '0.875rem', color: '#001b2e' }}>
+                                Don't have an account?{" "}
+                            </span>
                             <Link 
                                 href="register" 
                                 variant="body2" 
@@ -345,18 +293,20 @@ export default function LoginForm() {
                         </div>
                     </div>
                 </Form>
-                <Link 
-                    href="home" 
-                    variant="body2" 
-                    style={{ 
-                        marginTop: '4rem',
-                        color: 'black', 
-                        textDecoration: 'underline',
-                        textDecorationColor: 'black',
-                        fontSize: '0.875rem',
-                        fontWeight: 'normal' }}>
-                    <em>← Back home</em>
-                </Link>
+                <div className={styles.backButton}>
+                    <Link 
+                        href="home" 
+                        variant="body2" 
+                        style={{ 
+                            marginTop: '4rem',
+                            color: 'black', 
+                            textDecoration: 'underline',
+                            textDecorationColor: 'black',
+                            fontSize: '0.875rem',
+                            fontWeight: 'normal' }}>
+                        <em>← Back home</em>
+                    </Link>
+                </div>
             </div>
             <div className = {styles.rightContainer}>
                 <div className={styles.rightContainer}>

@@ -1,0 +1,38 @@
+.MuiFormControl-root.css-1nrlq1o-MuiFormControl-root {
+    display: flex;
+    align-items: center;
+    padding-left: 70px;
+    padding-bottom: 5px;
+}
+
+/* Styles for the input field */
+.MuiInputBase-root {
+  width: clamp(15rem, 25vw, 50rem);
+  height: 2.75rem;
+  background-color: #FFFFFF;
+  margin-bottom: 1rem;
+}
+
+/* Hover effect for the input border */
+.css-9ddj71-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline{
+  border-color: #FFC107 !important;
+}
+
+/* Label color when focused */
+.css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-focused{
+  color: #FFC107 !important;
+}
+
+/* Border color and background color for the outlined input */
+.MuiOutlinedInput-root fieldset {
+  border-color: #FFFFFF;
+}
+
+/* Border color when input is focused */
+.MuiOutlinedInput-root.Mui-focused fieldset {
+  border-color: #FFC107 !important;
+}
+
+.css-j204z7-MuiFormControlLabel-root {
+  margin-left: -4.75rem !important;
+}

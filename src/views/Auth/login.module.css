@@ -1,7 +1,7 @@
 .columnContainer {
     display: flex;
     flex-direction: row; /* Change from column to row to split the screen */
-    height: 87vh; /* Full height of the viewport */
+    height: 87.5vh; /* Full height of the viewport */
     width: 100%;
     background-color: #F2F2F2;
 }
@@ -29,6 +29,7 @@
     margin-bottom: 2rem;
     text-align: left;
 }
+
 .title {
     color: #015F8F;
     font-family: "Lexend SemiBold";
@@ -38,7 +39,11 @@
     transition: 500ms;
     opacity: 1;
     margin-bottom: 1.25rem;
-    
+}
+
+.subtitle {
+    text-align: left;
+    width: 30vw;
 }
 
 .loginButton {
@@ -66,4 +71,87 @@
     width: 30rem;
     height: auto;
     
+}
+
+.backButton {
+    margin-top: 4rem;
+}
+
+@media screen and (max-width: 1050px) {
+    .columnContainer {
+        display: flex;
+        flex-direction: row; /* Change from column to row to split the screen */
+        height: 87.5vh; /* Full height of the viewport */
+        background-color: #F2F2F2;
+    }
+
+    .leftContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Center content vertically */
+        align-items: center; /* Align content to the left */
+        width: 100%; /* Take up half of the screen */
+        padding-right: 4rem;
+    }
+    
+    .rightContainer {
+        width: 0%; /* Take up half of the screen */
+        /* Add any other styles for the right container, such as background images */
+    }
+
+    .titleContainer {
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    .title {
+        color: #015F8F;
+        font-family: "Lexend SemiBold";
+        font-size: clamp(18px, 10vw, 48px);
+        font-weight: 600;
+        line-height: clamp(20px, 3rem, 200px);
+        transition: 500ms;
+        opacity: 1;
+        margin-bottom: 1.25rem;
+    }
+
+
+    .subtitle {
+        text-align: center;
+        width: 100%
+    }
+
+
+    .loginButton {
+        width: clamp(15rem, 25vw, 100rem);
+        height: 2.75rem;
+        background-color: #015F8F;
+        margin-top: 1.5rem;
+    }
+
+    .textboxContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .linkContainer {
+        width: 15rem; /* Ensure it matches the width of the input and button */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center; /* Center the links */
+        gap: 1.5rem;
+
+    }
+    
+    .linkContainer a {
+        color: #001b2e;
+        text-align: center; /* Ensure text is centered */
+    }
+
+    .testimony {
+        width: 0rem;
+        height: auto;
+    }
 }
