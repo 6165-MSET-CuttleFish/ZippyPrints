@@ -15,11 +15,7 @@ import {AuthContext} from "../../views/Auth/Auth"
 import Progress1 from "../../res/progress1.svg"
 import Testiomny from "../../res/Login_testimony.svg"
 
-
-
-
-
-    
+ 
 const useStyles = makeStyles(e =>({ 
     loginButton: {
         border: 0,
@@ -67,33 +63,34 @@ const initalFValues = {
     password: '',
     reconfirmPassword: '',
     printer: false
-
 }
 
-let open = false;
-module.export = {open:open}
-
-function setOpen(children){
-open = children;
-}  
 
 export default function RegisterForm() {
-
-  const {currentUser} = useContext(AuthContext);
+  const { currentUser } = useContext(AuthContext)
+  const [ open, setOpen ] = useState(false);
+  module.export = {open:open}
   const navigate = useNavigate();
-  
-  const checkViewable= ()=>
-  {
-      if(currentUser)
-      {
-          navigate("/dashboard")
-          setOpen(true)
-      }
-  }
 
   useEffect(() => {
-      checkViewable()
-      })
+    const checkViewable = () => {
+      if (!currentUser) {
+
+      } else {
+        if (currentUser?.displayName != null) {
+          navigate("/dashboard");
+          setOpen(true);
+        } else if (currentUser?.displayName == null){
+          navigate("/setup");
+          setOpen(true);
+        }
+      }
+        
+    };
+    checkViewable();
+}, [currentUser]);
+
+  
 
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
@@ -101,11 +98,10 @@ export default function RegisterForm() {
             temp.email = (/.+@.+../).test(fieldValues.email)?"":"Email is not valid."
         if ('password' in fieldValues)
             temp.password = fieldValues.password.length>5?"":"Passwords should be at least 6 characters long."
-        console.log(temp)
         setErrors({
             ...temp
         })
-        
+
         if (fieldValues === values)
         return Object.values(temp).every(x => x === "")
 
@@ -125,12 +121,9 @@ export default function RegisterForm() {
 
     const handleSubmit = async(e) => {    
         e.preventDefault();   
-        console.log("handle submit") 
         if(validate()) {
-          console.log("validated") 
           setLoading({loading: true})
           await makeAccount();
-          console.log("acc made") 
         }  
     }
 
@@ -153,36 +146,19 @@ export default function RegisterForm() {
           sendEmailVerification(auth.currentUser)
           await updateProfile(await auth.currentUser, {
             displayName: userName,
-            
-          }).then(() => {
-            setLoading({loading: false})
-            setTimeActive(true)
-            navigate('/verification')
-          }).catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            window.alert("Error: " + errorCode + ", " + errorMessage)
-          });
+            }).then(() => {
+              setLoading({loading: false})
+              setTimeActive(true)
+              navigate('/verification')
+            }).catch((error) => {
+              const errorCode = error.code;
+              const errorMessage = error.message;
+              window.alert("Error: " + errorCode + ", " + errorMessage)
+            });
 
-          await setDoc(sharedRef, {
-            uid: auth.currentUser.uid,
-            printer: printer,
-          })
-
-          if (printer) {
-            await setDoc(printerRef, {
-              username: userName,
-              email: userEmail,
-              printer: printer,
+            await setDoc(sharedRef, {
+              uid: auth.currentUser.uid,
             })
-          } else {
-            await setDoc(userRef, {
-              username: userName,
-              email: userEmail,
-              printer: printer,
-            })
-          }
-          
           })
           .catch((error) => {
             window(error)
@@ -243,19 +219,12 @@ export default function RegisterForm() {
                 value={values.email}
                 onChange = {handleInputChange}
                 error={errors.email}
+                sx={{
+                  marginBottom: '1rem'
+                }}
                 fullWidth = {false}
                 required
               />
-              {/* <Controls.Input
-                label = "Username"
-                name="userName"
-                value={values.userName}
-                onChange = {handleInputChange}
-                error={errors.userName}
-                className={classes.textbox}
-                style = {{width: '350px'}}
-                required
-              /> */}
               <Controls.Input 
                 label = "Password"
                 name="password"
@@ -264,6 +233,9 @@ export default function RegisterForm() {
                 value={values.password}
                 onChange = {handleInputChange}
                 error={errors.password}
+                sx={{
+                  marginBottom: '1rem'
+                }}
                 required
               />
               <div className={styles.checkboxContainer}>
@@ -292,19 +264,6 @@ export default function RegisterForm() {
                   />
                 </div>
               </div>
-              {/* <Controls.Input 
-                label = "Reconfirm Password"
-                name="reconfirmPassword"
-                type = "password"
-                value={values.reconfirmPassword}
-                onChange = {handleInputChange}
-                error={errors.reconfirmPassword}
-                className={classes.textbox}
-                style = {{width: '350px'}}
-                required
-              /> */}
-              
-              
               <div className={styles.linkContainer}>
                 <Controls.Button 
                   type="submit"
@@ -355,9 +314,7 @@ export default function RegisterForm() {
                 </div>
           </div>
           <div className={styles.rightContainer}>
-              <div className={styles.rightContainer}>
                 <img src={Testiomny} className={styles.testimony} alt="Testimony" />
-              </div>
           </div>
         </div>
     )

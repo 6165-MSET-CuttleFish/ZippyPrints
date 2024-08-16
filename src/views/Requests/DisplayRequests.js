@@ -12,6 +12,7 @@ import Details from './Details';
 import { CurrentDetailsContext } from './DetailsContext';
 import { Menu } from '../../components/Menu/Menu'
 import { RequestContext } from './RequestContext';
+import { useNavigate } from 'react-router-dom';
 
 function DisplayRequests() {
     const [type, setType] = useState("3D Printing");
@@ -32,6 +33,20 @@ function DisplayRequests() {
     const [ error, setError ] = useState()
     const [ userReq, setUserReq ] = useState();
     const [ userReqInfo, setUserReqInfo ] = useState();
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      const checkViewable = () => {
+        if (!currentUser) {
+          navigate("/login")
+        } else if (!currentUser.emailVerified) {
+          navigate("/verification")
+        } else if (currentUser?.displayName == null) {
+            navigate("/setup");
+        }
+      };
+      checkViewable();
+  }, [currentUser]);
 
 
     useEffect(() => {
@@ -97,8 +112,12 @@ function DisplayRequests() {
       getRequests()
     }, [details])
 
+    
     useEffect(() => {
       const getAcceptedDocs = async () => {
+        try {
+
+        
             const docSnap = await getDoc(printerRef);
             setAcceptedReq((await docSnap).data()?.request)
             if (acceptedReq != undefined) {
@@ -106,14 +125,21 @@ function DisplayRequests() {
             } else {
               setActiveReq(false)
             }
-        } 
-        getAcceptedDocs()
+          } catch (error) {
+          console.log(error)
+        }
+      }
+      
+        try {
+          getAcceptedDocs()
+        } catch (error) {
+          console.log(error)
+        }
       }, [req, details])
 
       useEffect(() => {
         const getRequestedDocs = async () => {
           try {
-            console.log("getRequestedDocs")
             const docSnap = await getDoc(ref);
               if (docSnap.exists()) {
                 const data = docSnap.data()
@@ -129,7 +155,11 @@ function DisplayRequests() {
           }
         } 
         if (ref) {
-          getRequestedDocs()
+          try {
+            getRequestedDocs();
+          } catch (error) {
+            console.log('getRequestedDocs: ' + error)
+          }
         }
       }, [req, userReq])
       

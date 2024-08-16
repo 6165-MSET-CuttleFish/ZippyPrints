@@ -5,6 +5,7 @@ import Printer from './Printer'
 import { Paper, Button } from '@mui/material'
 import styles from './dashboard.module.css'
 import { AuthContext } from "../Auth/Auth";
+import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
     const [active, setActive] = useState("Location");
@@ -12,6 +13,20 @@ function Dashboard() {
     const [accountColor, setAccountColor] = useState('#717B8C');
     const [printerColor, setPrinterColor] = useState('#717B8C');
     const {currentUser} = useContext(AuthContext);
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        const checkViewable = () => {
+          if (!currentUser) {
+            navigate("/login")
+          } else if (!currentUser.emailVerified) {
+            navigate("/verification")
+          } else if (currentUser?.displayName == null) {
+              navigate("/setup");
+          }
+        };
+        checkViewable();
+    }, [currentUser]);
 
     useEffect(() => {    
         const handleColor = () => {

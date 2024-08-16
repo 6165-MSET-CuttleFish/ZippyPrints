@@ -5,6 +5,7 @@ import { AuthContext } from "../Auth/Auth";
 import CNC from './CNC'
 import Printer from './Printer'
 import LaserCutter from './LaserCutter'
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -15,6 +16,20 @@ function NewRequests() {
     const [laserCutter, setLaserCutter] = useState('#717B8C');
     const [cnc, setCNC] = useState('#717B8C');
     const {currentUser} = useContext(AuthContext);
+    const navigate = useNavigate();
+    
+    useEffect(() => {
+        const checkViewable = () => {
+          if (!currentUser) {
+            navigate("/login")
+          } else if (!currentUser.emailVerified) {
+            navigate("/verification")
+          } else if (currentUser?.displayName == null) {
+              navigate("/setup");
+          }
+        };
+        checkViewable();
+    }, [currentUser]);
 
     useEffect(() => {    
         const handleColor = () => {

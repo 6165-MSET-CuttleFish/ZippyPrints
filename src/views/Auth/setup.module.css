@@ -71,11 +71,16 @@
     height: auto;
 }
 
-.progress1 {
+.progress3 {
     margin-top: 2rem;
-    width: 26vw;
+    margin-left: -.75vw;
+    width: clamp(15rem, 27vw, 100rem);
     height: auto;
+}
 
+.progress3_mobile {
+    width: 0vw;
+    visibility: hidden;
 }
 
 .backButton {
@@ -167,17 +172,27 @@
 
     .checkboxContainer {
         display: flex;
-        flex-direction: row-reverse;
-        align-items: center;
-        justify-self: center;
-        width: 110%; /* Ensure the checkbox container is consistent with input fields */
+        flex-direction: row;
+        align-items: left;
+        justify-self: left;
+        width: 100%; /* Ensure the checkbox container is consistent with input fields */
         margin-bottom: 1rem;
         margin-top: -1rem;
       }
 
-    .progress1 {
+    .progress3 {
         margin-top: 0rem;
         visibility: hidden;
+    }
+
+    .progress3_mobile {
+        display: flex;
+        justify-content: center;
+        margin-left: 3rem;
+        margin-top: 2rem;
+        width: clamp(20rem, 40vw, 100rem);
+        height: auto;
+        visibility: visible;
     }
     
     .backButton {

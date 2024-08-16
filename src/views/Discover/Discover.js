@@ -53,12 +53,24 @@ function Discover() {
   //const auth = getAuth();
   //const user = auth.currentUser;
   
+  useEffect(() => {
+    const checkViewable = () => {
+      if (!currentUser) {
+        navigate("/login")
+      } else if (!currentUser.emailVerified) {
+        navigate("/verification")
+      } else if (currentUser?.displayName == null) {
+          navigate("/setup");
+      }
+    };
+    checkViewable();
+}, [currentUser]);
+
   if (!currentUser) {
     navigate("/Login");
     setOpen(true);
   }
-  else if(!currentUser.emailVerified)
-  {
+  else if(!currentUser.emailVerified){
     navigate("../Verification");
     setOpen(true);
   }
@@ -138,7 +150,7 @@ const onSelect = (marker) => {
   const {isLoaded, loadError} = useLoadScript({
       googleMapsApiKey: API_KEY,
       libraries: libRef.current,
-    });
+  });
 
 
 const mapRef = React.useRef();
@@ -200,9 +212,6 @@ const onMapLoad = (map) => {
 
     //TODO: replace with actual logo
   <div>
-    <h2>
-    
-    </h2>
       <Popup
         title = "Request"
         

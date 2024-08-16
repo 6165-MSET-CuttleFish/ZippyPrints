@@ -2,14 +2,18 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin-top: 5vw;
+    background-color: #F2F2F2;
+    height: 87.5vh;
+    text-align: center;
 }
 
 .columnContainer {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 20px;
+    margin-top: 5rem;
+    
 }
 .buttonContainer {
     display: flex;
@@ -17,19 +21,21 @@
     justify-content: center;
 }
 .verificationTitle {
-    color: #F0F5FF;
+    color: #015F8F;
     font-family: "Lexend SemiBold";
-    font-size: 28pt;
-    font-weight: 100;
-    line-height: 20px;
-    text-align: center;
-    width: 45vw;
+    font-size: clamp(18pt, 3rem, 1000pt);
+    font-weight: 600;
+    line-height: clamp(20px, 3.5rem, 200px);
+    transition: 500ms;
+    opacity: 1;
+    margin-bottom: 1.25rem;
+    width: 100%;
 }
 .verificationSubtitle {
-    color: #F0F5FF;
+    color: #015F8F;
     font-family: "Lexend Light";
     text-align: center;
-    font-size: 12pt;
-    width: 45vw;
+    font-size: clamp(10pt, 1rem, 12pt);
+    width: 100%;
     margin-bottom: 10vw;
 }

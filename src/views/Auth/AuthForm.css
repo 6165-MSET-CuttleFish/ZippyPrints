@@ -10,7 +10,6 @@
   width: clamp(15rem, 25vw, 50rem);
   height: 2.75rem;
   background-color: #FFFFFF;
-  margin-bottom: 1rem;
 }
 
 /* Hover effect for the input border */

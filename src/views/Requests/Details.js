@@ -141,7 +141,6 @@ export default function Details() {
                 })
                 req.accepted = true;
                 await updateDoc(ref, {
-                    
                     userRequest: req
                 })
 

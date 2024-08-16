@@ -24,6 +24,7 @@ import ResetPassword from './views/Auth/ResetPassword';
 import PageNotFound from './views/Error/PageNotFound'
 import DisplayRequest from './views/Requests/DisplayRequests'
 import Details from './views/Requests/Details';
+import Setup from './views/Auth/Setup'
 function App()  {
 
 
@@ -51,6 +52,7 @@ function App()  {
               <Route exact path="/details" element={<Details />} />
               <Route exact path="/Dashboard" element={<Dashboard />} />
               <Route exact path="/Register" element={<RegisterExport />} />
+              <Route exact path="/setup" element={<Setup />} />
               <Route exact path="/Logout" element={<Logout />} />
               <Route exact path="/AuthError" element={<AuthenticationError />} />
               <Route exact path="/Verification" element={<Verification />} />

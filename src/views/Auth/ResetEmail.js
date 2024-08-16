@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { updateEmail, EmailAuthProvider, reauthenticateWithCredential, sendEmailVerification } from "firebase/auth";
 import { getFirestore, updateDoc, doc, getDocs, collection } from 'firebase/firestore/lite';
 import {AuthContext} from "../../views/Auth/Auth"
@@ -22,6 +22,16 @@ export default function ResetEmail() {
     const navigate = useNavigate();
     const {setTimeActive} = useContext(AuthContext)
     
+    useEffect(() => {
+        const checkViewable = () => {
+            if (currentUser?.displayName == null) {
+                navigate("/setup");
+            } else if (!currentUser) {
+                navigate("/login");
+            }
+        };
+        checkViewable();
+    }, [currentUser, navigate]);
 
     const validate=(fieldValues = values)=>{
         let temp = {...errors}

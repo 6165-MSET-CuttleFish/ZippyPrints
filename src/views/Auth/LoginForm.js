@@ -111,15 +111,7 @@ export default function LoginForm() {
     } = useForm(initalFValues, true, validate);
 
     const{status} = useContext(RedirectCheck)
-    console.log("status:" + status)
-    const handleClose = (event, reason) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        else{
-            status = false;
-        }
-    };
+
     const provider = new GoogleAuthProvider();
     provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
     const auth = getAuth(); 
@@ -226,6 +218,9 @@ export default function LoginForm() {
                             value={values.email}
                             onChange = {handleInputChange}
                             error={errors.email}
+                            sx={{
+                                marginBottom: '1rem'
+                              }}
                             required
                         />
                         <Controls.Input 
@@ -236,6 +231,9 @@ export default function LoginForm() {
                             value={values.password}
                             onChange = {handleInputChange}
                             error={errors.password}
+                            sx={{
+                                marginBottom: '1rem'
+                              }}
                             className = {styles.textbox}
                             required
                             //add something to call handlesubmit when enter pressed in this box

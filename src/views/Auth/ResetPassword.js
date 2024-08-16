@@ -60,15 +60,19 @@ export default function ResetPassword()
     const [errorMessage, setErrorMessage] = useState();
 
 
-    const checkViewable= () => {
-        if(!currentUser) {
-            navigate("/Home")
-        }
-    }
+        useEffect(() => {
+          const checkViewable = () => {
+              if (currentUser?.displayName == null) {
+                  navigate("/setup");
+                  setOpen(true);
+              } else if (!currentUser) {
+                  navigate("/login");
+                  setOpen(true);
+              }
+          };
+          checkViewable();
+      }, [currentUser, navigate]);
 
-    useEffect(() => {
-        // checkViewable()
-    })
     
         useEffect(() => {
             let interval = null
