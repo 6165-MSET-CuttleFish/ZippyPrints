@@ -8,10 +8,10 @@ import { AuthContext } from "../Auth/Auth";
 import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
-    const [active, setActive] = useState("Location");
-    const [locationColor, setLocationColor] = useState('#717B8C');
-    const [accountColor, setAccountColor] = useState('#717B8C');
-    const [printerColor, setPrinterColor] = useState('#717B8C');
+    const [active, setActive] = useState("Account Settings");
+    const [locationColor, setLocationColor] = useState('#FFC107');
+    const [accountColor, setAccountColor] = useState('#FFC107');
+    const [printerColor, setPrinterColor] = useState('#FFC107');
     const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
     
@@ -32,17 +32,17 @@ function Dashboard() {
         const handleColor = () => {
             switch(active) {
                 case "Location":
-                    setLocationColor("#094FB7");
+                    setLocationColor("#FFC107");
                     setAccountColor("#717B8C");
                     setPrinterColor("#717B8C");
                     break;
                 case "Account Settings":
-                    setAccountColor("#094FB7");
+                    setAccountColor("#FFC107");
                     setPrinterColor("#717B8C");
                     setLocationColor("#717B8C");
                     break;
                 case "Your Printer":
-                    setPrinterColor("#094FB7");
+                    setPrinterColor("#FFC107");
                     setAccountColor("#717B8C");
                     setLocationColor("#717B8C");
                     break;
@@ -52,25 +52,24 @@ function Dashboard() {
        handleColor();
     }, [active])
     return (
-        <div className={styles.entireContainer}>
-                <div className={styles.dashboardTitle}>Welcome to your dashboard, {currentUser?.displayName}</div>
-            <div className={styles.container}>
-            <Paper 
-                sx={{
-                    backgroundColor: "#F0F5FF",
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-start',
-                    border: '1px solid',
-                    borderColor: 'rgba(230, 232, 236, 0.502)',
-                    borderRadius: '5px',
-                    gap: '32px',
-                    width: '75vw',
-                    height: 'clamp:(700px, 65vh, 2000px)',
-                    marginRight: '2.25vw',
-                }}            
-            >
+        <div className={styles.columnContainer}>
+            <div className={styles.titleContainer}>
+                <div className={styles.title}>Account Details</div>
+            </div>
+            <div className={styles.bodyContainer}>
+                {/* NavBar for Settings */}
                 <div className={styles.dashboardNav}>
+                    <Button 
+                        variant="text"
+                        sx={{
+                            border: 0,
+                            textTransform: 'none',
+                            color: accountColor,
+                        }}
+                        onClick={() => setActive("Account Settings")}
+                    >
+                        <div className={styles.dashboardButtonText}>Account Settings</div>
+                    </Button>
                     <Button 
                         variant="text"
                         text="Location"
@@ -79,21 +78,8 @@ function Dashboard() {
                             textTransform: 'none',
                             color: locationColor
                         }}
-                        onClick={() => setActive("Location")}
-                    >
+                        onClick={() => setActive("Location")}>
                         <div className={styles.dashboardButtonText}>Location</div>
-                    </Button>
-                    <Button 
-                        variant="text"
-                        sx={{
-                            border: 0,
-                            textTransform: 'none',
-                            color: accountColor,
-                            
-                        }}
-                        onClick={() => setActive("Account Settings")}
-                    >
-                        <div className={styles.dashboardButtonText}>Account Settings</div>
                     </Button>
                     <Button 
                         variant="text"
@@ -107,11 +93,11 @@ function Dashboard() {
                         <div className={styles.dashboardButtonText}>Your Printer</div>
                     </Button>
                 </div>
+                {/* Different pages for settings */}
                 {active === "Location" && <Location/>}
                 {active === "Account Settings" && <Account/>}
                 {active === "Your Printer" && <Printer/>}
-            </Paper>
-        </div>
+            </div>
         </div>
     );
 }

@@ -1,13 +1,33 @@
-.entireContainer {
+.columnContainer {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    margin-top: 4.5vw;
+    justify-content: flex-start;
+    padding-top: 10vh;
+    background-color: #F2F2F2;
+    height: 77.5vh;
 }
 
-.container {
+.titleContainer {
     display: flex;
-    flex-direction: row;
+    justify-content: start;
+    margin-left: 12vw;
+    margin-bottom: 2.5rem;
+    text-align: left;
+}
+
+.title {
+    color: #015F8F;
+    font-family: "Lexend SemiBold";
+    font-size: clamp(18px, 3rem, 1000px);
+    font-weight: 600;
+    line-height: clamp(20px, 3.5rem, 200px);
+    transition: 500ms;
+    opacity: 1;
+}
+
+.bodyContainer {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
 }
 
@@ -15,9 +35,10 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    margin-left: 2.5vw;
-    margin-top: 2vw;
-    gap: 25px;
+    margin-left: 12vw;
+    margin-right: 12vw;
+    margin-bottom: 2.5rem;
+    gap: 2rem;
     border-bottom: 1.5px solid #E0E4EC;
 }
 
@@ -33,11 +54,80 @@
     width: fit-content;
   }
 
-  .dashboardTitle {
-    color: #F0F5FF;
-    font-family: "Lexend SemiBold";
-    font-size: 28pt;
-    font-weight: 100;
-    text-align: center;
-    margin-bottom: 3vw;
+
+.dashboardButton:hover {
+    border: 1px hidden #094FB7;
+    border-radius: 2px;
+    transition-duration: 500ms;
+    background: black;
+}
+
+
+@media screen and (max-width: 1050px) {
+
+    .columnContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: 7.5vh;
+        background-color: #F2F2F2;
+        height: 100vh;
+    }
+    
+    .titleContainer {
+        display: flex;
+        justify-content: start;
+        margin-left: 0vw;
+        margin-bottom: 1.5rem;
+        text-align: left;
+    }
+
+    .title {
+        color: #015F8F;
+        font-family: "Lexend SemiBold";
+        font-size: clamp(18px, 10vw, 48px);
+        font-weight: 600;
+        line-height: clamp(22pt, 3rem, 68pt);
+        transition: 500ms;
+        opacity: 1;
+    }
+
+    .bodyContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .dashboardNav {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-left: 12vw;
+        margin-right: 12vw;
+        margin-bottom: 1.5rem;
+        gap: 1rem;
+        border-bottom: 1.5px solid #E0E4EC;
+    }
+
+    .dashboardButtonText {
+        font-family: "Lexend Light";
+        font-weight: 400;
+        letter-spacing: 0;
+        line-height: 20px;
+        margin-top: -1px;
+        font-size: 12pt;
+        text-align: center;
+        white-space: nowrap;
+        width: fit-content;
+    }
+
+
+    .dashboardButton:hover {
+        border: 1px  red;
+        border-radius: 2px;
+        transition-duration: 500ms;
+        background: red;
+    }
+
 }

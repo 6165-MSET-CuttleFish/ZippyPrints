@@ -1,0 +1,22 @@
+.css-144m3j1-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+    background-color: #FFFFFF;
+    margin-top: 0.35rem;
+}
+
+
+.css-ncmjfl-MuiButtonBase-root-MuiButton-root:hover {
+    background-color: #ffc10720 !important;
+}
+
+.css-mauk3a-MuiButtonBase-root-MuiButton-root:hover {
+    background-color: #01608f12 !important;
+}
+
+.css-1u3bzj6-MuiFormControl-root-MuiTextField-root:hover {
+    border-color: #FFC107 !important;
+
+}
+
+.MuiOutlinedInput-root:hover fieldset {
+    border-color: #FFC107 !important;
+}

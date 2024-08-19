@@ -14,7 +14,7 @@ import { API_KEY } from '../../api/firebaseConfig'
 import { AuthContext } from "../Auth/Auth";
 import styles from '../Profile/printer.module.css'
 import {useNavigate} from "react-router-dom"
-
+import '../Profile/Dashboard.css'
 
 const apiKey = API_KEY
 const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
@@ -47,9 +47,9 @@ function Printer() {
     const db = getFirestore();
     const printerRef = doc(db, 'printers', `${currentUser.uid}`)
     const sharedRef = doc(db, 'shared', `${currentUser.uid}`)
-    const [printerInfo, setPrinterInfo] = useState("Please enter your information about your printer");
-    const [filament, setFilament] = useState("Please enter information about the type of filament you offer");
-    const [price, setPrice] = useState("Please enter an estimate price range for your service");
+    const [printerInfo, setPrinterInfo] = useState("Enter information about your machine");
+    const [filament, setFilament] = useState("Enter information about your offered materials");
+    const [price, setPrice] = useState("Enter a price range for your service");
     const [service, setService] = useState([]);
     const [bio, setBio] = useState("Write a short bio about the service(s) you provide");
     const [error, setError] = useState(false)
@@ -83,37 +83,42 @@ function Printer() {
             }
           } catch (error) {
             setError(true)
+            console.log(error)
           }
         };
     
         if (sharedRef) {
           getRef();
         }
+
       }, []);
 
       useEffect(() => {
           checkViewable()
       })
   
+      console.log(service)
       useEffect(() => {
         const getUser = async () => {
             try {
                 const docSnap = await getDoc(printerRef);
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    setPrinterInfo(data.printers !== ""? data.printers : "Please enter your information about your printer")
-                    setFilament(data.filament !== ""? data.filament : "Please enter information about the type of filament you offer")
-                    setPrice(data.price !== ""? data.price : "Please enter an estimate price range for your service")
-                    setBio(data.bio !== ""? data.bio : "Write a short bio about the service(s) you provide")
+                    setPrinterInfo(data?.printers !== ""? data.printers : "Enter your information about your printer")
+                    setFilament(data?.filament !== ""? data.filament : "Enter information about your offered materials")
+                    setPrice(data?.price !== ""? data.price : "Enter a price range for your service")
+                    setBio(data?.bio !== ""? data.bio : "Write a short blurb about the service(s) you provide")
+                    setService(data.service?.length > 0? data?.service : [])
                 }
             } catch (error) {
                 setError(true)
+                console.log(error)
             }
         }
         if (printerRef) {
             getUser();
         }
-    }, [printerRef])
+    }, [currentUser])
 
    const uploadData = async () => {
            await updateDoc(printerRef, {
@@ -181,121 +186,114 @@ function Printer() {
 
     return(
         <div>
-            {/* <Box className={styles.topBox}>
-                <h3 className={styles.text}> Edit {username}'s Profile </h3>
-            <Avatar sx={{ m: 0, bgcolor: '#e0c699', fontSize: 2, marginTop: 1}}/>
-            </Box> */}
-
-            <Box component="form" noValidate >    
-                <Form onSubmit={handleSubmit} className={styles.textboxContainer}>
+            <Form onSubmit={handleSubmit}>
+                <div className={styles.columnContainer}>
+                    <div className={styles.leftContainer}>
                     <div className={styles.singleContainer}>
-                        <div className={styles.label}>Manufacturing Info *</div>
-                        <Controls.Input
-                            placeholder={printerInfo}
-                            name="printers"
-                            variant="filled"
-                            value={values.printers}
-                            onChange = {handleInputChange}
-                            error={errors.printers}
-                            InputProps={{
-                                className: styles.textbox,
-                            }}
-                            required
-                        />
-                    </div>
-                    <div className={styles.singleContainer}>
-                        <div className={styles.label}>Filament Type *</div>
-                        <Controls.Input 
-                            placeholder={filament}
-                            name="filament"
-                            variant="filled"
-                            value={values.filament}
-                            onChange = {handleInputChange}
-                            error={errors.filament}
-                            InputProps={{
-                                className: styles.textbox,
-                            }}                        
-                        />
-                    </div>
-                    <div className={styles.singleContainer}>
-                        <div className={styles.label}>Price *</div>
-                        <Controls.Input 
-                            placeholder={price}
-                            name="price"
-                            variant="filled"
-                            value={values.price}
-                            onChange = {handleInputChange}
-                            error={errors.price}
-                            InputProps={{
-                                className: styles.textbox,
-                            }} 
-                            required
-                        />
-                    </div>
-                    <div className={styles.singleContainer}>
-                        <div className={styles.label}>Service Type *</div>
-                        <Select
-                            placeholder="Hello"
-                            multiple
-                            value={service}
-                            onChange={handleChange}
-                            required
-                            sx={{width: '34vw'}}>
-                            {services.map((name) => (
-                                <MenuItem
-                                key={name}
-                                value={name}
+                            <div className={styles.label}>Service Type *</div>
+                            <Select
+                                placeholder="Hello"
+                                multiple
+                                value={service}
+                                onChange={handleChange}
+                                required
+                                className={styles.serviceSelect}
+                                InputProps={{
+                                    className: styles.serviceSelect
+                                }}>
+                                {services.map((name) => (
+                                    <MenuItem
+                                    key={name}
+                                    value={name}
+                                    >
+                                    {name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </div>
+                        <div className={styles.singleContainer}>
+                            <div className={styles.label}>Manufacturing Info *</div>
+                            <Controls.Input
+                                placeholder={printerInfo}
+                                name="printers"
+                                value={values.printers}
+                                onChange = {handleInputChange}
+                                error={errors.printers}
                                 InputProps={{
                                     className: styles.textbox,
-                                }}>
-                                {name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </div>
-                    <div className={styles.singleContainer}>
-                        <div className={styles.label}>Bio</div>
-                        <Controls.Input 
-                            placeholder={bio}
-                            name="bio"
-                            variant="filled"
-                            value={values.bio}
-                            onChange = {handleInputChange}
-                            error={errors.bio}
-                            InputProps={{
-                                className: styles.longTextbox,
-                            }} 
-                            required
+                                }}
+                                required
                             />
-                    </div>    
-                        <Controls.Button 
-                        className = {styles.button}
-                        variant = "contained"
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '12px',
-                            backgroundColor: '#0B63E5',
-                            borderRadius: '7px',
-                            padding: '0px 32px',
-                            width: '250px',
-                            transitionDuration: '500ms',
-                            height: '50px',
-                            marginTop: '0.7vw',
-                            marginBottom: '1.5vw',
-                            "&:hover": {
-                            background: "#035ee6",
-                            boxShadow: '5px 5px 5px #02142e8e',
-                            transitionDuration: '500ms'
-                            },
-                        }}
-                        size = "large"
-                        text = "Submit"
-                        onClick = {handleSubmit}
-                    />
+                        </div>
+
+                        <div className={styles.singleContainer}>
+                            <div className={styles.label}>Filament Type *</div>
+                            <Controls.Input 
+                                placeholder={filament}
+                                name="filament"
+                                value={values.filament}
+                                onChange = {handleInputChange}
+                                error={errors.filament}
+                                InputProps={{
+                                    className: styles.textbox,
+                                }}                        
+                            />
+                        </div>
+                        <div className={styles.singleContainer}>
+                            <div className={styles.label}>Price *</div>
+                            <Controls.Input 
+                                placeholder={price}
+                                name="price"
+                                value={values.price}
+                                onChange = {handleInputChange}
+                                error={errors.price}
+                                InputProps={{
+                                    className: styles.textbox,
+                                }} 
+                                required
+                            />
+                        </div>
+                    </div>
+                    
+                    <div className={styles.rightContainer}>
+                        <div className={styles.bioContainer}>
+                            <div className={styles.label}>Bio</div>
+                                <Controls.Input 
+                                    placeholder={bio}
+                                    name="bio"
+                                    value={values.bio}
+                                    onChange = {handleInputChange}
+                                    error={errors.bio}
+                                    multiline
+                                    maxRows={5}
+                                    minRows={5}
+                                    InputProps={{
+                                        className: styles.bioTextbox,
+                                    }} 
+                                    inputProps={{
+                                        maxLength: 300
+                                    }}
+                                    required/>
+                            </div> 
+                            <div className={styles.buttonContainer}>
+                                <Controls.Button 
+                                    className = {styles.button}
+                                    variant = "contained"
+                                    style={{
+                                        backgroundColor: "#015F8F",
+                                        textTransform: "none",
+                                        fontWeight: "600"
+                                    }}
+                                    size = "large"
+                                    text = "Save and continue"
+                                    onClick = {handleSubmit} />
+                            </div>
+                        </div>
+                        
+                    </div>
                 </Form>
-            </Box>
+
+            
             <Snackbar open={success} autoCloseDuration={5000} onClose={() => setSuccess(false)}>
                 <Alert onClose={() => setSuccess(false)} severity="success" sx={{ width: '100%' }}>
                     Success!

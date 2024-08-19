@@ -1,0 +1,54 @@
+.custom-switch {
+    width: 50px;
+    height: 24px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+  }
+  
+  .custom-switch .MuiSwitch-switchBase {
+    margin: 0;
+    transform: translateX(0px); /* Start position for the thumb */
+  }
+  
+  .custom-switch .MuiSwitch-switchBase.Mui-checked {
+    color: #fff;
+    transform: translateX(26px); /* Adjust for smaller thumb size */
+  }
+  
+  .custom-switch .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+    background-color: #FFC107; /* Secondary color during transition */
+    opacity: 1;
+    border: 0;
+    transition: background-color 300ms;
+  }
+  
+  .custom-switch .MuiSwitch-switchBase + .MuiSwitch-track {
+    background-color: #015F8F; /* Primary color during transition */
+    opacity: 1;
+    border: 0;
+    transition: background-color 300ms;
+  }
+  
+  .custom-switch .MuiSwitch-thumb {
+    background-color: #FFC107; /* Secondary color for the thumb */
+    width: 20px; /* Slightly smaller thumb */
+    height: 20px; /* Slightly smaller thumb */
+  }
+  
+  .custom-switch .MuiSwitch-track {
+    border-radius: 12px; /* Adjust to match the smaller height */
+    background-color: #e0e0e0; /* Neutral color when idle */
+    opacity: 1;
+    transition: background-color 300ms;
+    box-sizing: border-box;
+  }
+
+  .label {
+    color: black;
+    font-family: "Lexend Light";
+    line-height: 20px;
+    text-align: center;
+    white-space: nowrap;
+    width: fit-content;
+}

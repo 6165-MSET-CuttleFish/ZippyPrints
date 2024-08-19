@@ -57,12 +57,12 @@ function Location() {
         }
     }
     const [geoLocationData, setGeoLocationData] = useState(null);
-    const [street1, setStreet1] = useState("Please enter your address");
-    const [street2, setStreet2] = useState("Please enter your address (if applicable)");
-    const [zipcode, setZipcode] = useState("Please enter your zip code");
-    const [city, setCity] = useState("Please enter your city");
-    const [state, setState] = useState("Please enter your state");
-    const [country, setCountry] = useState("Please enter your country");
+    const [street1, setStreet1] = useState("Enter your address (optional)");
+    const [street2, setStreet2] = useState("Enter your address (optional)");
+    const [zipcode, setZipcode] = useState("Enter your zip code");
+    const [city, setCity] = useState("Enter your city");
+    const [state, setState] = useState("Enter your state");
+    const [country, setCountry] = useState("Enter your country");
     const [ success, setSuccess ] = useState(false)
     const [ error, setError ] = useState(false)
 
@@ -100,12 +100,12 @@ function Location() {
                 const docSnap = await getDoc(ref);
                 if (docSnap.exists()) {
                     const data = docSnap.data();
-                    setStreet1((data.address == "" || data?.address == undefined)? "Please enter your address" : data.address)
-                    setStreet2((data.address2 == "" || data?.address2 == undefined)? "Please enter your address (if applicable)" : data.address2)
-                    setZipcode((data.zipcode == "" || data.zipcode == undefined)? "Please enter your zipcode" : data.zipcode)
-                    setCity((data.city == "" || data?.city == undefined)? "Please enter your city" : data.city)
-                    setState((data.state == "" || data.state == undefined)? "Please enter your state" : data.state)
-                    setCountry((data.country == "" || data.country == undefined)? "Please enter your country" : data.country)
+                    setStreet1((data.address == "" || data?.address == undefined)? "Enter your address (optional)" : data.address)
+                    setStreet2((data.address2 == "" || data?.address2 == undefined)? "Enter your address (optional)" : data.address2)
+                    setZipcode((data.zipcode == "" || data.zipcode == undefined)? "Enter your zipcode" : data.zipcode)
+                    setCity((data.city == "" || data?.city == undefined)? "Enter your city" : data.city)
+                    setState((data.state == "" || data.state == undefined)? "Enter your state" : data.state)
+                    setCountry((data.country == "" || data.country == undefined)? "Enter your country" : data.country)
                 }
             } catch (error) {
                 setError(true)
@@ -220,27 +220,21 @@ function Location() {
 
 
     return(
-        <div>
-            {/* <Box className={styles.topBox}>
-                <h3 className={styles.text}> Edit {username}'s Profile </h3>
-            <Avatar sx={{ m: 0, bgcolor: '#e0c699', fontSize: 2, marginTop: 1}}/>
-            </Box> */}
-
-            <Box component="form" noValidate >    
-                <Form onSubmit={handleSubmit} className={styles.textboxContainer}>
+    <div>
+        <Form onSubmit={handleSubmit}>
+            <div className={styles.columnContainer}>
+                <div className={styles.leftContainer}>
                     <div className={styles.singleContainer}>
-                        <div className={styles.label}>Street *</div>
+                        <div className={styles.label}>Street</div>
                         <Controls.Input
                             placeholder={street1}
                             name="address"
-                            variant="filled"
                             value={values.address}
                             onChange = {handleInputChange}
                             error={errors.address}
                             InputProps={{
                                 className: styles.textbox,
                             }}
-                            required
                         />
                     </div>
                     <div className={styles.singleContainer}>
@@ -248,7 +242,6 @@ function Location() {
                         <Controls.Input 
                             placeholder={street2}
                             name="address2"
-                            variant="filled"
                             value={values.address2}
                             onChange = {handleInputChange}
                             error={errors.address2}
@@ -262,7 +255,6 @@ function Location() {
                         <Controls.Input 
                             placeholder={zipcode}
                             name="zipcode"
-                            variant="filled"
                             value={values.zipcode}
                             onChange = {handleInputChange}
                             error={errors.zipcode}
@@ -277,7 +269,6 @@ function Location() {
                         <Controls.Input 
                             placeholder={city}
                             name="city"
-                            variant="filled"
                             value={values.city}
                             onChange = {handleInputChange}
                             error={errors.city}
@@ -287,64 +278,52 @@ function Location() {
                             required
                             />
                     </div>
+                </div>
+                <div className={styles.rightContainer}>
                     <div className={styles.singleContainer}>
                         <div className={styles.label}>State *</div>
                         <Controls.Input 
                             placeholder={state}
                             name="state"
-                            variant="filled"
                             value={values.state}
                             onChange = {handleInputChange}
                             error={errors.state}
                             InputProps={{
                                 className: styles.textbox,
                             }} 
-                            required
-                            />
+                            required/>
                     </div>    
                     <div className={styles.singleContainer}>
                         <div className={styles.label}>Country *</div>
                         <Controls.Input 
                             placeholder={country}
                             name="country"
-                            variant="filled"
                             value={values.country}
                             onChange = {handleInputChange}
                             error={errors.country}
                             InputProps={{
                                 className: styles.textbox,
                             }}
-                            required
-                            />
+                            required/>
                         </div>
+                    <div className={styles.buttonContainer}>
                         <Controls.Button 
-                        className = {styles.button}
-                        variant = "contained"
-                        style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '12px',
-                            backgroundColor: '#0B63E5',
-                            borderRadius: '7px',
-                            padding: '0px 32px',
-                            width: '250px',
-                            transitionDuration: '500ms',
-                            height: '50px',
-                            marginTop: '0.7vw',
-                            marginBottom: '1.5vw',
-                            "&:hover": {
-                            background: "#035ee6",
-                            boxShadow: '5px 5px 5px #02142e8e',
-                            transitionDuration: '500ms'
-                            },
-                        }}
-                        size = "large"
-                        text = "Submit"
-                        onClick = {handleSubmit}
-                    />
-                </Form>
-            </Box>
+                            className = {styles.button}
+                            variant = "contained"
+                            style={{
+                                backgroundColor: "#015F8F",
+                                textTransform: "none",
+                                fontWeight: "600"
+                            }}
+                            size = "large"
+                            text = "Save and continue"
+                            onClick = {handleSubmit}/>
+                    </div>
+                    </div>
+                </div>
+            </Form>
+                
+
             <Snackbar open={success} autoCloseDuration={5000} onClose={() => setSuccess(false)}>
                 <Alert onClose={() => setSuccess(false)} severity="success" sx={{ width: '100%' }}>
                     Success!
@@ -355,7 +334,7 @@ function Location() {
                     We've encounted an error, please try again later
                 </Alert>
             </Snackbar>
-          </div>
+    </div>
         )
 }
 

@@ -50,7 +50,7 @@ export default function Setup() {
                 setOpen(true);
             }
         };
-        checkViewable();
+        // checkViewable();
     }, [currentUser, navigate]);
 
     const validate = (fieldValues = values) => {
@@ -136,12 +136,18 @@ export default function Setup() {
                 await setDoc(printerRef, {
                     username: username,
                     email: currentUser.email,
-                    printer: printer,
+                    printer: true,
                     formattedAddress: selectedPlace.formatted_address,
                     city: city || "",
                     state: state || "",
                     country: country ||"",
-                    geoPoint: new GeoPoint(await (data.results[0]?.geometry?.location?.lat), await (data.results[0]?.geometry?.location?.lng))
+                    geoPoint: new GeoPoint(await (data.results[0]?.geometry?.location?.lat), await (data.results[0]?.geometry?.location?.lng)),
+                    filament: "",
+                    bio: "",
+                    price: "",
+                    printers: "",
+                    service: []
+
 
                 })
                 await setDoc(markerRef, {
@@ -151,6 +157,11 @@ export default function Setup() {
                     formattedAddress: data.results[0]?.formatted_address,
                     uid: currentUser.uid,
                     email: currentUser.email,
+                    filament: "",
+                    bio: "",
+                    price: "",
+                    printers: "",
+                    service: []
                 })
             } else {
                 await setDoc(userRef, {
@@ -160,7 +171,12 @@ export default function Setup() {
                     formattedAddress: selectedPlace.formatted_address,
                     city: city || "",
                     state: state || "",
-                    country: country ||""
+                    country: country ||"",
+                    filament: "",
+                    bio: "",
+                    price: "",
+                    printers: "",
+                    service: []
                 })
             }
             navigate("/dashboard")

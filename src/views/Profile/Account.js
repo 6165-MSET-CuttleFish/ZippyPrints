@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Grid} from '@mui/material'
+import { Grid, IconButton, InputAdornment} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
@@ -15,7 +15,8 @@ import { AuthContext } from "../Auth/Auth";
 import styles from '../Profile/account.module.css'
 import {useNavigate} from "react-router-dom"
 import Popup from "../../components/Popup";
-
+import EditIcon from '@mui/icons-material/Edit';
+import UserPrinterSwitch from './UserPrinterSwitch'; // adjust the path according to your directory structure
 
 const apiKey = API_KEY
 const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
@@ -51,6 +52,8 @@ function Account() {
     const [ activeReq, setActiveReq ] = useState(false);
     const [ success, setSuccess ] = useState(false)
     const [ error, setError ] = useState(false)
+    const [isPrinter, setIsPrinter] = useState(false);
+
 
     
     const checkViewable= ()=> {
@@ -77,9 +80,11 @@ function Account() {
               if (data?.printer) {
                 setRef(doc(db, 'printers', `${currentUser?.uid}`));
                 setPrinter(true);
+                setIsPrinter(true)
               } else {
                 setRef(doc(db, 'users', `${currentUser?.uid}`));
                 setPrinter(false);
+                setIsPrinter(false)
               }
             } else {
                 console.log("No such document!");
@@ -137,7 +142,7 @@ function Account() {
     const validate=(fieldValues = values)=>{
         let temp = {...errors}
         if ('name' in fieldValues)
-            temp.name = (/..../).test(fieldValues.name)?"":"Username is not valid."
+            temp.name = (/.../).test(fieldValues.name)?"":"Username is not valid."
         if ('teamnumber' in fieldValues)
             temp.teamnumber = (/.../).test(fieldValues.teamnumber)?"":"Team Number is not valid."
                 
@@ -153,6 +158,7 @@ function Account() {
         if(validate()) {
             uploadData(); 
             resetForm();
+            handlePrinter();
         }  
     }
 
@@ -194,10 +200,14 @@ function Account() {
     const handleDeletePopup = () => {
         setOpenDeletePopup(true)
       }
+
+    const handleSwitchChange = (event) => {
+        setIsPrinter(event.target.checked);
+    };
     const handlePrinter = async () => {
         try {
             //changing account type from printer to user
-            if (printer) {
+            if (printer && !isPrinter) {
                 if (activeReq) {
                     setErrorMessage("Error: You currently have an unfilfilled accepted request, please complete the request or unassign it before switching account types!")
                     setError(true)
@@ -217,7 +227,7 @@ function Account() {
                         formattedAddress: userInfo?.formattedAddress || "",
                         geoPoint: userInfo?.geoPoint || "",
                         price: userInfo?.price || "",
-                        printer: userInfo?.printer || "",
+                        printer: false || "",
                         printers: userInfo?.printers || "",
                         service: userInfo?.service || "",
                         state: userInfo?.state || "",
@@ -234,7 +244,7 @@ function Account() {
                 }
 
             }  //changing account type from user to printer
-            else if (!printer) {
+            else if (!printer && isPrinter) {
                 await updateDoc(sharedRef, {
                     printer: true
                 })
@@ -251,7 +261,7 @@ function Account() {
                     formattedAddress: userInfo?.formattedAddress || "",
                     geoPoint: userInfo?.geoPoint || "",
                     price: userInfo?.price || "",
-                    printer: userInfo?.printer || "",
+                    printer: true || "",
                     printers: userInfo?.printers || "",
                     service: userInfo?.service || "",
                     state: userInfo?.state || "",
@@ -265,6 +275,9 @@ function Account() {
                 setSuccess(true)
                 setSuccessMessage("You are now a printer!")
                 setPrinter(true)
+            } else if (printer == isPrinter) {
+                setSuccess(true)
+                setSuccessMessage("Form submitted, you are a printer is a " + isPrinter + " statement")
             }
         } catch (error) {
             setError(true)
@@ -274,121 +287,99 @@ function Account() {
 
     return(
         <div>
-            {/* <Box className={styles.topBox}>
-                <h3 className={styles.text}> Edit {currentUser.displayName}'s Profile </h3>
-            <Avatar sx={{ m: 0, bgcolor: '#e0c699', fontSize: 2, marginTop: 1}}/>
-            </Box> */}
-
-            <Box component="form" noValidate >    
-                <Form onSubmit={handleSubmit} className={styles.textboxContainer}>
-                    <div className={styles.singleContainer}>
-                        <div className={styles.label}>Update username</div>
-                        <Controls.Input
-                            placeholder={name}
-                            name="name"
-                            variant="filled"
-                            value={values.name}
-                            onChange = {handleInputChange}
-                            error={errors.name}
-                            InputProps={{
-                                className: styles.textbox,
-                            }}
-                            required
-                        />
-                    </div>
-                    <div className={styles.singleContainer}>
-                        <div className={styles.label}>FIRST Team Number</div>
-                        <Controls.Input
-                            placeholder={teamnumber}
-                            name="teamnumber"
-                            variant="filled"
-                            value={values.teamnumber}
-                            onChange = {handleInputChange}
-                            error={errors.teamnumber}
-                            InputProps={{
-                                className: styles.textbox,
-                            }}
-                            required
-                        />                
-                    </div>
+            <Form onSubmit={handleSubmit}>
+                <div className={styles.columnContainer}>
+                    <div className={styles.leftContainer}>
+                        <div className={styles.singleContainer}>
+                            <div className={styles.label}>Update username</div>
+                            <Controls.Input
+                                placeholder={name}
+                                name="name"
+                                value={values.name}
+                                onChange = {handleInputChange}
+                                error={errors.name}
+                                InputProps={{
+                                    className: styles.textbox,
+                                }}/>
+                        </div>
+                        <div className={styles.singleContainer}>
+                            <div className={styles.label}>FIRST Team Number</div>
+                            <Controls.Input
+                                placeholder={teamnumber}
+                                name="teamnumber"
+                                value={values.teamnumber}
+                                onChange = {handleInputChange}
+                                error={errors.teamnumber}
+                                InputProps={{
+                                    className: styles.textbox,
+                                }} />                
+                        </div>
+                        <div className={styles.switchContainer}>
+                            <div className={styles.label}>Update Account Type: currently {printer?"Printer" : "User"}</div>
+                            <div className={styles.switch}>
+                                <UserPrinterSwitch checked={isPrinter} onChange={handleSwitchChange} />
+                            </div>
+                        </div>
                         <Controls.Button 
                             className = {styles.button}
                             variant = "contained"
                             style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                gap: '12px',
-                                backgroundColor: '#0B63E5',
-                                borderRadius: '7px',
-                                padding: '0px 32px',
-                                width: '250px',
-                                transitionDuration: '500ms',
-                                height: '50px',
-                                "&:hover": {
-                                background: "#035ee6",
-                                boxShadow: '5px 5px 5px #02142e8e',
-                                transitionDuration: '500ms'
-                                },
+                                backgroundColor: "#015F8F",
+                                textTransform: "none",
+                                fontWeight: "600"
                             }}
                             size = "large"
-                            text = "Update Information"
-                            onClick = {handleSubmit}
-                        />
+                            text = "Save information"
+                            onClick = {handleSubmit} />
+                    </div>
                     <div className={styles.dividerLine}></div>
-                            <div className={styles.singleContainer}>
-                                <Controls.Button
-                                    className = {styles.button}
-                                    variant = "contained"
-                                    style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        gap: '12px',
-                                        backgroundColor: '#02142E',
-                                        borderRadius: '7px',
-                                        padding: '0px 32px',
-                                        width: '315px',
-                                        transitionDuration: '500ms',
-                                        height: '50px',
-                                        "&:hover": {
-                                        background: "#035ee6",
-                                        boxShadow: '5px 5px 5px #02142e8e',
-                                        transitionDuration: '500ms'
-                                        },
-                                    }}
-                                    size = "large"
-                                    text = "Update Email Address"
-                                    onClick = {handleEmail}
-                                />
-                            </div>
-                            <div className={styles.singleContainer}>
-                                <Controls.Button
-                                    className = {styles.button}
-                                    variant = "contained"
-                                    style={{
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        gap: '12px',
-                                        backgroundColor: '#02142E',
-                                        borderRadius: '7px',
-                                        padding: '0px 32px',
-                                        width: '315px',
-                                        transitionDuration: '500ms',
-                                        height: '50px',
-                                        "&:hover": {
-                                        background: "#035ee6",
-                                        boxShadow: '5px 5px 5px #02142e8e',
-                                        transitionDuration: '500ms'
-                                        },
-                                    }}
-                                    size = "large"
-                                    text = "Reset Password"
-                                    onClick = {handlePassword}
-                                />
-                            </div>
-                            <div className={styles.singleContainer}>
+                    <div className={styles.rightContainer}>
+                        <div className={styles.singleContainer}>
+                            <div className={styles.label}>Email</div>
+                            <Controls.Input
+                                name="email"
+                                disabled
+                                InputProps={{
+                                    className: styles.textbox,
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            {currentUser?.email}
+                                        </InputAdornment>
+                                    ),
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={handleEmail}>
+                                                <EditIcon />
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                required />
+                        </div>
+                        <div className={styles.singleContainer}>
+                            <div className={styles.label}>Password</div>
+                            <Controls.Input
+                                name="password"
+                                disabled
+                                type="password"
+                                InputProps={{
+                                    className: styles.textbox,
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            ●●●●●●●●●●●●
+                                        </InputAdornment>
+                                    ),
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton onClick={handlePassword}>
+                                                <EditIcon />
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
+                                required />
+                        </div>
+                            {/* <div className={styles.singleContainer}>
                                 <Controls.Button
                                     className = {styles.button}
                                     variant = "contained"
@@ -413,7 +404,9 @@ function Account() {
                                     text = "Update Printer Status"
                                     onClick = {handlePrinter}
                                 />
-                            </div>    
+                            </div>     */}
+                        </div>
+                    </div>
                 </Form>
                 <div className={styles.deleteContainer}>
                             <Button
@@ -439,29 +432,26 @@ function Account() {
                                 size = "large"
                                 onClick = {handleDeletePopup}
                         >
-                                <div className={styles.dashboardButtonText}>Delete Account</div>
+                                <div className={styles.deleteButtonText}>Delete Account</div>
                             </Button> 
                         </div>
-            </Box>
             <Popup
-            openPopup={openDeletePopup}
-            setOpenPopup={setOpenDeletePopup}
-            sx={{
-                marginTop: '20vw'
-            }}
-            >
+                openPopup={openDeletePopup}
+                setOpenPopup={setOpenDeletePopup}
+                sx={{
+                    marginTop: '20vw'
+                }}>
                 <div className={styles.singleContainer}>
                     <div className={styles.label}>Delete Account</div>
                         <Controls.Input
                         placeholder="Please enter your password"
                         name="password"
-                        variant="filled"
                         type="password"
                         value={values.password}
                         onChange = {handleInputChange}
                         error={errors.password}
-                        sx={{
-                            width: 350
+                        InputProps={{
+                            className: styles.deleteTextbox,
                         }}
                         required
                         />   
