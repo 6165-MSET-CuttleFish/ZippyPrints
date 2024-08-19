@@ -8,7 +8,7 @@ import { AuthContext } from "../Auth/Auth";
 import { useNavigate } from 'react-router-dom';
 
 function Dashboard() {
-    const [active, setActive] = useState("Account Settings");
+    const [active, setActive] = useState("Account Details");
     const [locationColor, setLocationColor] = useState('#FFC107');
     const [accountColor, setAccountColor] = useState('#FFC107');
     const [printerColor, setPrinterColor] = useState('#FFC107');
@@ -36,7 +36,7 @@ function Dashboard() {
                     setAccountColor("#717B8C");
                     setPrinterColor("#717B8C");
                     break;
-                case "Account Settings":
+                case "Account Details":
                     setAccountColor("#FFC107");
                     setPrinterColor("#717B8C");
                     setLocationColor("#717B8C");
@@ -54,7 +54,7 @@ function Dashboard() {
     return (
         <div className={styles.columnContainer}>
             <div className={styles.titleContainer}>
-                <div className={styles.title}>Account Details</div>
+                <div className={styles.title}>Account Settings</div>
             </div>
             <div className={styles.bodyContainer}>
                 {/* NavBar for Settings */}
@@ -66,9 +66,9 @@ function Dashboard() {
                             textTransform: 'none',
                             color: accountColor,
                         }}
-                        onClick={() => setActive("Account Settings")}
+                        onClick={() => setActive("Account Details")}
                     >
-                        <div className={styles.dashboardButtonText}>Account Settings</div>
+                        <div className={styles.dashboardButtonText}>Account Details</div>
                     </Button>
                     <Button 
                         variant="text"
@@ -95,7 +95,7 @@ function Dashboard() {
                 </div>
                 {/* Different pages for settings */}
                 {active === "Location" && <Location/>}
-                {active === "Account Settings" && <Account/>}
+                {active === "Account Details" && <Account/>}
                 {active === "Your Printer" && <Printer/>}
             </div>
         </div>
