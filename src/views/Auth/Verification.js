@@ -43,7 +43,6 @@ export default function Verification() {
     const {currentUser} = useContext(AuthContext);
     const navigate = useNavigate();
 
-
     useEffect(() => {
       const checkViewable = () => {
           if (currentUser?.emailVerified && currentUser?.displayName != null) {
@@ -53,13 +52,29 @@ export default function Verification() {
               navigate("/setup")
               setOpen(true)
           }
+
           if (!currentUser) {
             navigate("/Login");
             setOpen(true)
           }
       };
       checkViewable();
-    }, [currentUser]);
+    }, []);
+
+    useEffect(() => {
+      const interval = setInterval(() => {
+        currentUser?.reload()
+        .then(() => {
+          if(currentUser?.emailVerified){
+            clearInterval(interval)
+              navigate('/setup')
+          }
+        })
+        .catch((err) => {
+          alert(err.message)
+        })
+      }, 1000)
+    }, [navigate, currentUser])
     
     const resendEmailVerification = () => {
         setButtonDisabled(true)
@@ -107,6 +122,7 @@ export default function Verification() {
         //   return () => clearInterval(interval);
         // }
       }, [setTime, setTimeActive]);
+
 
       useEffect(() => {
         if (timeActive) {

@@ -50,7 +50,7 @@ export default function Setup() {
                 setOpen(true);
             }
         };
-        // checkViewable();
+        checkViewable();
     }, [currentUser, navigate]);
 
     const validate = (fieldValues = values) => {
