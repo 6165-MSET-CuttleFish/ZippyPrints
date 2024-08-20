@@ -1,27 +1,55 @@
-.entireContainer {
+.columnContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 10vh;
+    background-color: #F2F2F2;
+    height: 77.5vh;
+}
+
+.titleContainer {
+    display: flex;
+    flex-direction: column;
+    margin-left: 12vw;
+    margin-bottom: 2rem;
+    text-align: left;
+    gap: 0.5rem;
+}
+
+.title {
+    color: #015F8F;
+    font-family: "Lexend SemiBold";
+    font-size: clamp(18px, 3rem, 1000px);
+    font-weight: 600;
+    line-height: clamp(20px, 3.5rem, 200px);
+    transition: 500ms;
+    opacity: 1;
+}
+
+.subtitle {
+    color: black;
+    font-family: "Lexend Light";
+    font-size: 12pt;
+}
+
+
+.bodyContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    margin-top: 4.5vw;
-    margin-bottom: 4.5vw;
 }
 
-.container {
+.requestNav {
     display: flex;
     flex-direction: row;
     justify-content: center;
-}
-
-.dashboardNav {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: 2vw;
-    gap: 25px;
+    gap: 5rem;
     border-bottom: 1.5px solid #E0E4EC;
     margin-bottom: 2vw;
+    margin-right: 12vw;
+    margin-left: 12vw;
 }
-.dashboardButtonText {
+.requestButtonText {
     font-family: "Lexend Light";
     font-weight: 400;
     letter-spacing: 0;
@@ -34,11 +62,69 @@
   }
 
 
-  .dashboardTitle {
-    color: #F0F5FF;
-    font-family: "Lexend SemiBold";
-    font-size: 28pt;
-    font-weight: 100;
-    text-align: center;
-    margin-bottom: 4.5vw;
+@media screen and (max-width: 1000px) {
+
+    .columnContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding-top: 7.5vh;
+        background-color: #F2F2F2;
+        height: 100%;
+    }
+    
+    .titleContainer {
+        display: flex;
+        justify-content: start;
+        margin-left: 0vw;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+
+    .title {
+        color: #015F8F;
+        font-family: "Lexend SemiBold";
+        font-size: clamp(18px, 10vw, 48px);
+        font-weight: 600;
+        line-height: clamp(22pt, 3rem, 68pt);
+        transition: 500ms;
+        opacity: 1;
+    }
+
+    .subtitle {
+        color: black;
+        font-family: "Lexend Light";
+        font-size: 10pt;    
+    }
+    
+    .bodyContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .requestNav {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 4vw;
+        border-bottom: 1.5px solid #E0E4EC;
+        margin-bottom: 2vw;
+        margin-right: 14rem;
+        margin-left: 14rem;
+    }
+
+    .requestButtonText {
+        font-family: "Lexend Light";
+        font-weight: 400;
+        letter-spacing: 0;
+        line-height: 20px;
+        margin-top: -1px;
+        font-size: 12pt;
+        text-align: center;
+        white-space: nowrap;
+        width: fit-content;
+    }
+
 }

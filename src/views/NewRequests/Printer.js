@@ -8,7 +8,7 @@ import styles from './printer.module.css'
 import {useNavigate} from "react-router-dom"
 import { v4 } from 'uuid';
 import { getStorage, ref as storageRef, uploadBytes } from 'firebase/storage'
-
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 
 const materials = [
@@ -307,11 +307,11 @@ function Printer() {
         let temp = {...errors}
     
         if ('height' in fieldValues)
-            temp.height = (/^[0-9\b]+$/).test(fieldValues.height)?"":"Please enter valid information (at least one number)."
+            temp.height = (/^[0-9\b]+$/).test(fieldValues.height)?"":"Enter valid information (at least one number)."
         if ('length' in fieldValues)
-            temp.length = (/^[0-9\b]+$/).test(fieldValues.length)?"":"Please enter valid information (at least one number)."
+            temp.length = (/^[0-9\b]+$/).test(fieldValues.length)?"":"Enter valid information (at least one number)."
         if ('width' in fieldValues)
-            temp.width = (/^[0-9\b]+$/).test(fieldValues.width)?"":"Please enter valid information (at least one number)."
+            temp.width = (/^[0-9\b]+$/).test(fieldValues.width)?"":"Enter valid information (at least one number)."
                 
         setErrors({
             ...temp
@@ -332,196 +332,213 @@ function Printer() {
 
     return (
         <div>
-           <Box component="form" noValidate >    
-                <Form onSubmit={handleSubmit} className={styles.textboxContainer}>
-                <div className={styles.singleContainer}>
-                    <div className={styles.label}>Material*</div>
-                    <Select
-                        placeholder="material"
-                        single
-                        value={material}
-                        error={errors.material}
-                        onChange={handleMaterial}
-                        required
-                        sx={{width: '34vw'}}>
-                        {materials.map((name) => (
-                            <MenuItem
-                            key={name}
-                            value={name}
-                            InputProps={{
-                                className: styles.textbox,
-                            }}>
-                            {name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </div>
-                <div className={styles.singleContainer}>
-                    <div className={styles.label}>Color*</div>
-                    <Select
-                        placeholder="color"
-                        single
-                        value={color}
-                        error={errors.color}
-                        onChange={handleColor}
-                        required
-                        sx={{width: '34vw'}}>
-                        {colors.map((name) => (
-                            <MenuItem
-                            key={name}
-                            value={name}
-                            InputProps={{
-                                className: styles.textbox,
-                            }}>
-                            {name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </div>
-                <div className={styles.singleContainer}>
-                    <div className={styles.label}>Length*</div>
-                    <Controls.Input
-                        placeholder="Enter the length of your print in appropriate units"
-                        name="length"
-                        value={values.length}
-                        onChange = {handleInputChange}
-                        error={errors.length}
-                        InputProps={{
-                            className: styles.textbox,
-                        }}
-                        required
-                    />
-                </div>
-                <div className={styles.singleContainer}>
-                    <div className={styles.label}>Width*</div>
-                    <Controls.Input
-                        placeholder="Enter the width of your print in appropriate units"
-                        name="width"
-                        value={values.width}
-                        onChange = {handleInputChange}
-                        error={errors.width}
-                        InputProps={{
-                            className: styles.textbox,
-                        }}
-                        required
-                    />
-                </div>
-                <div className={styles.singleContainer}>
-                    <div className={styles.label}>Height*</div>
-                    <Controls.Input
-                        placeholder="Enter the height of your print in appropriate units"
-                        name="height"
-                        value={values.height}
-                        onChange = {handleInputChange}
-                        error={errors.height}
-                        InputProps={{
-                            className: styles.textbox,
-                        }}
-                        required
-                    />
-                </div>
-                <div className={styles.singleContainer}>
-                    <div className={styles.label}>Measurement Unit*</div>
-                    <Select
-                        placeholder="units"
-                        single
-                        value={unit}
-                        error={errors.unit}
-                        onChange={handleUnit}
-                        required
-                        sx={{width: '34vw'}}>
-                        {units.map((name) => (
-                            <MenuItem
-                            key={name}
-                            value={name}
-                            InputProps={{
-                                className: styles.textbox,
-                            }}>
-                            {name}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </div>
-                <div className={styles.singleContainer}>
-                    <div className={styles.label}>Additional Information</div>
-                    <Controls.Input
-                        placeholder="Enter additional information about your request"
-                        name="info"
-                        value={values.info}
-                        multiline
-                        maxRows={4}
-                        onChange = {handleInputChange}
-                        error={errors.info}
-                        InputProps={{
-                            className: styles.longTextbox,
-                        }}
-                        required
-                    />
-                </div>
-                </Form>
-                    <div className={styles.uploadContainer}>
-                    <Button variant="contained" component="label"  size="small"
-                    style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                            gap: '12px',
-                            backgroundColor: '#0B63E5',
-                            borderRadius: '7px',
-                            padding: '0px 32px',
-                            width: '155px',
-                            transitionDuration: '500ms',
-                            height: '25px',
-                            "&:hover": {
-                            background: "#035ee6",
-                            boxShadow: '5px 5px 5px #02142e8e',
-                            transitionDuration: '500ms'
-                            },
-                        }}>
-                            Upload File
-                            <input 
-                                type="file" 
-                                hidden
-                                multiple
-                                onChange={(event) => {
-                                    setFiles(event.target.files)
-                                    setUploaded(true)
+            <Form onSubmit={handleSubmit}>
+                <div className={styles.columnContainer}>
+                    <div className={styles.leftContainer}>
+                    <div className={styles.singleContainer}>
+                        <div className={styles.label}>Measurement Unit*</div>
+                            <Select
+                                placeholder="units"
+                                single
+                                value={unit}
+                                error={errors.unit}
+                                onChange={handleUnit}
+                                required
+                                className={styles.serviceSelect}
+                                InputProps={{
+                                    className: styles.serviceSelect
+                                }}>
+                                {units.map((name) => (
+                                    <MenuItem
+                                    key={name}
+                                    value={name}>
+                                    {name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </div>
+                        <div className={styles.singleContainer}>
+                            <div className={styles.label}>Height*</div>
+                            <Controls.Input
+                                placeholder="Enter the height of your print"
+                                name="height"
+                                value={values.height}
+                                onChange = {handleInputChange}
+                                error={errors.height}
+                                InputProps={{
+                                    className: styles.textbox,
                                 }}
-                                />
-                        </Button>
-                        { !uploaded && <div className={styles.uploadText}>
-                            {fileName}
-                        </div> }
-                        { uploaded && <div className={styles.uploadText}>
-                            {files[0]?.name}, {files[1]?.name}, {files[2]?.name}  
-                        </div>}
+                                required
+                            />
+                        </div>
+                        <div className={styles.singleContainer}>
+                            <div className={styles.label}>Length*</div>
+                            <Controls.Input
+                                placeholder="Enter the length of your print"
+                                name="length"
+                                value={values.length}
+                                onChange = {handleInputChange}
+                                error={errors.length}
+                                InputProps={{
+                                    className: styles.textbox,
+                                }}
+                                required
+                            />
+                        </div>
+                        <div className={styles.singleContainer}>
+                            <div className={styles.label}>Width*</div>
+                            <Controls.Input
+                                placeholder="Enter the width of your print"
+                                name="width"
+                                value={values.width}
+                                onChange = {handleInputChange}
+                                error={errors.width}
+                                InputProps={{
+                                    className: styles.textbox,
+                                }}
+                                required
+                            />
+                        </div>
+                        
+                        <div className={styles.uploadContainer}>
+                            <Button 
+                                variant="outlined" 
+                                component="label"  
+                                size="small"
+                                style={{
+                                    borderColor: "#015F8F",
+                                    textTransform: "none",
+                                    fontWeight: "400",
+                                    width: '8rem',
+                                    height: '2rem'
+                                }}>
+                                    <CloudUploadIcon style={{ marginRight: '0.5rem', marginLeft: '-0.5rem' }}/> Upload File
+                                    <input 
+                                        type="file" 
+                                        hidden
+                                        multiple
+                                        onChange={(event) => {
+                                            setFiles(event.target.files)
+                                            setUploaded(true)
+                                        }}
+                                        />
+                                </Button>
+                                { !uploaded && <div className={styles.uploadText}>
+                                    {fileName}
+                                </div> }
+                                { uploaded && <div className={styles.uploadText}>
+                                    {files[0]?.name}, {files[1]?.name}, {files[2]?.name}  
+                                </div>}
+                        </div>        
+                    </div>
+                    <div className={styles.rightContainer}>
+                        <div className={styles.singleContainer}>
+                            <div className={styles.label}>Color*</div>
+                            <Select
+                                placeholder="color"
+                                single
+                                value={color}
+                                error={errors.color}
+                                onChange={handleColor}
+                                required
+                                className={styles.serviceSelect}
+                                InputProps={{
+                                    className: styles.serviceSelect
+                                }}>
+                                {colors.map((name) => (
+                                    <MenuItem
+                                    key={name}
+                                    value={name}>
+                                    {name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </div>
+                        <div className={styles.singleContainer}>
+                            <div className={styles.label}>Material*</div>
+                            <Select
+                                placeholder={[]}
+                                single
+                                value={material}
+                                error={errors.material}
+                                onChange={handleMaterial}
+                                required
+                                className={styles.serviceSelect}
+                                InputProps={{
+                                    className: styles.serviceSelect
+                                }}>
+                                {materials.map((name) => (
+                                    <MenuItem
+                                    key={name}
+                                    value={name}>
+                                    {name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </div>
+                       
+                        <div className={styles.singleContainer}>
+                            <div className={styles.label}>Additional Information</div>
+                            <Controls.Input
+                                placeholder="Enter additional information (optional)"
+                                name="info"
+                                value={values.info}
+                                multiline
+                                maxRows={4}
+                                onChange = {handleInputChange}
+                                error={errors.info}
+                                InputProps={{
+                                    className: styles.textbox,
+                                }}
+                                required
+                            />
+                        </div>
+                        <div className={styles.uploadContainer_mobile}>
+                            <Button 
+                                variant="outlined" 
+                                component="label"  
+                                size="small"
+                                style={{
+                                    borderColor: "#015F8F",
+                                    textTransform: "none",
+                                    fontWeight: "400",
+                                    width: '8rem',
+                                    height: '2rem'
+                                }}>
+                                    <CloudUploadIcon style={{ marginRight: '0.5rem', marginLeft: '-0.5rem' }}/> Upload File
+                                    <input 
+                                        type="file" 
+                                        hidden
+                                        multiple
+                                        onChange={(event) => {
+                                            setFiles(event.target.files)
+                                            setUploaded(true)
+                                        }}
+                                        />
+                                </Button>
+                                { !uploaded && <div className={styles.uploadText}>
+                                    {fileName}
+                                </div> }
+                                { uploaded && <div className={styles.uploadText}>
+                                    {files[0]?.name}, {files[1]?.name}, {files[2]?.name}  
+                                </div>}
+                        </div>
+                        <div className={styles.buttonContainer}>
+                            <Controls.Button 
+                                className = {styles.button}
+                                variant = "contained"
+                                size = "large"
+                                text = "Save and continue"
+                                style={{
+                                    backgroundColor: "#015F8F",
+                                    textTransform: "none",
+                                    fontWeight: "600",
+                                }}
+                                onClick = {handleSubmit}/>
+                        </div>
+                    </div>
                 </div>
-
-                <div className={styles.submitContainer}>
-                <Controls.Button 
-                        className = {styles.button}
-                        variant = "contained"
-                        style={{
-                            display: 'flex',
-                            gap: '12px',
-                            backgroundColor: '#0B63E5',
-                            borderRadius: '7px',
-                            padding: '0px 32px',
-                            width: '500px',
-                            transitionDuration: '500ms',
-                            height: '50px',
-                            marginTop: '0.7vw',
-                            marginBottom: '1.5vw',
-                            "&:hover": {
-                            background: "#035ee6",
-                            boxShadow: '5px 5px 5px #02142e8e',
-                            transitionDuration: '500ms'
-                            },
-                        }}
-                        size = "large"
-                        text = "Submit"
-                        onClick = {handleSubmit}
-                    />
+            </Form>        
                 <Snackbar open={success} autoCloseDuration={5000} onClose={() => setSuccess(false)}>
                     <Alert severity="success" sx={{ width: '100%' }} onClose={() => setSuccess(false)}>
                         Success!
@@ -532,8 +549,6 @@ function Printer() {
                         {errorMessage}
                     </Alert>
                 </Snackbar>
-                </div>
-            </Box>
           </div>
     )
 }

@@ -1,72 +1,51 @@
-.topBox {
-    margin: auto;
-    padding-top: 2%;
+.columnContainer {
     display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
 }
 
-.textboxContainer {
+.leftContainer {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    column-gap: 25px;
-    row-gap: 15px;
+    flex-direction: column;
+    justify-content: flex-start; /* Center content vertically */
+    align-items: flex-start; /* Align content to the left */
+    width: 50%; /* Take up half of the screen */
+    padding-left: 12vw; /* Padding for spacing from the left edge */
+    gap: 0.75rem;
+}
+
+.rightContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Center content vertically */
+    align-items: flex-start; /* Center content horizontally */
+    width: 50%; /* Take up half of the screen */
+    gap: 0.75rem;
+}
+
+.textbox {
+    width: clamp(25rem, 34vw, 40rem);
+    height: 2.75rem;
+    background-color: #FFFFFF;
+    margin-top: 0.35rem;
+}
+
+.serviceSelect {
+    width: clamp(25rem, 34vw, 40rem);
+    margin-top: 0.35rem;
+}
+
+.buttonContainer {
+    align-self: flex-end;
+    margin-right: 10vw;
+    margin-top: 5rem;
 }
 
 .button {
-    height: 48;
-    width: 350;
-}
-
-.container {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    margin-top: 7.5vw;
-}
-
-.dashboardNav {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin-left: 2.5vw;
-    margin-top: 2vw;
-    gap: 25px;
-    border-bottom: 1.5px solid #E0E4EC;
-}
-
-.dashboardButtonText {
-    color: #717B8C;
-    font-family: "Lexend Light";
-    font-weight: 400;
-    letter-spacing: 0;
-    line-height: 20px;
-    margin-top: -1px;
-    text-align: center;
-    white-space: nowrap;
-    width: fit-content;
-  }
-
-  .dashboardButton:hover {
-    border: 1px hidden #094FB7;
-    border-radius: 2px;
-    transition-duration: 500ms;
-    background: #094fb723;
-  }
-.textbox {
-    width: 34vw;
-}
-.longTextbox {
-    width: 70vw;
-}
-
-.singleContainer {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    gap: 10px;
+    width: 20rem;
+    height: 2.75rem;
+    background-color: #015F8F;
+    margin-top: 1.5rem;
 }
 
 .label {
@@ -78,37 +57,128 @@
     width: fit-content;
 }
 
-.serviceSelect {
-    width: 250px;
-}
-
 .uploadContainer {
     display: flex;
     flex-direction: row;
     justify-content: left;
-    margin-left: 2.5vw;
-    margin-top: 25px;
     gap: 25px;
+    margin-top: 0.5rem;
 }
 
 .uploadText {
     color: #717B8C;
     font-family: "Lexend Light";
-    font-weight: 400;
+    font-weight: 300;
     letter-spacing: 0;
-    line-height: 20px;
-    text-align: center;
-    white-space: nowrap;
-    width: fit-content;
+    line-height: 12pt;
+    width: 50%;
   }
 
-  .submitContainer {
+.submitContainer {
     display: flex;
     flex-direction: row;
     justify-content: center;
-
 }
 
-.borders {
-    margin-bottom: 50px;
+.uploadContainer_mobile {
+    display: none;
+    gap: 0px;
+    margin-top: 0rem;
+    visibility: hidden;
+}
+
+@media screen and (max-width: 1000px) {
+    .columnContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .leftContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Center content vertically */
+        align-items: center; /* Align content to the left */
+        width: 100%; /* Take up half of the screen */
+        padding-left: 0vw; /* Padding for spacing from the left edge */
+        gap: 0.5rem;
+    }
+
+    .rightContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* Center content vertically */
+        align-items: center; /* Center content horizontally */
+        width: 100%; /* Take up half of the screen */
+        gap: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    .textbox {
+        width: clamp(20rem, 25vw, 40rem);
+        height: 2.75rem;
+        background-color: #FFFFFF;
+        margin-top: 0.35rem;
+    }
+    .serviceSelect {
+        width: clamp(20rem, 25vw, 40rem);
+        margin-top: 0.35rem;
+    }
+    
+    
+    .label {
+        color: black;
+        font-family: "Lexend Light";
+        line-height: 20px;
+        font-size: 10pt;
+        text-align: center;
+        white-space: nowrap;
+        width: fit-content;
+    }
+
+
+    .buttonContainer {
+        align-self: center;
+        margin-right: 0vw;
+        margin-top: 0.5rem;
+    }
+
+    .button {
+        width: 20rem;
+        height: 2.75rem;
+        background-color: #015F8F;
+        margin-top: 1.5rem;
+    }
+
+    .uploadContainer {
+        display: none;
+        gap: 0px;
+        margin-top: 0rem;
+        visibility: hidden;
+    }
+
+    .uploadContainer_mobile {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 25px;
+        margin-top: 0.5rem;
+        visibility: visible;
+    }
+
+    .uploadText {
+        color: #717B8C;
+        font-family: "Lexend Light";
+        font-weight: 300;
+        letter-spacing: 0;
+        line-height: 12pt;
+        width: 22%;
+      }
+    
+    .submitContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
 }

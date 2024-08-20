@@ -35,19 +35,19 @@ function NewRequests() {
         const handleColor = () => {
             switch(active) {
                 case "3D Printer":
-                    setPrinter("#094FB7");
+                    setPrinter("#FFC107");
                     setLaserCutter("#717B8C");
                     setCNC("#717B8C");
                     break;
                 case "Laser Cutter":
                     setPrinter("#717B8C");
-                    setLaserCutter("#094FB7");
+                    setLaserCutter("#FFC107");
                     setCNC("#717B8C");
                     break;
                 case "CNC":
                     setPrinter("#717B8C");
                     setLaserCutter("#717B8C");
-                    setCNC("#094FB7");
+                    setCNC("#FFC107");
                     break;
                 default:
             }
@@ -56,25 +56,13 @@ function NewRequests() {
     }, [active])
     
     return (
-        <div className={styles.entireContainer}>
-            <div className={styles.dashboardTitle}>Need something? Choose a service below!</div>
-            <div className={styles.container}>
-            <Paper 
-                sx={{
-                    backgroundColor: "#F0F5FF",
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    border: '1px solid',
-                    borderColor: 'rgba(230, 232, 236, 0.502)',
-                    borderRadius: '5px',
-                    gap: '32px',
-                    width: '75vw',
-                    height: 'clamp:(700px, 65vh, 2000px)',
-                    marginRight: '2.25vw',
-                }}            
-            >
-                <div className={styles.dashboardNav}>
+        <div className={styles.columnContainer}>
+            <div className={styles.titleContainer}>
+                <div className={styles.title}>Parts Request</div>
+                <div className={styles.subtitle}>Need something made? Choose a service below!</div>
+            </div>
+            <div className={styles.bodyContainer}>
+                <div className={styles.requestNav}>
                     <Button 
                         variant="text"
                         text="3D Printer"
@@ -85,7 +73,7 @@ function NewRequests() {
                         }}
                         onClick={() => setActive("3D Printer")}
                     >
-                        <div className={styles.dashboardButtonText}>3D Printer</div>
+                        <div className={styles.requestButtonText}>3D Printer</div>
                     </Button>
                     <Button 
                         variant="text"
@@ -97,7 +85,7 @@ function NewRequests() {
                         }}
                         onClick={() => setActive("Laser Cutter")}
                     >
-                        <div className={styles.dashboardButtonText}>Laser Cutter</div>
+                        <div className={styles.requestButtonText}>Laser Cutter</div>
                     </Button>
                     <Button 
                         variant="text"
@@ -108,14 +96,13 @@ function NewRequests() {
                         }}
                         onClick={() => setActive("CNC")}
                     >
-                        <div className={styles.dashboardButtonText}>CNC</div>
+                        <div className={styles.requestButtonText}>CNC</div>
                     </Button>
                 </div>
                 {active === "3D Printer" && <Printer/>}
                 {active === "Laser Cutter" && <LaserCutter/>}
                 {active === "CNC" && <CNC/>}
-            </Paper>
-        </div>
+            </div>
         </div>
     );
 } 
