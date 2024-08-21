@@ -13,6 +13,8 @@ import { CurrentDetailsContext } from './DetailsContext';
 import { Menu } from '../../components/Menu/Menu'
 import { RequestContext } from './RequestContext';
 import { useNavigate } from 'react-router-dom';
+import {Button} from '@mui/material';
+import "./Display.css"
 
 function DisplayRequests() {
     const [type, setType] = useState("3D Printing");
@@ -35,6 +37,24 @@ function DisplayRequests() {
     const [ userReqInfo, setUserReqInfo ] = useState();
     const navigate = useNavigate();
 
+    const [printReq, setPrintReq] = useState([])
+    const [laserReq, setLaserReq] = useState([])
+    const [CNCReq, setCNCReq] = useState([])
+
+    //setting variant of different buttons
+    const [ allSelect, setAllSelect] = useState(true)
+    const [ printSelect, setPrintSelect] = useState(false)
+    const [ laserSelect, setLaserSelect] = useState(false)
+    const [ CNCSelect, setCNCSelect] = useState(false)
+
+    //switching between awaiting requests, accepted requests, and current user's requests
+    const [active, setActive] = useState("Awaiting Requests");
+    const [requestSelect, setRequestSelect] = useState('#717B8C');
+    const [acceptedSelect, setAcceptedSelect] = useState('#717B8C');
+    const [awaitingSelect, setAwaitingSelect] = useState('#717B8C');
+
+
+    
     useEffect(() => {
       const checkViewable = () => {
         if (!currentUser) {
@@ -47,7 +67,29 @@ function DisplayRequests() {
       };
       checkViewable();
   }, [currentUser]);
-
+    useEffect(() => {    
+      const handleColor = () => {
+          switch(active) {
+              case "Your Requests":
+                  setRequestSelect("#FFC107");
+                  setAcceptedSelect("#717B8C");
+                  setAwaitingSelect("#717B8C");
+                  break;
+              case "Accepted Requests":
+                  setRequestSelect("#717B8C");
+                  setAcceptedSelect("#FFC107");
+                  setAwaitingSelect("#717B8C");
+                  break;
+              case "Awaiting Requests":
+                  setRequestSelect("#717B8C");
+                  setAcceptedSelect("#717B8C");
+                  setAwaitingSelect("#FFC107");
+                  break;
+              default:
+          }
+      }
+    handleColor();
+  }, [active])
 
     useEffect(() => {
       setDetails(false)
@@ -83,7 +125,10 @@ function DisplayRequests() {
         try {
           const querySnapshot = await getDocs(q);
           setReq([])
-          querySnapshot.forEach((doc) => {
+          setPrintReq([])
+          setLaserReq([])
+          setCNCReq([])
+           querySnapshot.forEach((doc) => {
             setReq((current) => [...current, {
               color: doc.data()?.color,
               height: doc.data()?.height,
@@ -102,7 +147,68 @@ function DisplayRequests() {
               accepted: doc.data()?.accepted,
               uid: doc.data()?.uid
             },]);
+            if (doc.data()?.type == "3D Printing") {
+              setPrintReq((current) => [...current, {
+                color: doc.data()?.color,
+                height: doc.data()?.height,
+                info: doc.data()?.info,
+                length: doc.data()?.length,
+                email:doc.data()?.email,
+                material: doc.data()?.material,
+                unit: doc.data()?.unit,
+                width: doc.data()?.width,
+                files: doc.data()?.files,
+                teamnumber: doc.data()?.teamnumber,
+                location: doc.data()?.location, 
+                email: doc.data()?.email,
+                type: doc.data()?.type,
+                thickness: doc.data()?.thickness,
+                accepted: doc.data()?.accepted,
+                uid: doc.data()?.uid
+              },]);
+            } else if (doc.data()?.type == "Laser Cutting") {
+              setLaserReq((current) => [...current, {
+                color: doc.data()?.color,
+                height: doc.data()?.height,
+                info: doc.data()?.info,
+                length: doc.data()?.length,
+                email:doc.data()?.email,
+                material: doc.data()?.material,
+                unit: doc.data()?.unit,
+                width: doc.data()?.width,
+                files: doc.data()?.files,
+                teamnumber: doc.data()?.teamnumber,
+                location: doc.data()?.location, 
+                email: doc.data()?.email,
+                type: doc.data()?.type,
+                thickness: doc.data()?.thickness,
+                accepted: doc.data()?.accepted,
+                uid: doc.data()?.uid
+              },]);
+            } else if (doc.data()?.type == "CNCing") {
+              setCNCReq((current) => [...current, {
+                color: doc.data()?.color,
+                height: doc.data()?.height,
+                info: doc.data()?.info,
+                length: doc.data()?.length,
+                email:doc.data()?.email,
+                material: doc.data()?.material,
+                unit: doc.data()?.unit,
+                width: doc.data()?.width,
+                files: doc.data()?.files,
+                teamnumber: doc.data()?.teamnumber,
+                location: doc.data()?.location, 
+                email: doc.data()?.email,
+                type: doc.data()?.type,
+                thickness: doc.data()?.thickness,
+                accepted: doc.data()?.accepted,
+                uid: doc.data()?.uid
+              },]);
+            }
           });
+
+
+          
         } catch (error){
           // window.alert(error) //We want to use a snackbar instead of a popup so this is commmented out
           console.log(error)
@@ -116,8 +222,6 @@ function DisplayRequests() {
     useEffect(() => {
       const getAcceptedDocs = async () => {
         try {
-
-        
             const docSnap = await getDoc(printerRef);
             setAcceptedReq((await docSnap).data()?.request)
             if (acceptedReq != undefined) {
@@ -129,7 +233,7 @@ function DisplayRequests() {
           console.log(error)
         }
       }
-      
+
         try {
           getAcceptedDocs()
         } catch (error) {
@@ -167,115 +271,170 @@ function DisplayRequests() {
       useEffect(() => {
         setElRefs((refs) => Array(req.length).fill().map((_, i) => refs[i] || createRef()));
       }, [req]);
-    
-    const handleInputChange = (event) => {
-        setType(event?.target.value);
+
+
+    const handleFilter = (filterType) => {
+      if (filterType == "All") {
+        setReq([...printReq, ...laserReq, ...CNCReq])
+        setPrintSelect(false)
+        setAllSelect(true)
+        setLaserSelect(false)
+        setCNCSelect(false)
+      } else if (filterType == "3D Prints") {
+        setReq(printReq)
+        setPrintSelect(true)
+        setAllSelect(false)
+        setLaserSelect(false)
+        setCNCSelect(false)
+      } else if (filterType == "Laser Cut") {
+        setReq(laserReq)
+        setPrintSelect(false)
+        setAllSelect(false)
+        setLaserSelect(true)
+        setCNCSelect(false)
+      } else if (filterType == "CNC") {
+        setReq(CNCReq)
+        setPrintSelect(false)
+        setAllSelect(false)
+        setLaserSelect(false)
+        setCNCSelect(true)
+      }
     }
 
 
     return (
-      <div>
-        {/* Request List Page */}
+      <div className={styles.entireContainer}>
+      {/* Request List Page */}
         <div> 
-        {!details &&
-        <div>
-          <Paper sx={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            backgroundColor: '#F0F5FF',
-            
-          }}>
-            <div className={styles.wrapper}>
-              <div className = {styles.searchContainer}>
-                <SearchIcon 
+          {!details &&
+            <div>
+              {/* Title and Filter Section*/}
+              <div className={styles.titleContainer}>
+                <div className={styles.title}>Part Requests</div>
+                <div className={styles.subtitle}>See requests awaiting to be fulfilled below!</div>
+              </div>
+              <div className={styles.filterNav}>
+                <Button 
+                  variant={allSelect ? "contained" : "text"}
                   sx={{
-                    height: "35px",
-                    width: "35px"
-                  }}/>
-                <InputBase className = {styles.searchBar} placeholder = "Search"/>
+                    border: 0,
+                    borderRadius: '2px',
+                    textTransform: 'none',
+                    color: 'black',
+                    margin: '0.3rem', }}
+                  onClick={() => handleFilter("All")}>
+                  <div className={styles.filterButton}>Show all</div>
+                </Button>
+                <Button 
+                  variant={printSelect ? "contained" : "text"}
+                  sx={{
+                    border: 0,
+                    textTransform: 'none',
+                    borderRadius: '2px',
+                    margin: '0.3rem',
+                    color: 'black' }}
+                  onClick={() => handleFilter("3D Prints")}>
+                  <div className={styles.filterButton}>3D Prints</div>
+                </Button>
+                <Button 
+                  variant={laserSelect ? "contained" : "text"}
+                  sx={{
+                    border: 0,
+                    textTransform: 'none',
+                    borderRadius: '2px',
+                    margin: '0.3rem',
+                    color: 'black' }}
+                  onClick={() => handleFilter("Laser Cut")}>
+                  <div className={styles.filterButton}>Laser Cut</div>
+                </Button>
+                <Button 
+                  variant={CNCSelect ? "contained" : "text"}
+                  sx={{
+                    border: 0,
+                    textTransform: 'none',
+                    borderRadius: '2px',
+                    margin: '0.3rem',
+                    color: 'black' }}
+                  onClick={() => handleFilter("CNC")}>
+                  <div className={styles.filterButton}>CNC</div>
+                </Button>
               </div>
-              <div className={styles.dropDownContainer}>
-                <div className={styles.menuTitle}>Request Filter</div>
-                  <FormControl>
-                    <InputLabel className={styles.menuSubtitle}>What method are you looking for?</InputLabel>
-                    <Select value = {type} className={styles.dropDown} onChange = {handleInputChange}>
-                      <MenuItem className={styles.dropDownText} value = '3D Printing'> 3D Printing </MenuItem>
-                      <MenuItem className={styles.dropDownText} value = 'Laser Cutting'> Laser Cutting </MenuItem>
-                      <MenuItem className={styles.dropDownText} value = 'CNC Work'> CNC Work </MenuItem>
-                      <MenuItem className={styles.dropDownText} value = 'CNC Routing'> CNC Routing </MenuItem>
-                    </Select>
-                  </FormControl>
+              <div className={styles.requestsNav}> 
+                    <Button 
+                        variant="text"
+                        sx={{
+                            border: 0,
+                            textTransform: 'none',
+                            color: awaitingSelect,
+                        }}
+                        onClick={() => setActive("Awaiting Requests")}>
+                        <div 
+                          className={styles.requestButtonText} 
+                          style={{ textDecoration: active == "Awaiting Requests" ? 'underline' : 'none' }}>
+                            Awaiting Requests({req.length})
+                        </div>
+                    </Button>
+                  <Button 
+                        variant="text"
+                        sx={{
+                            border: 0,
+                            textTransform: 'none',
+                            color: requestSelect,
+                        }}
+                        onClick={() => setActive("Your Requests")}>
+                        <div 
+                        className={styles.requestButtonText} 
+                        style={{ textDecoration: active == "Your Requests" ? 'underline' : 'none' }}>
+                          Your Requests {userReq ? "(1)" : "(0)"}
+                        </div>
+                    </Button>
+                    <Button 
+                        variant="text"
+                        sx={{
+                            border: 0,
+                            textTransform: 'none',
+                            color: acceptedSelect,
+                            
+                        }}
+                        onClick={() => setActive("Accepted Requests")}>
+                        <div 
+                          className={styles.requestButtonText}
+                          style={{ textDecoration: active == "Accepted Requests" ? 'underline' : 'none' }}>
+                            Accepted Requests {acceptedReq ? "(1)" : "(0)"}
+                          </div>
+                    </Button>
               </div>
-            </div>
-          </Paper>
 
-          <div className = {styles.container}> 
-          { userReq &&
-          <div> 
-              <div className={styles.listTitle}>Your Request </div>
-              <Grid container spacing = {3} className = {styles.printerList}>
-                  <Paper 
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      border: '1px solid',
-                      borderColor: 'rgba(230, 232, 236, 0.502)',
-                      borderRadius: '20px',
-                      gap: '32px',
-                      width: '50vw',
-                      height: '12vw',
-                      marginRight: '2.25vw',
-                    }}
-                    className={styles.paper}>
-                      {<RequestList request = {userReqInfo}/>}
-                    </Paper>
-              </Grid>
+          <div className = {styles.bodyContainer}> 
+          { userReq && active == "Your Requests" && 
+            <div> 
+              <div className={styles.paper}>
+                  {<RequestList request = {userReqInfo}/>}
+              </div>
             </div>
           }
 
-          { activeReq &&
-          <div> 
-              <div className={styles.listTitle}>Your Accepted Requests </div>
-              <Grid container spacing = {3} className = {styles.printerList}>
-                  <Paper 
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      border: '1px solid',
-                      borderColor: 'rgba(230, 232, 236, 0.502)',
-                      borderRadius: '20px',
-                      gap: '32px',
-                      width: '50vw',
-                      height: '12vw',
-                      marginRight: '2.25vw',
-                    }}
-                    className={styles.paper}>
-                      {<RequestList request = {acceptedReq}/>}
-                    </Paper>
-              </Grid>
+          { activeReq && active == "Accepted Requests" && 
+            <div> 
+              <div className={styles.paper}>
+                  {<RequestList request = {acceptedReq}/>}
+              </div>
             </div>
           }
-
-          <div className={styles.listTitle}>Active Requests </div>
-          <Grid container spacing = {3} className = {styles.printerList}>
-            {req?.map((request, i) =>(
-              <Paper 
-                sx={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  border: '1px solid',
-                  borderColor: 'rgba(230, 232, 236, 0.502)',
-                  borderRadius: '20px',
-                  gap: '32px',
-                  width: '50vw',
-                  height: '12vw',
-                  marginRight: '2.25vw',
-                }}
-                className={styles.paper} ref={elRefs[i]} key={i} item xs={12}>
-                  {<RequestList request = {request}/>}
-                </Paper> 
-            ))}
-          </Grid>
+          { active == "Awaiting Requests" &&
+            <div>
+                {req?.map((request, i) =>(
+                  <div 
+                    className={styles.paper} 
+                    ref={elRefs[i]} 
+                    key={i} 
+                    item 
+                    xs={12}>
+                      {<RequestList request = {request}/>}
+                  </div>
+                ))}
+            </div>
+          }
           </div>
         </div>
         }

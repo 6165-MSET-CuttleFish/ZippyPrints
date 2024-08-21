@@ -412,7 +412,8 @@ function Printer() {
                                     width: '8rem',
                                     height: '2rem'
                                 }}>
-                                    <CloudUploadIcon style={{ marginRight: '0.5rem', marginLeft: '-0.5rem' }}/> Upload File
+                                    <CloudUploadIcon style={{ marginRight: '0.5rem', marginLeft: '-0.25rem', color: '#015F8F' }}/> 
+                                    <div className={styles.label}>Upload File</div>
                                     <input 
                                         type="file" 
                                         hidden
@@ -505,7 +506,8 @@ function Printer() {
                                     width: '8rem',
                                     height: '2rem'
                                 }}>
-                                    <CloudUploadIcon style={{ marginRight: '0.5rem', marginLeft: '-0.5rem' }}/> Upload File
+                                    <CloudUploadIcon style={{ marginRight: '0.5rem', marginLeft: '-0.25rem', color: '#015F8F' }}/> 
+                                    <div className={styles.label}>Upload File</div>
                                     <input 
                                         type="file" 
                                         hidden

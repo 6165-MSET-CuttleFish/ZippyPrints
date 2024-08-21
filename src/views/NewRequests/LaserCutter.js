@@ -391,14 +391,15 @@ function LaserCutter() {
                           fontWeight: "400",
                           width: '8rem',
                           height: '2rem'}}>
-                        <CloudUploadIcon style={{ marginRight: '0.5rem', marginLeft: '-0.5rem' }}/> Upload File
+                        <CloudUploadIcon style={{ marginRight: '0.5rem', marginLeft: '-0.25rem', color: '#015F8F' }}/> 
+                        <div className={styles.label}>Upload File</div>
                         <input 
-                          type="file" 
-                          hidden
-                          multiple
-                          onChange={(event) => {
-                            setFiles(event.target.files)
-                            setUploaded(true) }}/>
+                        type="file" 
+                        hidden
+                        multiple
+                        onChange={(event) => {
+                          setFiles(event.target.files)
+                          setUploaded(true) }}/>
                       </Button>
                       { !uploaded && 
                         <div className={styles.uploadText}> {fileName}</div> }
@@ -476,14 +477,15 @@ function LaserCutter() {
                             fontWeight: "400",
                             width: '8rem',
                             height: '2rem'}}>
-                          <CloudUploadIcon style={{ marginRight: '0.5rem', marginLeft: '-0.5rem' }}/> Upload File
-                          <input 
-                            type="file" 
-                            hidden
-                            multiple
-                            onChange={(event) => {
-                              setFiles(event.target.files)
-                              setUploaded(true) }}/>
+                          <CloudUploadIcon style={{ marginRight: '0.5rem', marginLeft: '-0.25rem', color: '#015F8F' }}/> 
+                            <div className={styles.label}>Upload File</div>
+                              <input 
+                              type="file" 
+                              hidden
+                              multiple
+                              onChange={(event) => {
+                                  setFiles(event.target.files)
+                                  setUploaded(true) }}/>
                         </Button>
                         { !uploaded && 
                           <div className={styles.uploadText}> {fileName}</div> }

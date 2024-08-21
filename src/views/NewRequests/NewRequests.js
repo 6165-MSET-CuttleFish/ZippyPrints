@@ -34,12 +34,12 @@ function NewRequests() {
     useEffect(() => {    
         const handleColor = () => {
             switch(active) {
-                case "3D Printer":
+                case "3D Printing":
                     setPrinter("#FFC107");
                     setLaserCutter("#717B8C");
                     setCNC("#717B8C");
                     break;
-                case "Laser Cutter":
+                case "Laser Cutting":
                     setPrinter("#717B8C");
                     setLaserCutter("#FFC107");
                     setCNC("#717B8C");
@@ -58,22 +58,22 @@ function NewRequests() {
     return (
         <div className={styles.columnContainer}>
             <div className={styles.titleContainer}>
-                <div className={styles.title}>Parts Request</div>
+                <div className={styles.title}>Request a Part</div>
                 <div className={styles.subtitle}>Need something made? Choose a service below!</div>
             </div>
             <div className={styles.bodyContainer}>
                 <div className={styles.requestNav}>
                     <Button 
                         variant="text"
-                        text="3D Printer"
+                        text="3D Printing"
                         sx={{
                             border: 0,
                             textTransform: 'none',
                             color: printer
                         }}
-                        onClick={() => setActive("3D Printer")}
+                        onClick={() => setActive("3D Printing")}
                     >
-                        <div className={styles.requestButtonText}>3D Printer</div>
+                        <div className={styles.requestButtonText}>3D Printing</div>
                     </Button>
                     <Button 
                         variant="text"
@@ -83,9 +83,9 @@ function NewRequests() {
                             color: laserCutter,
                             
                         }}
-                        onClick={() => setActive("Laser Cutter")}
+                        onClick={() => setActive("Laser Cutting")}
                     >
-                        <div className={styles.requestButtonText}>Laser Cutter</div>
+                        <div className={styles.requestButtonText}>Laser Cutting</div>
                     </Button>
                     <Button 
                         variant="text"
@@ -99,8 +99,8 @@ function NewRequests() {
                         <div className={styles.requestButtonText}>CNC</div>
                     </Button>
                 </div>
-                {active === "3D Printer" && <Printer/>}
-                {active === "Laser Cutter" && <LaserCutter/>}
+                {active === "3D Printing" && <Printer/>}
+                {active === "Laser Cutting" && <LaserCutter/>}
                 {active === "CNC" && <CNC/>}
             </div>
         </div>

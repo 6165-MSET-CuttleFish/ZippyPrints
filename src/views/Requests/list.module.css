@@ -1,31 +1,49 @@
-.titleContainer {
+.entireContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start ;
+    background-color: #E0E4EC;
+    height: 11rem;
+    margin-bottom: 2rem;
+}
+
+.contentContainer {
+    margin-left: 1.5rem;  
+    margin-right: 1.5rem;
+    width: 50vw;
+}
+
+.topContainer {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     margin-top: 1.5vh;
-    margin-left: 1vw;
+}
+
+.titleContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .line{
     background-color: #094fb723;
     height: 1px;
-    width: 47.5vw;
     margin-top: 1vh;
   }
 
 .infoContainer {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
-    gap: 5vw;
+    justify-content: space-between;
     margin-top: 0.5vw;
+    border: 2rem;
 }
 
 .infoContainer2 {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    margin-left: 1vw;
 
 }
 
@@ -54,8 +72,7 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    margin-left: 1vw;
-    margin-top: 1.5vw;
+    margin-top: 1.5rem;
     gap: 1vw;
   }
 

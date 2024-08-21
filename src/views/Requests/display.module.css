@@ -1,39 +1,91 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;    
+* body {
+    background-color: #F2F2F2;
 }
-.menuContainer {
+
+.entireContainer {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    height: 88vh;
+    padding-top: 10vh;
+    background-color: #F2F2F2;
+    height: 100%;
 }
 
-.menuScreen {
-    display: block;
-    padding-top: 2vh;
-    padding-right: 1.5vw;
-    padding-left: 0.5vw;
-    margin-top: 0px;
-    flex-direction: column;
-    justify-content: left;
-    align-items: left;
-    background-color: #F0F5FF;
-    height: 85.5vh;
-    width: 25vw;
-}
-.search {
+.titleContainer {
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    margin-left: 12vw;
+    margin-bottom: 2rem;
+    text-align: left;
+    gap: 0.5rem;
 }
 
-.container{
+.title {
+    color: #015F8F;
+    font-family: "Lexend SemiBold";
+    font-size: clamp(18px, 3rem, 1000px);
+    font-weight: 600;
+    line-height: clamp(20px, 3.5rem, 200px);
+    transition: 500ms;
+    opacity: 1;
+}
+
+.subheading {
+    color: #015F8F;
+    font-family: "Lexend SemiBold";
+    font-size: clamp(18px, 2rem, 1000px);
+    font-weight: 600;
+    line-height: clamp(20px, 3rem, 200px);
+    transition: 500ms;
+    opacity: 1;
+}
+
+.subtitle {
+    color: black;
+    font-family: "Lexend Light";
+    font-size: 12pt;
+}
+
+.filterNav {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 5rem;
+    border: 1.5px solid #E0E4EC;
+    background-color: #E0E4EC;
+    height: 3rem;
+    margin-bottom: 2vw;
+    margin-right: 18vw;
+    margin-left: 18vw;
+}
+
+.filterButton {
+    font-family: "Lexend Light";
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 20px;
+    margin-top: -1px;
+    font-size: 14pt;
+    text-align: center;
+    white-space: nowrap;
+    width: fit-content;
+  }
+
+  .requestsNav {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    margin-left: 18vw;
+  }
+
+.bodyContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    margin-top: 3rem;
 }
+
 .wrapper {
     display: flex;
     flex-direction: row;
@@ -126,10 +178,6 @@
     justify-content: center;
     padding-top: 4vw;
     width: 30vw;
-}
-
-.paperTitle {
-    display: flex;
 }
 
 .detailsContainer {
