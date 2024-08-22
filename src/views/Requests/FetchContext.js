@@ -5,8 +5,9 @@ import { getDocs, query, collection, getFirestore, doc, getDoc } from 'firebase/
 export const FetchContext = createContext();
 
 export const FetchProvider = ({ children }) => {
-    const [req, setReq] = useState([]);
-    const [filter, setFilter] = useState('All'); // Filter state
+    const [placeholder, setPlaceholder] = useState([]) //placeholder for req
+    const [req, setReq] = useState(placeholder);
+    const [filter, setFilter] = useState('3D Prints'); // Filter state
     const db = getFirestore();
     const q = query(collection(db, "requests"));
     const [printReq, setPrintReq] = useState([])
@@ -95,17 +96,20 @@ export const FetchProvider = ({ children }) => {
         const storedRequests = localStorage.getItem('sortedRequests');
         const lastUpdated = localStorage.getItem('lastUpdated');
         const now = new Date();
-
         if (storedRequests && lastUpdated && (now - new Date(lastUpdated)) < 24 * 60 * 60 * 1000) {
             console.log("Fetching req from local storage")
+            console.log(localStorage)
             console.log(localStorage.getItem('sortedRequests'))
           const parsedRequests = JSON.parse(storedRequests);
           console.log(parsedRequests)
-          setReq(parsedRequests);
+          setPlaceholder(parsedRequests);
+          setPrintReq(JSON.parse(localStorage.getItem('printReq')))
+          setLaserReq(JSON.parse(localStorage.getItem('laserReq')))
+          setCNCReq(JSON.parse(localStorage.getItem('CNCReq')))
         } else {
             console.log("Fetching req from API")
           const querySnapshot = await getDocs(q);
-            setReq([]);
+            setPlaceholder([]);
             setPrintReq([]);
             setLaserReq([]);
             setCNCReq([]);
@@ -126,7 +130,7 @@ export const FetchProvider = ({ children }) => {
                       };
       
                       // Updating arrays directly inside the callback
-                      setReq((current) => [...current, requestData]);
+                      setPlaceholder((current) => [...current, requestData]);
                     
                       if (doc.data()?.type === "3D Printing") {
                         console.log("3dprinting")
@@ -137,7 +141,7 @@ export const FetchProvider = ({ children }) => {
                       } else if (doc.data()?.type === "CNCing") {
                         setCNCReq((current) => [...current, requestData]);
                       }
-                      console.log(req)
+                      console.log(placeholder)
       
                       resolve(); // Resolve the promise once the state has been updated
                     } else {
@@ -146,11 +150,11 @@ export const FetchProvider = ({ children }) => {
                   });
                 });
               }
-              console.log(req)
+              console.log(placeholder)
             });
 
             await Promise.all(promises).then(() => {
-                setReq((current) => 
+                setPlaceholder((current) => 
                 [...current].sort((a, b) => a.distance_value - b.distance_value)
               )
 
@@ -173,25 +177,31 @@ export const FetchProvider = ({ children }) => {
         console.log(error);
       }
     };
-
+    console.log(placeholder)
+    console.log(printReq)
+    console.log(req)
+    
     // Refresh function
     const refreshRequests = () => {
         localStorage.removeItem('sortedRequests');
-        // localStorage.removeItem('printReq');
-        // localStorage.removeItem('laserReq');
-        // localStorage.removeItem('CNCReq');
+        localStorage.removeItem('printReq');
+        localStorage.removeItem('laserReq');
+        localStorage.removeItem('CNCReq');
         localStorage.removeItem('lastUpdated');
         getRequests();
+
     };
 
     //Update local storage whenever req changes
     const updateStorage = () => {
         const now = new Date()
-        localStorage.setItem('sortedRequests', JSON.stringify(req))
-        // localStorage.setItem('printReq', JSON.stringify(printReq))
-        // localStorage.setItem('laserReq', JSON.stringify(laserReq))
-        // localStorage.setItem('CNCReq', JSON.stringify(CNCReq))
+        localStorage.setItem('sortedRequests', JSON.stringify(placeholder))
+        localStorage.setItem('printReq', JSON.stringify(printReq))
+        localStorage.setItem('laserReq', JSON.stringify(laserReq))
+        localStorage.setItem('CNCReq', JSON.stringify(CNCReq))
         localStorage.setItem('lastUpdated', now)
+        if (filter == "All")
+            setReq(placeholder)
     }
 
     // Effect to fetch requests on initial load
@@ -201,51 +211,49 @@ export const FetchProvider = ({ children }) => {
 
     
     useEffect(() => {
-        updateStorage();
-    }, [req])
+        if (placeholder != "") {
+            console.log("updateStorage")
+            updateStorage();
+        }
+    }, [placeholder, req])
     
 
     // Filtered requests based on the filter state
-    const filteredRequests = req.filter((request) => {
-        if (filter === 'All') return true;
-        if (filter === '3D Prints') return request.type === '3D Print';
-        if (filter === 'Laser Cut') return request.type === 'Laser Cut';
-        if (filter === 'CNC') return request.type === 'CNC';
-        return true;
-    });
 
     const handleFilter = (filterType) => {
         setFilter(filterType)
         if (filterType == "All") {
-          // setReq([...printReq, ...laserReq, ...CNCReq])
-          setPrintSelect(false)
-          setAllSelect(true)
-          setLaserSelect(false)
-          setCNCSelect(false)
+            console.log("filter changed to all")
+            setReq(placeholder)
+            setPrintSelect(false)
+            setAllSelect(true)
+            setLaserSelect(false)
+            setCNCSelect(false)
         } else if (filterType == "3D Prints") {
-          // setReq(printReq)
-          setPrintSelect(true)
-          setAllSelect(false)
-          setLaserSelect(false)
-          setCNCSelect(false)
+            console.log("filter changed to 3d11prints")
+            setReq(printReq)
+            setPrintSelect(true)
+            setAllSelect(false)
+            setLaserSelect(false)
+            setCNCSelect(false)
         } else if (filterType == "Laser Cut") {
-          // setReq(laserReq)
-          setPrintSelect(false)
-          setAllSelect(false)
-          setLaserSelect(true)
-          setCNCSelect(false)
+            setReq(laserReq)
+            setPrintSelect(false)
+            setAllSelect(false)
+            setLaserSelect(true)
+            setCNCSelect(false)
         } else if (filterType == "CNC") {
-          // setReq(CNCReq)
-          setPrintSelect(false)
-          setAllSelect(false)
-          setLaserSelect(false)
-          setCNCSelect(true)
+            setReq(CNCReq)
+            setPrintSelect(false)
+            setAllSelect(false)
+            setLaserSelect(false)
+            setCNCSelect(true)
         }
-      }
+    }
         
 
     return (
-        <FetchContext.Provider value={{ req: filteredRequests, refreshRequests, setFilter, handleFilter, allSelect, printSelect, laserSelect}}>
+        <FetchContext.Provider value={{ req, refreshRequests, filter, handleFilter, allSelect, printSelect, laserSelect}}>
             {children}
         </FetchContext.Provider>
 

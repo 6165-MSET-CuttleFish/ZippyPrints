@@ -82,7 +82,7 @@ const RequestList = ({request}) => {
 
     
     useEffect(() => {
-        if (userLocation && request?.location) {
+        if (userLocation && request?.location && request?.accepted) {
             const service = new window.google.maps.DistanceMatrixService();
             service.getDistanceMatrix({
                     origins: [userLocation],
@@ -114,7 +114,9 @@ const RequestList = ({request}) => {
                 <div className={styles.topContainer}>
                     <div className={styles.titleContainer}>
                         <div className={styles.printerTitle}>Team {request?.teamnumber} - {request?.type} </div>
-                        <div className={styles.printerTitle}>Distance: {distance}</div>
+                        {(distance || request.distance) &&
+                        <div className={styles.printerTitle}>Distance: {request.accepted ? distance : request.distance}</div>
+                        }
                     </div>
                     <div className={styles.line}></div>
                 </div>

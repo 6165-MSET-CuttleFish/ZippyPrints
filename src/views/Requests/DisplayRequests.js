@@ -23,9 +23,11 @@ function DisplayRequests() {
     const {currentUser} = useContext(AuthContext);
     const storage = getStorage();
     const {req, setReq} = useContext(FetchContext);
-    const {setFilter} = useContext(FetchContext);
+    const {filter} = useContext(FetchContext);
     const {handleFilter} = useContext(FetchContext)
     const {refreshRequests} = useContext(FetchContext);
+    const {key} = useContext(FetchContext);
+
 
     const { details, setDetails } = useContext(CurrentDetailsContext);
     const db = getFirestore();
@@ -66,6 +68,7 @@ function DisplayRequests() {
     
     useEffect(() => {
       const checkViewable = () => {
+        handleFilter("All")
         if (!currentUser) {
           navigate("/login")
         } else if (!currentUser.emailVerified) {
@@ -75,21 +78,24 @@ function DisplayRequests() {
         }
       };
       checkViewable();
-  }, [currentUser]);
+  }, [ref]);
     useEffect(() => {    
       const handleColor = () => {
           switch(active) {
               case "Your Requests":
+                  handleFilter("All")
                   setRequestSelect("#FFC107");
                   setAcceptedSelect("#717B8C");
                   setAwaitingSelect("#717B8C");
                   break;
               case "Accepted Requests":
+                  handleFilter("All")
                   setRequestSelect("#717B8C");
                   setAcceptedSelect("#FFC107");
                   setAwaitingSelect("#717B8C");
                   break;
               case "Awaiting Requests":
+                  handleFilter("All")
                   setRequestSelect("#717B8C");
                   setAcceptedSelect("#717B8C");
                   setAwaitingSelect("#FFC107");
@@ -383,7 +389,7 @@ function DisplayRequests() {
             </div>
           }
 
-          { activeReq && active == "Accepted Requests" && 
+          { acceptedReq != null && active == "Accepted Requests" && 
             <div> 
               <div className={styles.paper}>
                   {<RequestList request = {acceptedReq}/>}
