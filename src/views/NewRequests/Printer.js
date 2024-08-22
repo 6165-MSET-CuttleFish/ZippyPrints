@@ -79,6 +79,8 @@ function Printer() {
     const sharedRef = doc(db, 'shared', `${currentUser?.uid}`)
     const [ref, setRef] = useState();
     const [printer, setPrinter] = useState()
+
+    const [ geocode, setGeocode ] = useState()
     
     useEffect(() => {
         const getRef = async () => {
@@ -118,6 +120,7 @@ function Printer() {
                 setTeam((data.teamnumber == "" || data.teamnumber == undefined)? "MISSING!" : data.teamnumber)
                 let state = data.formattedAddress?.split((","))[2].split(" ")[1];
                 let formatted = (await docSnap).data().formattedAddress?.split((","))[1] + ", " + state + "," + (await docSnap).data().formattedAddress.split((","))[3];
+                setGeocode(data.geoPoint)
                 setLocation(formatted)
               } else {
                 console.log("No such document!");
@@ -199,7 +202,8 @@ function Printer() {
                 type: "3D Printing",
                 accepted: false,
                 uid: currentUser?.uid,
-                printer: printer
+                printer: printer,
+                geoPoint: geocode
            })
    
         await updateDoc(ref, {
@@ -222,7 +226,8 @@ function Printer() {
                },
                 type: "3D Printing",
                 accepted: false,
-                uid: currentUser?.uid
+                uid: currentUser?.uid,
+                geoPoint: geocode
             }
         })
         } catch (error) {

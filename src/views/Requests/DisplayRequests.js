@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createRef, useContext } from 'react';
 import { CircularProgress, Grid, Typography, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
-import { Autocomplete } from '@react-google-maps/api';
+import { Autocomplete, LoadScriptNext } from '@react-google-maps/api';
 import { AppBar, Toolbar, Box, InputBase, Paper } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { getFirestore, collection, getDocs, addDoc, updateDoc, doc, getDoc, GeoPoint, query, setDoc } from 'firebase/firestore/lite';
@@ -11,17 +11,22 @@ import RequestList from './Requests';
 import Details from './Details';
 import { CurrentDetailsContext } from './DetailsContext';
 import { Menu } from '../../components/Menu/Menu'
-import { RequestContext } from './RequestContext';
+import { FetchContext } from './FetchContext';
 import { useNavigate } from 'react-router-dom';
 import {Button} from '@mui/material';
 import "./Display.css"
+import { API_KEY } from '../../api/firebaseConfig';
 
 function DisplayRequests() {
     const [type, setType] = useState("3D Printing");
     const [elRefs, setElRefs] = useState([]);
     const {currentUser} = useContext(AuthContext);
     const storage = getStorage();
-    const [req, setReq] = useState([]);
+    const {req, setReq} = useContext(FetchContext);
+    const {setFilter} = useContext(FetchContext);
+    const {handleFilter} = useContext(FetchContext)
+    const {refreshRequests} = useContext(FetchContext);
+
     const { details, setDetails } = useContext(CurrentDetailsContext);
     const db = getFirestore();
     const printerRef = doc(db, "printers", `${currentUser?.uid}`)
@@ -42,16 +47,20 @@ function DisplayRequests() {
     const [CNCReq, setCNCReq] = useState([])
 
     //setting variant of different buttons
-    const [ allSelect, setAllSelect] = useState(true)
-    const [ printSelect, setPrintSelect] = useState(false)
-    const [ laserSelect, setLaserSelect] = useState(false)
-    const [ CNCSelect, setCNCSelect] = useState(false)
+    const { allSelect } = useContext(FetchContext)
+    const { printSelect } = useContext(FetchContext)
+    const { laserSelect } = useContext(FetchContext)
+    const { CNCSelect } = useContext(FetchContext)
 
     //switching between awaiting requests, accepted requests, and current user's requests
     const [active, setActive] = useState("Awaiting Requests");
     const [requestSelect, setRequestSelect] = useState('#717B8C');
     const [acceptedSelect, setAcceptedSelect] = useState('#717B8C');
     const [awaitingSelect, setAwaitingSelect] = useState('#717B8C');
+
+    //distance sorting algorithm
+    const [ userLocation, setUserLocation ] = useState();
+    const [ distance, setDistance ] = useState("WRONG")
 
 
     
@@ -120,104 +129,16 @@ function DisplayRequests() {
       }
     }, []);
 
-    useEffect(() => {
-      const getRequests = async () => {
-        try {
-          const querySnapshot = await getDocs(q);
-          setReq([])
-          setPrintReq([])
-          setLaserReq([])
-          setCNCReq([])
-           querySnapshot.forEach((doc) => {
-            setReq((current) => [...current, {
-              color: doc.data()?.color,
-              height: doc.data()?.height,
-              info: doc.data()?.info,
-              length: doc.data()?.length,
-              email:doc.data()?.email,
-              material: doc.data()?.material,
-              unit: doc.data()?.unit,
-              width: doc.data()?.width,
-              files: doc.data()?.files,
-              teamnumber: doc.data()?.teamnumber,
-              location: doc.data()?.location, 
-              email: doc.data()?.email,
-              type: doc.data()?.type,
-              thickness: doc.data()?.thickness,
-              accepted: doc.data()?.accepted,
-              uid: doc.data()?.uid
-            },]);
-            if (doc.data()?.type == "3D Printing") {
-              setPrintReq((current) => [...current, {
-                color: doc.data()?.color,
-                height: doc.data()?.height,
-                info: doc.data()?.info,
-                length: doc.data()?.length,
-                email:doc.data()?.email,
-                material: doc.data()?.material,
-                unit: doc.data()?.unit,
-                width: doc.data()?.width,
-                files: doc.data()?.files,
-                teamnumber: doc.data()?.teamnumber,
-                location: doc.data()?.location, 
-                email: doc.data()?.email,
-                type: doc.data()?.type,
-                thickness: doc.data()?.thickness,
-                accepted: doc.data()?.accepted,
-                uid: doc.data()?.uid
-              },]);
-            } else if (doc.data()?.type == "Laser Cutting") {
-              setLaserReq((current) => [...current, {
-                color: doc.data()?.color,
-                height: doc.data()?.height,
-                info: doc.data()?.info,
-                length: doc.data()?.length,
-                email:doc.data()?.email,
-                material: doc.data()?.material,
-                unit: doc.data()?.unit,
-                width: doc.data()?.width,
-                files: doc.data()?.files,
-                teamnumber: doc.data()?.teamnumber,
-                location: doc.data()?.location, 
-                email: doc.data()?.email,
-                type: doc.data()?.type,
-                thickness: doc.data()?.thickness,
-                accepted: doc.data()?.accepted,
-                uid: doc.data()?.uid
-              },]);
-            } else if (doc.data()?.type == "CNCing") {
-              setCNCReq((current) => [...current, {
-                color: doc.data()?.color,
-                height: doc.data()?.height,
-                info: doc.data()?.info,
-                length: doc.data()?.length,
-                email:doc.data()?.email,
-                material: doc.data()?.material,
-                unit: doc.data()?.unit,
-                width: doc.data()?.width,
-                files: doc.data()?.files,
-                teamnumber: doc.data()?.teamnumber,
-                location: doc.data()?.location, 
-                email: doc.data()?.email,
-                type: doc.data()?.type,
-                thickness: doc.data()?.thickness,
-                accepted: doc.data()?.accepted,
-                uid: doc.data()?.uid
-              },]);
-            }
-          });
 
-
-          
-        } catch (error){
-          // window.alert(error) //We want to use a snackbar instead of a popup so this is commmented out
-          console.log(error)
-          // console.log(redirect)
-        }
-      }
-      getRequests()
-    }, [details])
-
+    // const calculateDistance = (destination, callback) => {
+    //   const service = new window.google.maps.DistanceMatrixService();
+    //   service.getDistanceMatrix({
+    //       origins: [userLocation],
+    //       destinations: [destination],
+    //       unitSystem: window.google.maps.UnitSystem.IMPERIAL,
+    //       travelMode: 'DRIVING',
+    //   }, callback);
+    // };
     
     useEffect(() => {
       const getAcceptedDocs = async () => {
@@ -240,6 +161,8 @@ function DisplayRequests() {
           console.log(error)
         }
       }, [req, details])
+      // console.log(req )
+
 
       useEffect(() => {
         const getRequestedDocs = async () => {
@@ -247,6 +170,7 @@ function DisplayRequests() {
             const docSnap = await getDoc(ref);
               if (docSnap.exists()) {
                 const data = docSnap.data()
+                setUserLocation(data.formattedAddress)
                 setUserReqInfo(data.userRequest)
                 if (userReqInfo != null) {
                   setUserReq(true);
@@ -266,44 +190,89 @@ function DisplayRequests() {
           }
         }
       }, [req, userReq])
+
+      
+
       
 
       useEffect(() => {
         setElRefs((refs) => Array(req.length).fill().map((_, i) => refs[i] || createRef()));
       }, [req]);
 
+      // useEffect(() => {
+      //   const getRequests = async () => {
+      //     try {
+      //       const querySnapshot = await getDocs(q);
+      //       setReq([]);
+      //       setPrintReq([]);
+      //       setLaserReq([]);
+      //       setCNCReq([]);
+      
+      //       const promises = querySnapshot.docs.map(async (doc) => {
+      //         if (userLocation && doc.data()?.location) {
+      //           return new Promise((resolve) => {
+      //             calculateDistance(doc.data()?.location, (response, status) => {
+      //               // console.log("fetch api")
+      //               if (status === 'OK') {
+      //                 const distance = response.rows[0].elements[0].distance.text; // Distance in miles
+      //                 const distanceValue = response.rows[0].elements[0].distance.value
+      
+      //                 const requestData = {
+      //                   ...doc.data(),
+      //                   distance: distance,
+      //                   distance_value: distanceValue
+      //                 };
+      
+      //                 // Updating arrays directly inside the callback
+      //                 setReq((current) => [...current, requestData]);
+      
+      //                 if (doc.data()?.type === "3D Printing") {
+      //                   setPrintReq((current) => [...current, requestData]);
+      //                 } else if (doc.data()?.type === "Laser Cutting") {
+      //                   setLaserReq((current) => [...current, requestData]);
+      //                 } else if (doc.data()?.type === "CNCing") {
+      //                   setCNCReq((current) => [...current, requestData]);
+      //                 }
+      
+      //                 resolve(); // Resolve the promise once the state has been updated
+      //               } else {
+      //                 resolve(); // Resolve even if the status is not OK
+      //               }
+      //             });
+      //           });
+      //         }
+      //       });
+      
+      //       await Promise.all(promises); // Wait for all distance calculations to finish
+      //        setReq((current) => 
+      //           [...current].sort((a, b) => a.distance_value - b.distance_value)
+      //         );
 
-    const handleFilter = (filterType) => {
-      if (filterType == "All") {
-        setReq([...printReq, ...laserReq, ...CNCReq])
-        setPrintSelect(false)
-        setAllSelect(true)
-        setLaserSelect(false)
-        setCNCSelect(false)
-      } else if (filterType == "3D Prints") {
-        setReq(printReq)
-        setPrintSelect(true)
-        setAllSelect(false)
-        setLaserSelect(false)
-        setCNCSelect(false)
-      } else if (filterType == "Laser Cut") {
-        setReq(laserReq)
-        setPrintSelect(false)
-        setAllSelect(false)
-        setLaserSelect(true)
-        setCNCSelect(false)
-      } else if (filterType == "CNC") {
-        setReq(CNCReq)
-        setPrintSelect(false)
-        setAllSelect(false)
-        setLaserSelect(false)
-        setCNCSelect(true)
-      }
-    }
+      //         setPrintReq((current) => 
+      //           [...current].sort((a, b) => a.distance_value - b.distance_value)
+      //         );
+
+      //         setLaserReq((current) => 
+      //           [...current].sort((a, b) => a.distance_value - b.distance_value)
+      //         );
+
+      //         setCNCReq((current) => 
+      //           [...current].sort((a, b) => a.distance_value - b.distance_value)
+      //         );
+      //     } catch (error) {
+      //       console.log(error);
+      //     }
+      //   };
+      
+      //   getRequests();
+      // }, [details, userLocation, ref]);
+
 
 
     return (
+      <LoadScriptNext googleMapsApiKey={API_KEY}>
       <div className={styles.entireContainer}>
+        <Button onClick={() => refreshRequests()}>CLICK ME TO REFRESH</Button>
       {/* Request List Page */}
         <div> 
           {!details &&
@@ -445,6 +414,7 @@ function DisplayRequests() {
           { details && <Details/> }
       </div>
     </div>
+    </LoadScriptNext>
     )
 }
 

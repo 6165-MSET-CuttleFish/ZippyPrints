@@ -25,6 +25,7 @@ import PageNotFound from './views/Error/PageNotFound'
 import DisplayRequest from './views/Requests/DisplayRequests'
 import Details from './views/Requests/Details';
 import Setup from './views/Auth/Setup'
+import { FetchProvider } from './views/Requests/FetchContext';
 function App()  {
 
 
@@ -35,6 +36,7 @@ function App()  {
       <SelectedProvider>
       <DetailsProvider>
       <RequestProvider>
+      <FetchProvider>
       <Helmet>
         <title>ZippyPrints</title>
         <meta name="description" content="A fast, easy to use, and reliable way for printing custom designs through printers near you!!" />
@@ -64,6 +66,7 @@ function App()  {
             </Routes>
           </RedirectCheckProvider>  
         </BrowserRouter>
+        </FetchProvider>
         </RequestProvider>
         </DetailsProvider>
         </SelectedProvider>

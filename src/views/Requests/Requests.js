@@ -13,9 +13,6 @@ import { CurrentDetailsContext } from './DetailsContext';
 import { RequestContext } from './RequestContext';
 import { API_KEY } from '../../api/firebaseConfig';
 
-
-const baseUrl = "https://maps.googleapis.com/maps/api/distancematrix/json?"
-const apiKey = API_KEY;
 const RequestList = ({request}) => {
     const {currentUser} = useContext(AuthContext);
     const storage = getStorage();
@@ -47,10 +44,8 @@ const RequestList = ({request}) => {
               const data = docSnap.data();
               if (data?.printer) {
                 setRef(printerRef);
-                console.log("printer")
               } else {
                 setRef(userRef);
-                console.log("user")
               }
             } else {
               console.log("No such document!");
@@ -84,21 +79,22 @@ const RequestList = ({request}) => {
         }
       }, [ref, details])
 
+
+    
     useEffect(() => {
-        if (userLocation && request.location) {
+        if (userLocation && request?.location) {
             const service = new window.google.maps.DistanceMatrixService();
             service.getDistanceMatrix({
                     origins: [userLocation],
-                    destinations: [request.location],
+                    destinations: [request?.location],
                     unitSystem: window.google.maps.UnitSystem.IMPERIAL,
                     travelMode: 'DRIVING',
                 }, callback);
             }
-        }, [userLocation, request.location]);
+        }, [userLocation, request?.location]);
 
         const callback = (response, status) => {
             if (status === 'OK') {
-                console.log(response)
                 const origins = response.originAddresses;
                 for (let i = 0; i < origins.length; i++) {
                     const results = response.rows[i].elements;
@@ -110,9 +106,9 @@ const RequestList = ({request}) => {
             }
         }
 
-
     return(
     <LoadScriptNext googleMapsApiKey={API_KEY}>
+        {/* { distance != null && */
         <div className = {styles.entireContainer}>
             <div className={styles.contentContainer}>
                 <div className={styles.topContainer}>
@@ -142,7 +138,10 @@ const RequestList = ({request}) => {
                     sx={{
                         backgroundColor: "#015F8F",
                         textTransform: "none",
-                        fontWeight: "600" }}
+                        fontWeight: "600", 
+                        "&:hover": {
+                            backgroundColor: "#015F8F"
+                        }}}
                         onClick = {() => {
                             setReq(request)
                             setDetails(true)
@@ -153,6 +152,7 @@ const RequestList = ({request}) => {
                 </div>
             </div>
         </div>
+        }
     </LoadScriptNext>
     );
     
