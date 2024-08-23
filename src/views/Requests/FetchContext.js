@@ -96,7 +96,7 @@ export const FetchProvider = ({ children }) => {
         const storedRequests = localStorage.getItem('sortedRequests');
         const lastUpdated = localStorage.getItem('lastUpdated');
         const now = new Date();
-        if (storedRequests && lastUpdated && (now - new Date(lastUpdated)) < 24 * 60 * 60 * 1000) {
+        if (storedRequests && lastUpdated && (now - new Date(lastUpdated)) < 0.5 * 60 * 60 * 1000) {
             console.log("Fetching req from local storage")
             console.log(localStorage)
             console.log(localStorage.getItem('sortedRequests'))
@@ -230,7 +230,7 @@ export const FetchProvider = ({ children }) => {
             setLaserSelect(false)
             setCNCSelect(false)
         } else if (filterType == "3D Prints") {
-            console.log("filter changed to 3d11prints")
+            console.log("filter changed to 3!d11prints")
             setReq(printReq)
             setPrintSelect(true)
             setAllSelect(false)
@@ -253,7 +253,7 @@ export const FetchProvider = ({ children }) => {
         
 
     return (
-        <FetchContext.Provider value={{ req, refreshRequests, filter, handleFilter, allSelect, printSelect, laserSelect}}>
+        <FetchContext.Provider value={{ req, refreshRequests, filter, handleFilter, allSelect, printSelect, laserSelect, CNCSelect }}>
             {children}
         </FetchContext.Provider>
 

@@ -7,6 +7,8 @@ import { getStorage, ref as storageRef, getDownloadURL } from "firebase/storage"
 import { getFirestore, doc, updateDoc, deleteDoc, deleteField, setDoc, getDoc } from "firebase/firestore";
 import { AuthContext } from "../Auth/Auth";
 import { Alert, Snackbar } from "@mui/material";
+import { Link } from "react-router-dom";
+import { FetchContext } from "./FetchContext";
 
 
 export default function Details() {
@@ -36,6 +38,8 @@ export default function Details() {
         return {name: req?.files[i]} 
     });
     const printerRef = doc(db, 'printers', "" + currentUser.uid)
+
+    const { refreshRequests } = useContext(FetchContext)
 
     
 
@@ -145,8 +149,8 @@ export default function Details() {
                 })
 
                await deleteDoc(reqRef);
+                refreshRequests();
                setSuccess(true);
-
                setAccepted(true)
             } else {
                 setError("You can only accept one request at a time! Please complete or unassign your active request to accept this request")
@@ -192,6 +196,7 @@ export default function Details() {
                 userRequest: req
             })
 
+            refreshRequests();
             setUnSuccess(true)
             setAccepted(false)
         } catch (error) {
@@ -202,130 +207,81 @@ export default function Details() {
     }
 
     return (
-        <div className={styles.container}>
-            <div className={styles.titleText}>Team {req?.teamnumber}'s {req?.type} Request</div>
-            <div className={styles.titleDescriptionText}>{req?.email}</div>
-            <div className={styles.titleDescriptionText}>{req?.location} </div>
-            {accepted && <div className={styles.titleDescriptionText}>This request has been accepted </div>}
-            {!accepted && <div className={styles.titleDescriptionText}>This request has not been accepted </div>}
-            <div className={styles.subtitleText}>Manufacturing Details:</div>
-            <div className={styles.descriptionText}>Material: {req?.material}</div>
-            <div className={styles.descriptionText}>Color: {req?.color} </div>
-            <div className={styles.descriptionText}>Unit: {req?.unit} </div>
-            <div className={styles.descriptionText}>{text}: {number} </div>
-            <div className={styles.descriptionText}>Width: {req?.width} </div>
-            <div className={styles.descriptionText}>Length: {req?.length} </div>
-            <div className={styles.buttonContainer}>
-            <Controls.Button 
-                className = {styles.button}
-                variant = "contained"
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '12px',
-                    backgroundColor: '#0B63E5',
-                    borderRadius: '7px',
-                    padding: '0px 32px',
-                    width: '250px',
-                    transitionDuration: '500ms',
-                    height: '50px',
-                    marginTop: '0.7vw',
-                    marginBottom: '1.5vw',
-                    "&:hover": {
-                        background: "#035ee6",
-                        boxShadow: '5px 5px 5px #02142e8e',
-                        transitionDuration: '500ms'
-                    },
-                }}
-                size = "large"
-                text = "Return"
-                onClick = {() => {setDetails(false)}}
-            />
-            <Controls.Button 
-                className = {styles.button}
-                variant = "contained"
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '12px',
-                    backgroundColor: '#0B63E5',
-                    borderRadius: '7px',
-                    padding: '0px 32px',
-                    width: '250px',
-                    transitionDuration: '500ms',
-                    height: '50px',
-                    marginTop: '0.7vw',
-                    marginBottom: '1.5vw',
-                    "&:hover": {
-                        background: "#035ee6",
-                        boxShadow: '5px 5px 5px #02142e8e',
-                        transitionDuration: '500ms'
-                    },
-                }}
-                size = "large"
-                text = "Download File"
-                onClick = {() => {handleDownload()}}
-            />
-            { !accepted && accepted != null && !ownReq &&
-            <Controls.Button 
-                className = {styles.button}
-                variant = "contained"
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '12px',
-                    backgroundColor: '#0B63E5',
-                    borderRadius: '7px',
-                    padding: '0px 32px',
-                    width: '250px',
-                    transitionDuration: '500ms',
-                    height: '50px',
-                    marginTop: '0.7vw',
-                    marginBottom: '1.5vw',
-                    "&:hover": {
-                        background: "#035ee6",
-                        boxShadow: '5px 5px 5px #02142e8e',
-                        transitionDuration: '500ms'
-                    },
-                }}
-                size = "large"
-                text = "Accept Request"
-                onClick = {() => {handleAccept()}}
-            />
-            }
+    <div>
+        <div className={styles.titleContainer}>
+            <div className={styles.title}>{req?.type} - {accepted ? "Accepted" : "Not Accepted"}</div>
+            <div className={styles.description}>{req?.teamnumber ? `Team ${req?.teamnumber}` : `User ${req?.name}`}</div>
+            <div className={styles.description}>{req?.email}</div>
+            <div className={styles.description}>{req?.location}</div>
 
-            { accepted && !ownReq && 
-            <Controls.Button 
-                className = {styles.button}
-                variant = "contained"
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '12px',
-                    backgroundColor: '#0B63E5',
-                    borderRadius: '7px',
-                    padding: '0px 32px',
-                    width: '250px',
-                    transitionDuration: '500ms',
-                    height: '50px',
-                    marginTop: '0.7vw',
-                    marginBottom: '1.5vw',
-                    "&:hover": {
-                        background: "#035ee6",
-                        boxShadow: '5px 5px 5px #02142e8e',
-                        transitionDuration: '500ms'
-                    },
-                }}
-                size = "large"
-                text = "Unassign Request"
-                onClick = {() => {handleUnassign()}}
-            />
-            }
+        </div>    
+        <div className={styles.container}>        
+            <div className={styles.subtitle}>Manufacturing Details:</div>
+            <div className={styles.description}>Material: {req?.material}</div>
+            <div className={styles.description}>Color: {req?.color} </div>
+            <div className={styles.description}>{text}: {number} {req?.unit}</div>
+            <div className={styles.description}>Width: {req?.width} {req?.unit}</div>
+            <div className={styles.description}>Length: {req?.length} {req?.unit}</div>
+            <div className={styles.description}> </div>
         </div>
+        <div className={styles.buttonContainer}>
+                <Controls.Button 
+                    className = {styles.button}
+                    variant = "contained"
+                    style={{
+                        backgroundColor: "#015F8F",
+                        textTransform: "none",
+                        fontWeight: "600",
+                    }}
+                    size = "large"
+                    text = "Download File"
+                    onClick = {() => {handleDownload()}}
+                />
+                { !accepted && accepted != null && !ownReq &&
+                <Controls.Button 
+                    className = {styles.button}
+                    variant = "contained"
+                    style={{
+                        backgroundColor: "#015F8F",
+                        textTransform: "none",
+                        fontWeight: "600"
+                    }}
+                    size = "large"
+                    text = "Accept Request"
+                    onClick = {() => {handleAccept()}}
+                />
+                }
+
+                { accepted && !ownReq && 
+                <Controls.Button 
+                    className = {styles.button}
+                    variant = "contained"
+                    style={{
+                        backgroundColor: "#015F8F",
+                        textTransform: "none",
+                        fontWeight: "600"
+                    }}
+                    size = "large"
+                    text = "Unassign Request"
+                    onClick = {() => {handleUnassign()}}
+                />
+                }
+            </div>
+        <div className={styles.backButton}>
+            <Link 
+                onClick = {() => {setDetails(false)}}
+                variant="body2" 
+                style={{ 
+                    marginTop: '4rem',
+                    color: 'black', 
+                    textDecoration: 'underline',
+                    textDecorationColor: 'black',
+                    fontSize: '0.875rem',
+                    fontWeight: 'normal' }}>
+                <em>← Back to request list</em>
+            </Link>
+        </div>
+
         <Snackbar open={snackbar} autoCloseDuration={5000} onClose={() => setSnackbar(false)}>
             <Alert onClose={() => setSnackbar(false)} severity="error" sx={{ width: '100%' }}>
                 {error}
@@ -349,7 +305,7 @@ export default function Details() {
                 You have successfully unassigned this request
             </Alert>
         </Snackbar>
-        </div>
+    </div>
         
     )
 }

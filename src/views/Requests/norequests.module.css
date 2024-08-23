@@ -1,0 +1,53 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+
+}
+
+.title {
+    color: #015F8F;
+    font-family: "Lexend SemiBold";
+    font-size: clamp(18px, 2rem, 1000px);
+    font-weight: 600;
+    transition: 500ms;
+    opacity: 1;
+    width: 35%;
+    margin-top: 2rem;
+    margin-left: 5rem;
+}
+
+.image {
+    height: auto;
+    width: 25rem;
+    margin-top: -4rem;
+}
+
+@media screen and (max-width: 850px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    
+    .title {
+        color: #015F8F;
+        font-family: "Lexend SemiBold";
+        font-size: clamp(18pt, 3.5vw, 1000px);
+        font-weight: 600;
+        transition: 500ms;
+        opacity: 1;
+        width: 80%;
+        margin-top: -1rem;
+        margin-left: 0rem;
+        text-align: center;
+    }
+    
+    .image {
+        height: auto;
+        width: clamp(18rem, 60vw, 22.5rem);
+        margin-top: 0rem;
+    }    
+}

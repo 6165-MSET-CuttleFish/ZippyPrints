@@ -10,14 +10,14 @@
 .contentContainer {
     margin-left: 1.5rem;  
     margin-right: 1.5rem;
-    width: 50vw;
+    width: clamp(20rem, 60vw, 50rem);
 }
 
 .topContainer {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    margin-top: 1.5vh;
+    margin-top: 1rem;
 }
 
 .titleContainer {
@@ -53,7 +53,6 @@
     font-size: 18pt;
     font-weight: 100;
     line-height: 20px;
-
 }
 
 .printerHeading {
@@ -74,6 +73,123 @@
     justify-content: flex-start;
     margin-top: 1.5rem;
     gap: 1vw;
-  }
+}
 
   
+@media screen and (max-width: 850px) {
+    .entireContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start ;
+        background-color: #E0E4EC;
+        height: 10rem;
+        margin-bottom: 2rem;
+    }
+    .contentContainer {
+        margin-left: 1rem;  
+        margin-right: 1rem;
+        width: clamp(19rem, 60vw, 50rem);
+    }
+
+    .topContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin-top: 0.75rem;
+    }
+    
+    .titleContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .infoContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-top: 0.5vw;
+        border: 2rem;
+    }
+    
+    .infoContainer2 {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }   
+
+    .printerTitle {
+        color: rgba(6, 28, 61, 1);
+        font-family: "Lexend SemiBold";
+        font-size: clamp(12pt, 2.75vw, 32pt);
+    }
+
+    .printerHeading {
+        color: rgba(6, 28, 61, 1);
+        font-family: "Lexend Regular";
+        font-size: clamp(8pt, 2vw, 32pt);
+    }
+    
+    .printerSubtitle {
+        color: rgba(6, 28, 61, 1);
+        font-family: "Lexend Light";
+        font-size: clamp(8pt, 2vw, 32pt);
+    }
+}   
+
+@media screen and (max-width: 560px) {
+    .entireContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start ;
+        background-color: #E0E4EC;
+        height: 15rem;
+        margin-bottom: 2rem;
+    }
+
+    .topContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin-top: 1.5vh;
+    }
+    
+    .titleContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .infoContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        margin-top: 0.5vw;
+        border: 2rem;
+    }
+
+    .printerTitle {
+        color: rgba(6, 28, 61, 1);
+        font-family: "Lexend SemiBold";
+        font-size: clamp(16pt, 4vw, 32pt);
+    }
+
+    .printerHeading {
+        color: rgba(6, 28, 61, 1);
+        font-family: "Lexend Regular";
+        font-size: clamp(12pt, 3vw, 32pt);
+    }
+    
+    .printerSubtitle {
+        color: rgba(6, 28, 61, 1);
+        font-family: "Lexend Light";
+        font-size: clamp(12pt, 3vw, 32pt);
+    }
+    .buttonContainer {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        margin-top: 0.5rem;
+        gap: 1vw;
+    }
+}

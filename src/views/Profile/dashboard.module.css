@@ -55,14 +55,6 @@
   }
 
 
-.dashboardButton:hover {
-    border: 1px hidden #094FB7;
-    border-radius: 2px;
-    transition-duration: 500ms;
-    background: black;
-}
-
-
 @media screen and (max-width: 1050px) {
 
     .columnContainer {

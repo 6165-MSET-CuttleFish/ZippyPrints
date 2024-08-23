@@ -10,12 +10,12 @@ import styles from './display.module.css'
 import RequestList from './Requests';
 import Details from './Details';
 import { CurrentDetailsContext } from './DetailsContext';
-import { Menu } from '../../components/Menu/Menu'
 import { FetchContext } from './FetchContext';
 import { useNavigate } from 'react-router-dom';
 import {Button} from '@mui/material';
 import "./Display.css"
 import { API_KEY } from '../../api/firebaseConfig';
+import NoRequests from './NoRequests';
 
 function DisplayRequests() {
     const [type, setType] = useState("3D Printing");
@@ -169,7 +169,7 @@ function DisplayRequests() {
       }, [req, details])
       // console.log(req )
 
-
+      // console.log(req[0])
       useEffect(() => {
         const getRequestedDocs = async () => {
           try {
@@ -278,7 +278,6 @@ function DisplayRequests() {
     return (
       <LoadScriptNext googleMapsApiKey={API_KEY}>
       <div className={styles.entireContainer}>
-        <Button onClick={() => refreshRequests()}>CLICK ME TO REFRESH</Button>
       {/* Request List Page */}
         <div> 
           {!details &&
@@ -389,6 +388,10 @@ function DisplayRequests() {
             </div>
           }
 
+          { !userReq && active == "Your Requests" &&
+            <NoRequests />
+          }
+
           { acceptedReq != null && active == "Accepted Requests" && 
             <div> 
               <div className={styles.paper}>
@@ -396,6 +399,11 @@ function DisplayRequests() {
               </div>
             </div>
           }
+
+          { acceptedReq == null && active == "Accepted Requests" &&
+            <NoRequests />
+          }
+
           { active == "Awaiting Requests" &&
             <div>
                 {req?.map((request, i) =>(
@@ -409,6 +417,11 @@ function DisplayRequests() {
                   </div>
                 ))}
             </div>
+          }
+          
+          { active == "Awaiting Requests" && req.length == 0 &&
+            
+            <NoRequests />
           }
           </div>
         </div>

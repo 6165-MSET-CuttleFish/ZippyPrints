@@ -1,38 +1,41 @@
 .container {
     display: flex;
-    justify-content: flex-start;
     flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-left: 12vw;
 }
 
-.titleText {
-    color: #F0F5FF;
-    font-family: "Lexend SemiBold";
-    font-size: 28pt;
-    font-weight: 100;
-    margin-top: 3vh;
+.titleContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 2.5rem;
     text-align: center;
 }
 
-.subtitleText {
-    color: #F0F5FF;
-    font-family:'Lexend Regular'; 
-    font-size: 18pt;
-    font-weight: 300;
-    letter-spacing: 0;
-    line-height: 60px;
-    width: 648px;
-    margin-top: 2vh;
-  }
-
-.descriptionText {
-    color: #F0F5FF;
-    font-family: "Lexend Light";
-    font-size: 12pt;
-
+.title {
+    color: #015F8F;
+    font-family: "Lexend SemiBold";
+    font-size: clamp(18px, 3rem, 1000px);
+    font-weight: 600;
+    line-height: clamp(20px, 3.5rem, 200px);
+    transition: 500ms;
+    opacity: 1;
 }
 
-.titleDescriptionText {
-    color: #F0F5FF;
+.subtitle {
+    color: black;
+    font-family: "Lexend Light";
+    font-size: clamp(12px, 1.5rem, 1000px);
+    font-weight: 600;
+    transition: 500ms;
+    opacity: 1;
+  }
+
+
+.description {
+    color: black;
     font-family: "Lexend Light";
     font-size: 12pt;
     text-align: center;
@@ -41,7 +44,49 @@
 
 .buttonContainer {
     display: flex;
+    flex-direction: row;
     justify-content: center;
-    gap: 2vw;
-    margin-top: 5vh;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.button {
+    width: 20rem;
+    height: 2.75rem;
+    background-color: #015F8F;
+    margin-top: 1.5rem;
+}
+.backButton {
+    margin-top: 4rem;
+    margin-left: 12vw;
+}
+
+@media screen and (max-width: 850px) {
+    .title {
+        color: #015F8F;
+        font-family: "Lexend SemiBold";
+        font-size: clamp(18px, 2rem, 1000px);
+        font-weight: 600;
+        line-height: clamp(20px, 3.5rem, 200px);
+        transition: 500ms;
+        opacity: 1;
+    }
+    .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        margin-left: 0vw;
+    }
+    
+    .button {
+        width: clamp(15rem, 25vw, 100rem);
+        height: 2.75rem;
+        background-color: #015F8F;
+        margin-top: 1.5rem;
+    }
+    .backButton {
+        margin-top: 2rem;
+        align-self: center;
+    }
 }
