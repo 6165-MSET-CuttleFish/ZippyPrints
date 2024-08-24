@@ -1,3 +1,78 @@
+.entireContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    background-color: #F2F2F2;
+    height: 100%;
+    width: 35vw;
+}
+
+.titleContainer {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    gap: 0.5rem;
+}
+
+.title {
+    color: #015F8F;
+    font-family: "Lexend SemiBold";
+    font-size: clamp(12pt, 2rem, 48pt);
+    font-weight: 600;
+    line-height: clamp(20px, 3.5rem, 200px);
+    transition: 500ms;
+    opacity: 1;
+    margin-left: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.filterContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    margin-left: 1rem;
+    margin-bottom: 2rem;
+}
+
+.select {
+    width: 15vw;
+}
+
+.subheading {
+    color: #015F8F;
+    font-family: "Lexend SemiBold";
+    font-size: clamp(18px, 2rem, 1000px);
+    font-weight: 600;
+    line-height: clamp(20px, 3rem, 200px);
+    transition: 500ms;
+    opacity: 1;
+}
+
+.subtitle {
+    color: black;
+    font-family: "Lexend Light";
+    font-size: 12pt;
+}
+
+.printerContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.printerList {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    height: 68.5vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+/* 
+
+
 .menuScreen {
     display: block;
     padding-top: 2vh;
@@ -94,4 +169,4 @@
 .paperTitle {
     display: flex;
     
-}
+} */

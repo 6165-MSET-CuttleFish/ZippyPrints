@@ -30,7 +30,6 @@ export const FetchProvider = ({ children }) => {
     
     //distance api
     const [ userLocation, setUserLocation ] = useState()
-    const [ distance, setDistance ] = useState()
 
     // Function to calculate distance (once)
     const calculateDistance = (destination, callback) => {

@@ -22,25 +22,6 @@ import { CurrentCenterContext } from '../../views/Discover/CenterProvider';
 import { CurrentSelectedContext } from '../../views/Discover/SelectedProvider';
 
 const Details = ({place}) => {
-    const useStyles = makeStyles(theme =>({ 
-        requestButton: {
-            border: 0,
-            borderRadius: 3,
-            boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-            height: 48,
-            width: 220,
-          },
-          submitButton:{
-          right: -3,
-          top: 7,
-          width:350,
-          },
-          textbox:{
-          right:5
-          }
-        
-      }))
-    const classes = useStyles();
     const initalFValues = {
         requester_email: '',
         teamnumber: '',
@@ -132,92 +113,55 @@ const Details = ({place}) => {
           lng: place.lng
       })
     }
+    // console.log(place?.service)
 
     return(
-        <div>
-          <div className={styles.sidebarContainer}>
+        <div className={styles.entireContainer}>
             <div className={styles.titleContainer}>
-                <div className={styles.printerTitle}>Team {place?.team} {place.username}</div>
+                <div className={styles.printerTitle}>{place?.teamnumber ? `Team ${place?.teamnumber}` : `Printer ${place?.username}`}</div>
+                <div className={styles.printerTitle}>{place?.distance_value < 100 ? `0 mi` : `${place?.distance}`}</div>
             </div>
             <div className={styles.infoContainer}>
+                    {/* <div className={styles.line}></div> */}
                     <div className={styles.printerHeading}>Contact Info:</div>
                     <div className={styles.printerSubtitle}>{place?.email}</div>
-                    <br></br>
+                    <div className={styles.printerHeading}>Services: {place.service?.length || "0"}</div>
+                    <div className={styles.printerSubtitle}>
+                    {place.service?.map((p) =>(
+                      p + " " 
+                    ))}
+                    </div>
                     <div className={styles.printerHeading}>General Location:</div>
-                    {place.location.split(",")[1]}, {(place.location.split(",")[2]).split(" ")[1]}
+                    {place.formattedAddress.split(",")[1]}, {(place.formattedAddress.split(",")[2]).split(" ")[1]}
             </div>
 
             <div className={styles.buttonContainer}>
             <Button
                   variant = "contained"
                   sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '12px',
-                    backgroundColor: '#F0F5FF',
-                    borderRadius: '7px',
-                    padding: '0px 24px',
-                    width: 'fit-content',
-                    transitionDuration: '500ms',
-                    "&.MuiButton-contained": {
-                      color: '#0B63E5',
-                      fontFamily: "Lexend Regular",
-                      fontSize: 'clamp(10px, 0.9vw, 18px)',
-                      fontWeight: '500',
-                      letterSpacing: '0',
-                      lineHeight: '56px',
-                      marginTop: '-2px',
-                      whiteSpace: 'nowrap',
-                      width: 'fit-content'
-                    },
+                    backgroundColor: "#015F8F",
+                    textTransform: "none",
+                    fontWeight: "600", 
                     "&:hover": {
-                      background: "#d9e6ff",
-                      boxShadow: '5px 5px 5px #02142e8e',
-                      transitionDuration: '500ms',                  
-                    },
-                  }}
+                        backgroundColor: "#015F8F"
+                    }}}
                   onClick={() => {
                     onSelect(place)
-                    }}
-                  >
+                    }}>
                       Find on Map
-                  </Button>   
-
-                  <Button
+            </Button>   
+            <Button
                   variant = "contained"
                   sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '12px',
-                    backgroundColor: '#0B63E5',
-                    borderRadius: '7px',
-                    padding: '0px 24px',
-                    width: 'fit-content',
-                    transitionDuration: '500ms',
-                    "&.MuiButton-contained": {
-                      color: '#F0F5FF',
-                      fontFamily: "Lexend Regular",
-                      fontSize: 'clamp(10px, 0.9vw, 18px)',
-                      fontWeight: '500',
-                      letterSpacing: '0',
-                      lineHeight: '56px',
-                      marginTop: '-2px',
-                      whiteSpace: 'nowrap',
-                      width: 'fit-content'
-                    },
+                    backgroundColor: "#015F8F",
+                    textTransform: "none",
+                    fontWeight: "600", 
                     "&:hover": {
-                      background: "#035ee6",
-                      boxShadow: '5px 5px 5px #02142e8e',
-                      transitionDuration: '500ms'
-                    },
-                  }}
-                    onClick = {handleClick}
-                  >
+                        backgroundColor: "#015F8F"
+                    }}}
+                    onClick = {handleClick}>
                       Request a Print
-                  </Button>   
-            </div>
+            </Button>   
           </div>
         <Popup
         title = "Request"
@@ -229,7 +173,7 @@ const Details = ({place}) => {
             value={values.teamnumber}
             onChange = {handleInputChange}
             error={errors.teamnumber}
-            className={classes.textbox}
+            className={styles.textbox}
             style = {{width: '350px'}}
             required
           />
@@ -239,7 +183,7 @@ const Details = ({place}) => {
             value={values.requester_email}
             onChange = {handleInputChange}
             error={errors.requester_email}
-            className={classes.textbox}
+            className={styles.textbox}
             style = {{width: '350px'}}
             required
           />
@@ -249,7 +193,7 @@ const Details = ({place}) => {
             value={values.cad_link}
             onChange = {handleInputChange}
             error={errors.cad_link}
-            className={classes.textbox}
+            className={styles.textbox}
             style = {{width: '350px'}}
             required
           />
@@ -259,7 +203,7 @@ const Details = ({place}) => {
             value={values.filament}
             onChange = {handleInputChange}
             error={errors.filament}
-            className={classes.textbox}
+            className={styles.textbox}
             style = {{width: '350px'}}
             required
           />
@@ -269,7 +213,7 @@ const Details = ({place}) => {
             value={values.infill}
             onChange = {handleInputChange}
             error={errors.infill}
-            className={classes.textbox}
+            className={styles.textbox}
             style = {{width: '350px'}}
             required
           />
@@ -279,7 +223,7 @@ const Details = ({place}) => {
             value={values.supports}
             onChange = {handleInputChange}
             error={errors.supports}
-            className={classes.textbox}
+            className={styles.textbox}
             style = {{width: '350px'}}
             required
           />
@@ -289,7 +233,7 @@ const Details = ({place}) => {
             value={values.time_frame}
             onChange = {handleInputChange}
             error={errors.time_frame}
-            className={classes.textbox}
+            className={styles.textbox}
             style = {{width: '350px'}}
             required
           />
@@ -299,11 +243,11 @@ const Details = ({place}) => {
             value={values.addt_info}
             onChange = {handleInputChange}
             error={errors.addt_info}
-            className={classes.textbox}
+            className={styles.textbox}
             style = {{width: '350px'}}
           />
           <Controls.Button
-            className = {classes.submitButton}
+            className = {styles.submitButton}
             variant = "contained"
             size = "large"
             style={{

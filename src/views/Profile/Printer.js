@@ -29,8 +29,7 @@ const initalFValues = {
 const services = [
     '3D Printing',
     'Laser Cutting',
-    'CNC Work',
-    'CNC Routing',
+    'CNC',
     'Other (describe below)',
   ];
 
@@ -47,6 +46,7 @@ function Printer() {
     const db = getFirestore();
     const printerRef = doc(db, 'printers', `${currentUser.uid}`)
     const sharedRef = doc(db, 'shared', `${currentUser.uid}`)
+    const markerRef = doc(db, 'markers', `${currentUser.uid}`)
     const [printerInfo, setPrinterInfo] = useState("Enter information about your machine");
     const [filament, setFilament] = useState("Enter information about your offered materials");
     const [price, setPrice] = useState("Enter a price range for your service");
@@ -121,14 +121,22 @@ function Printer() {
     }, [currentUser])
 
    const uploadData = async () => {
-           await updateDoc(printerRef, {
-                printers: values.printers,
-                price: values.price,
-                filament: values.filament,
-                service: service,
-                bio: values.bio,
-           })
-       }
+        await updateDoc(printerRef, {
+            printers: values.printers,
+            price: values.price,
+            filament: values.filament,
+            service: service,
+            bio: values.bio,
+        })
+
+        await updateDoc(markerRef, {
+            printers: values.printers,
+            price: values.price,
+            filament: values.filament,
+            service: service,
+            bio: values.bio,
+        })
+    }
 
     
 

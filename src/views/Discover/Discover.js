@@ -349,7 +349,9 @@ const onMapLoad = (map) => {
 
             <p className={styles.teamText}>Team {selected.team}</p>
 
-           <p className={styles.locationText}> Location: {selected.location.split(",")[1]}, {selected.location.split(",")[2]}</p>
+           <p className={styles.locationText}> 
+              {selected.location ? `${selected.location.split(",")[1]}, ${selected.location.split(",")[2]}` : `${selected.formattedAddress.split(",")[1]}, ${selected.formattedAddress.split(",")[2]}`}
+           </p>
            <Controls.Button 
                 className = {classes.requestButton}
                 variant = "contained"

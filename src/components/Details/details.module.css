@@ -1,30 +1,44 @@
-
-
-.titleContainer {
+.entireContainer {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    margin-top: 1vw;
-    margin-bottom: 1vw;
-    margin-left: 1vw;
+    align-items: flex-start;
+    background-color: #E0E4EC;
+    height: 15rem;
+    width: 25vw;
+    margin-bottom: 2rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
 }
+
+.titleContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+    width: 90%;
+}
+
+.line{
+    background-color: #094fb723;
+    height: 1px;
+    margin-top: 1vh;
+  }
+
 
 .infoContainer {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    margin-top: 1vw;
-    margin-bottom: 1vw;
-    margin-left: 1vw;
+    margin-left: 1rem;
 }
 
 .printerTitle {
     color: rgba(6, 28, 61, 1);
     font-family: "Lexend SemiBold";
-    font-size: 18pt;
-    font-weight: 100;
-    line-height: 20px;
-
+    font-size: 1.3rem;
 }
 
 .printerHeading {
@@ -43,7 +57,8 @@
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    margin-left: 1vw;
-    margin-top: 0.5vw;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
     gap: 1vw;
-  }
+}
