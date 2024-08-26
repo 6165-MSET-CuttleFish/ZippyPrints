@@ -137,6 +137,10 @@ function Account() {
         await updateProfile(await currentUser, {
             displayName: values.name,
         })
+        await updateDoc(markerRef, {
+            username: values?.name,
+            teamnumber: values?.teamnumber
+        })
     }
 
 

@@ -3,7 +3,6 @@
     flex-direction: column;
     justify-content: flex-start;
     background-color: #F2F2F2;
-    height: 100%;
     width: 35vw;
 }
 
@@ -92,7 +91,6 @@
     .select {
         width: clamp(20rem, 20rem, 50rem);
     }
-    
 }
 /* 
 

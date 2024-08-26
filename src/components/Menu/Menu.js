@@ -162,7 +162,6 @@ export const Menu = () => {
                       distance: distance,
                       distance_value: distanceValue
                     };
-                    console.log(markerData)
 
                     setPlaceholder((current) => [...current, markerData]);
                     resolve();
