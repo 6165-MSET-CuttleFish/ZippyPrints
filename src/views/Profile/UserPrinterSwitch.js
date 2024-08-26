@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, FormControlLabel, Typography } from '@mui/material';
 import './UserPrinterSwitch.css';
 
-export default function UserPrinterSwitch({ checked, onChange }) {
+export default function UserPrinterSwitch({ checked, onChange, leftText, rightText }) {
     return (
       <FormControlLabel
         control={
@@ -15,7 +15,7 @@ export default function UserPrinterSwitch({ checked, onChange }) {
         }
         label={
           <Typography className="label">
-            Become a {checked ? 'Printer' : 'User'}
+            {checked ? `${leftText}` : `${rightText}`}
           </Typography>
         }
         labelPlacement="end" /* Position label to the right of the switch */

@@ -148,7 +148,7 @@ export const Menu = () => {
           const querySnapshot = await getDocs(q);
           setPlaceholder([])
           const promises = querySnapshot.docs.map(async (doc) => {
-            if (userLocation && doc.data()?.lat && doc.data()?.lng /* TODO: && doc.data()?.visibility*/) {
+            if (userLocation && doc.data()?.lat && doc.data()?.lng && doc.data()?.visibility) {
               const destination = `${doc.data()?.lat},${doc.data()?.lng}`;
               return new Promise((resolve => {
                 calculateDistance(destination, (response, status) => {
@@ -196,7 +196,7 @@ export const Menu = () => {
       handleFilter(filter)
     }
 
-    const deleteStorage = () => {
+    const refreshPrinters = () => {
       localStorage.removeItem('markers')
       localStorage.removeItem('lastUpdated')
       console.log("storage deleted")
@@ -242,9 +242,9 @@ export const Menu = () => {
     }
 
     return(
-        <div>
+        <div >
+          <Button onClick = {() => {refreshPrinters()}}>Refresh</Button>
           {/* header */}
-          <Button onClick={() => deleteStorage()}>DELETE</Button>
               <div clasName={styles.titleContainer}>
                 <div className={styles.title}>Options Around You</div>
               </div>

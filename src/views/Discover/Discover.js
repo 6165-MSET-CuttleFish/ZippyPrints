@@ -14,11 +14,12 @@ import {AuthContext} from "../../views/Auth/Auth"
 import Popup from "../../components/Popup";
 import {useForm, Form} from '../../components/useForm'
 import { v4 as uuidv4 } from 'uuid';
-import styles from '../Discover/map.module.css'
+import styles from './map.module.css'
 import {useNavigate} from "react-router-dom"
 import { Menu } from '../../components/Menu/Menu'
 import { CurrentCenterContext } from './CenterProvider.js'
 import { CurrentSelectedContext } from './SelectedProvider';
+import Mobile from './Mobile';
 
 const initalFValues = {
     id: 0,
@@ -109,7 +110,8 @@ function Discover() {
   let libRef = React.useRef(libraries)
   const mapContainerStyle = {
     width: '100vw',
-    height: '87.5vh'
+    height: '87.5vh',
+    visibility: 'visible'
   }
 
 const onSelect = (marker) => {
@@ -309,62 +311,66 @@ const onMapLoad = (map) => {
         openPopup={openRegisterPopup}
         setOpenPopup={setOpenRegisterPopup}>
       </Popup>
+    
     <div className={styles.wrapper}>
-    <Menu/>
-    <GoogleMap
-      mapContainerStyle = {mapContainerStyle}
-      zoom = {5}
-      center = {center}
-      options={options}
-      onLoad={onMapLoad}
-      >
-        {markers?.map((marker, i) => (
-          <Marker
-          key={i}
-          position = {{
-            lat: marker.lat,
-            lng: marker.lng
-          }}
-          icon={{
-            url: '/printer.png',
-            scaledSize: new window.google.maps.Size(30, 30),
-            origin: new window.google.maps.Point(0,0),
-            anchor: new window.google.maps.Point(15, 15)
-          }}
-          onClick={() => {
-            onSelect(marker)
-            }}
-          />
-        ))}
+      <div className={styles.menu}> <Menu className={styles.menu}/> </div>
+      <div className={styles.mobile}> <Mobile /> </div>
+      <div className={styles.maps}>
+        <GoogleMap 
+          mapContainerStyle = {mapContainerStyle}
+          zoom = {5}
+          center = {center}
+          options={options}
+          onLoad={onMapLoad}
+          >
+            {markers?.map((marker, i) => (
+              <Marker
+              key={i}
+              position = {{
+                lat: marker.lat,
+                lng: marker.lng
+              }}
+              icon={{
+                url: '/printer.png',
+                scaledSize: new window.google.maps.Size(30, 30),
+                origin: new window.google.maps.Point(0,0),
+                anchor: new window.google.maps.Point(15, 15)
+              }}
+              onClick={() => {
+                onSelect(marker)
+                }}
+              />
+            ))}
 
 
-        {selected? (
-        <InfoWindow
-          position={{lat: selected.lat, lng: selected.lng}}
-          onCloseClick={() => {
-            setSelected(null)
-          }}
-        >
-          <Box className={styles.markerBox}>
+            {selected? (
+            <InfoWindow
+              position={{lat: selected.lat, lng: selected.lng}}
+              onCloseClick={() => {
+                setSelected(null)
+              }}
+            >
+              <Box className={styles.markerBox}>
 
-            <p className={styles.teamText}>Team {selected.team}</p>
+                <p className={styles.teamText}>Team {selected.team}</p>
 
-           <p className={styles.locationText}> 
-              {selected.location ? `${selected.location.split(",")[1]}, ${selected.location.split(",")[2]}` : `${selected.formattedAddress.split(",")[1]}, ${selected.formattedAddress.split(",")[2]}`}
-           </p>
-           <Controls.Button 
-                className = {classes.requestButton}
-                variant = "contained"
-                    size = "large"
-                    style={{
-                        backgroundColor: "#001b2e",
-                    }}
-                    text = "Submit Request"
-                onClick = {handleClick}
-                />  
-          </Box>
-        </InfoWindow>) : null}
-    </GoogleMap>
+              <p className={styles.locationText}> 
+                  {selected.location ? `${selected.location.split(",")[1]}, ${selected.location.split(",")[2]}` : `${selected.formattedAddress.split(",")[1]}, ${selected.formattedAddress.split(",")[2]}`}
+              </p>
+              <Controls.Button 
+                    className = {classes.requestButton}
+                    variant = "contained"
+                        size = "large"
+                        style={{
+                            backgroundColor: "#001b2e",
+                        }}
+                        text = "Submit Request"
+                    onClick = {handleClick}
+                    />  
+              </Box>
+            </InfoWindow>) : null}
+        </GoogleMap>
+      </div>
     </div>  
   </div>
   );

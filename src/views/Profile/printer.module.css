@@ -62,6 +62,9 @@
     margin-top: 1.5rem;
 }
 
+.switch {
+    margin-left: 4.5rem;
+}
 
 @media screen and (max-width: 1050px) {
     .columnContainer {
@@ -119,6 +122,7 @@
         white-space: nowrap;
         width: fit-content;
     }
+
 
     .buttonContainer {
         align-self: center;

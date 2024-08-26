@@ -161,7 +161,8 @@ export default function Setup() {
                     bio: "",
                     price: "",
                     printers: "",
-                    service: []
+                    service: [],
+                    visibility: true
                 })
             } else {
                 await setDoc(userRef, {

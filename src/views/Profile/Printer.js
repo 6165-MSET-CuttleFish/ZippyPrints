@@ -15,6 +15,7 @@ import { AuthContext } from "../Auth/Auth";
 import styles from '../Profile/printer.module.css'
 import {useNavigate} from "react-router-dom"
 import '../Profile/Dashboard.css'
+import UserPrinterSwitch from './UserPrinterSwitch'
 
 const apiKey = API_KEY
 const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
@@ -54,7 +55,9 @@ function Printer() {
     const [bio, setBio] = useState("Write a short bio about the service(s) you provide");
     const [error, setError] = useState(false)
     const [success, setSuccess] = useState(false)
-    
+    const [visible, setVisible] = useState()
+    const [visibleChecked, setVisibleChecked] = useState()
+
     const checkViewable= ()=> {
         if(!currentUser) {
             navigate("/Login")
@@ -75,7 +78,7 @@ function Printer() {
               if (data?.printer) {
                 return
               } else {
-                navigate("/404")
+                navigate("/Dashboard")
                 alert("You cannot access this page because you are not a registered printer")
               }
             } else {
@@ -96,8 +99,30 @@ function Printer() {
       useEffect(() => {
           checkViewable()
       })
+
+      useEffect(() => {
+        const getVisible = async() => {
+            const docSnap = await getDoc(markerRef);
+            if (docSnap.exists()) {
+                if (docSnap.data().visibility) {
+                    setVisible(true)
+                    setVisibleChecked(true)
+                    console.log("visibility  " + visible)
+                } else {
+                    setVisible(false)
+                    setVisibleChecked(false)
+                }
+            }
+        }
+        if (markerRef) {
+            getVisible();
+        }
+      }, [currentUser])
   
       console.log(service)
+      const handleSwitchChange = (event) => {
+        setVisibleChecked(event.target.checked);
+    };
       useEffect(() => {
         const getUser = async () => {
             try {
@@ -128,14 +153,19 @@ function Printer() {
             service: service,
             bio: values.bio,
         })
-
         await updateDoc(markerRef, {
             printers: values.printers,
             price: values.price,
             filament: values.filament,
             service: service,
             bio: values.bio,
+            visibility: visibleChecked,
         })
+        setPrinterInfo(values.printers)
+        setPrice(values.price)
+        setFilament(values.filament)
+        setBio(values.bio)
+        setVisible(visibleChecked)
     }
 
     
@@ -282,7 +312,14 @@ function Printer() {
                                         maxLength: 300
                                     }}
                                     required/>
-                            </div> 
+                        </div> 
+                        <div className={styles.switchContainer}>
+                            <div className={styles.label}>Update Visibility on Maps: currently {visible?"visible" : "not visible"}</div>
+                            <div className={styles.switch}>
+                                <UserPrinterSwitch checked={visibleChecked} onChange={handleSwitchChange} leftText = "Visible" rightText = "Not visible" />
+                            </div>
+                        </div>
+                            
                             <div className={styles.buttonContainer}>
                                 <Controls.Button 
                                     className = {styles.button}

@@ -53,6 +53,7 @@ function Account() {
     const [ success, setSuccess ] = useState(false)
     const [ error, setError ] = useState(false)
     const [isPrinter, setIsPrinter] = useState(false);
+    const markerRef = doc(db, 'markers', `${currentUser.uid}`)
 
 
     
@@ -129,13 +130,13 @@ function Account() {
 
 
    const uploadData = async () => {
-           await updateDoc(ref, {
+        await updateDoc(ref, {
             username: values.name,
             teamnumber: values.teamnumber,
-           })
-           await updateProfile(await currentUser, {
+        })
+        await updateProfile(await currentUser, {
             displayName: values.name,
-          })
+        })
     }
 
 
@@ -153,12 +154,13 @@ function Account() {
         if (fieldValues === values)
         return Object.values(temp).every(x => x === "")
     }
-    const handleSubmit = async(e) => {        
-        e.preventDefault()
+    const handleSubmit = async(e) => {       
+        e.preventDefault() 
         if(validate()) {
             uploadData(); 
-            resetForm();
             handlePrinter();
+            resetForm();
+
         }  
     }
 
@@ -231,10 +233,14 @@ function Account() {
                         printers: userInfo?.printers || "",
                         service: userInfo?.service || "",
                         state: userInfo?.state || "",
-                        teamnumber: userInfo?.teamnumber || "",
-                        username: userInfo?.username || "",
+                        teamnumber: values?.teamnumber || "",
+                        username: values?.name || "",
                         zipcode: userInfo?.zipcode || "",
                         userRequest: userInfo?.userRequest || ""
+                    })
+
+                    await updateDoc(markerRef, {
+                        visibility: false,
                     })
     
                     await deleteDoc(printerRef);
@@ -265,10 +271,14 @@ function Account() {
                     printers: userInfo?.printers || "",
                     service: userInfo?.service || "",
                     state: userInfo?.state || "",
-                    teamnumber: userInfo?.teamnumber || "",
-                    username: userInfo?.username || "",
+                    teamnumber: values?.teamnumber || "",
+                    username: values?.name || "",
                     zipcode: userInfo?.zipcode || "",
                     userRequest: userInfo?.userRequest || ""
+                })
+
+                await updateDoc(markerRef, {
+                    visibility: true,
                 })
 
                 await deleteDoc(userRef);
@@ -317,7 +327,7 @@ function Account() {
                         <div className={styles.switchContainer}>
                             <div className={styles.label}>Update Account Type: currently {printer?"Printer" : "User"}</div>
                             <div className={styles.switch}>
-                                <UserPrinterSwitch checked={isPrinter} onChange={handleSwitchChange} />
+                                <UserPrinterSwitch checked={isPrinter} onChange={handleSwitchChange} leftText = "Become a Printer" rightText = "Become a User" />
                             </div>
                         </div>
                         <Controls.Button 

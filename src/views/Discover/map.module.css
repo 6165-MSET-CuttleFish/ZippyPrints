@@ -30,7 +30,33 @@
     height: 87.5vh;
 }
 
+.mobile {
+    visibility: hidden;
+    width: 0vw;
+}
 
+
+
+
+
+
+@media screen and (max-width: 750px) {
+    .menu{
+        height: 0vw;
+        width: 0vw;
+        visibility:hidden;
+    }
+
+    .maps {
+        width: 0vw;
+        height: 0vw;
+    }
+    .mobile {
+        visibility: visible;
+        width: 100%
+    }
+
+}
 
 /* sx={{marginTop: 8,
     display: 'flex',

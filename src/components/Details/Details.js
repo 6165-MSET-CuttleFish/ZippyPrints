@@ -125,7 +125,7 @@ const Details = ({place}) => {
                     {/* <div className={styles.line}></div> */}
                     <div className={styles.printerHeading}>Contact Info:</div>
                     <div className={styles.printerSubtitle}>{place?.email}</div>
-                    <div className={styles.printerHeading}>Services: {place.service?.length || "0"}</div>
+                    <div className={styles.printerHeading}>Services: {place.service?.length || "Not specified"}</div>
                     <div className={styles.printerSubtitle}>
                     {place.service?.map((p) =>(
                       p + " " 

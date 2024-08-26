@@ -7,7 +7,6 @@
   }
   
   .custom-switch .MuiSwitch-switchBase {
-    margin: 0;
     transform: translateX(0px); /* Start position for the thumb */
   }
   

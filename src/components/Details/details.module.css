@@ -5,7 +5,7 @@
     align-items: flex-start;
     background-color: #E0E4EC;
     height: 15rem;
-    width: 25vw;
+    width: clamp(20rem, 25vw, 50rem);
     margin-bottom: 2rem;
     margin-left: 1rem;
     margin-right: 1rem;
@@ -60,5 +60,17 @@
     margin-left: 1rem;
     margin-top: 1rem;
     margin-bottom: 0.5rem;
-    gap: 1vw;
+    gap: 1.5rem;
+}
+
+@media screen and (max-width: 1050px) {
+    .entireContainer {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        background-color: #E0E4EC;
+        height: 100%;
+        width: clamp(20rem, 25vw, 50rem);
+    }
+    
 }
