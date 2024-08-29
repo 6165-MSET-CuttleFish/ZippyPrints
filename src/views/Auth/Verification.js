@@ -6,8 +6,9 @@ import { Alert, Snackbar } from '@mui/material'
 import {useNavigate} from "react-router-dom"
 import {AuthContext} from "../../views/Auth/Auth"
 import styles from '../Auth/verification.module.css'
-import { CircularProgress, Button } from '@mui/material';
-
+import { Button } from '@mui/material';
+import Progress2 from '../../res/progress2.svg'
+import Progress2Mobile from '../../res/progress2_mobile.svg'
 
 let open = false;
 module.export = {open:open}
@@ -94,6 +95,7 @@ export default function Verification() {
             setButtonDisabled(false)
         })
       }
+
       useEffect(() => {
         const savedTime = localStorage.getItem('time');
         const savedTimeActive = localStorage.getItem('timeActive');
@@ -102,25 +104,6 @@ export default function Verification() {
           setTime(parseInt(savedTime));
           setTimeActive(JSON.parse(savedTimeActive));
         }
-      
-        // if (savedTimeActive === 'true') {
-        //   const interval = setInterval(() => {
-        //     setTime(prevTime => {
-        //       if (prevTime <= 1) {
-        //         clearInterval(interval);
-        //         setTimeActive(false);
-        //         localStorage.removeItem('time');
-        //         localStorage.removeItem('timeActive');
-        //         return 0;
-        //       }
-        //       const newTime = prevTime - 1;
-        //       localStorage.setItem('time', newTime);
-        //       return newTime;
-        //     });
-        //   }, 1000);
-      
-        //   return () => clearInterval(interval);
-        // }
       }, [setTime, setTimeActive]);
 
 
@@ -189,6 +172,8 @@ export default function Verification() {
                   Resend Verification Email {timeActive && time}
               </Button>
               </div>
+              <img src={Progress2} className={styles.progress2} alt="Progress (2 of 3)" />
+              <img src={Progress2Mobile} className={styles.progress2_mobile} alt="Progress (2 of 3)" />
             </div>
             <Snackbar open={openSuccess} autoCloseDuration={5000} onClose={() => setOpenSuccess(false)}>
                 <Alert severity="success" sx={{ width: '100%' }} onClose={() => setOpenSuccess(false)}>

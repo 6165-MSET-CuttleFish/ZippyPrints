@@ -1,14 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react'
-import {useForm, Form} from '../../components/useForm'
-import Controls from '../../components/actions/Controls'
-import { Avatar, ThemeProvider, createTheme, Box, TextField, } from '@mui/material'
+import { useForm } from '../../components/useForm'
+import { TextField, } from '@mui/material'
 import {useNavigate} from "react-router-dom"
 import {AuthContext} from "../../views/Auth/Auth"
 import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import styles from '../Auth/reset.module.css'
-import { createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
 import { Alert, Snackbar } from '@mui/material'
-import { CircularProgress, Button } from '@mui/material';
+import { Button } from '@mui/material';
 
 
 
@@ -135,29 +133,24 @@ export default function ResetPassword()
     }
     
     
-    const theme = createTheme();
     return(
         <div className = {styles.container}>
             <div className = {styles.columnContainer}>
-            <div className = {styles.verificationTitle}>Hello!</div>
-            <div className = {styles.verificationSubtitle}>Reset your password by pressing the button below — a link will be sent to your 
-            email address for you to reset your password.</div>
+            <div className={styles.titleContainer}>
+                <div className = {styles.verificationTitle}>Hello {currentUser?.displayName}!</div>
+                <div className = {styles.verificationSubtitle}>Reset your password by pressing the button below — a link will be sent to your 
+                email address for you to reset your password.</div>
+            </div>
             <div className = {styles.textContainer}>
             <TextField
                     label = "Email"
                     name="email"
+                    size="small"
                     value={values.email}
                     onChange = {handleInputChange}
                     error={errors.email}
                     fullWidth = {false}
-                    style = {{width: '275px'}}
                     required
-                    id = "margin-normal"
-                    margin = "normal"
-                    sx={{
-                      borderRadius: '7px',
-                      backgroundColor: '#F0F5FF'
-                  }}
                 />
               </div>
              <div className = {styles.buttonContainer}>
@@ -166,36 +159,14 @@ export default function ResetPassword()
                 size = "large"
                 onClick = {handleSubmit}
                 disabled={timeActive}
+                className={styles.button}
                 sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '12px',
-                    backgroundColor: '#F0F5FF',
-                    borderRadius: '7px',
-                    padding: '0px 32px',
-                    width: 'fit-content',
-                    bottom: '5px',
-                    transitionDuration: '500ms',
-                    "&.MuiButton-contained": {
-                      color: '#0B63E5',
-                      fontFamily: "Lexend Regular",
-                      fontSize: 'clamp(10px, 0.9vw, 18px)',
-                      fontWeight: '500',
-                      letterSpacing: '0',
-                      lineHeight: '56px',
-                      marginTop: '-2px',
-                      whiteSpace: 'nowrap',
-                      width: 'fit-content'
-                    },
-                    "&:hover": {
-                      background: "#d9e6ff",
-                      boxShadow: '5px 5px 5px #02142e8e',
-                      transitionDuration: '500ms'
-                    },
+                    backgroundColor: "#015F8F",
+                    textTransform: "none",
+                    fontWeight: "600",
                 }}
                 >
-                Send Reset Password Email {timeActive && time}
+                Reset password {timeActive && time}
             </Button>
             </div>
             </div>

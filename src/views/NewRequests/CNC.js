@@ -111,10 +111,8 @@ function CNC() {
               const docSnap = await getDoc(ref);
               if (docSnap.exists()) {
                 const data = docSnap.data();
-                setTeam((data.teamnumber == "" || data.teamnumber == undefined)? "MISSING!" : data.teamnumber)
-                let state = data.formattedAddress?.split((","))[2].split(" ")[1];
-                let formatted = (await docSnap).data().formattedAddress?.split((","))[1] + ", " + state + "," + (await docSnap).data().formattedAddress.split((","))[3];
-                setLocation(formatted)
+                setTeam((data.teamnumber == "" || data.teamnumber == undefined)? "" : data.teamnumber)
+                setLocation(data.formattedAddress)
               } else {
                 console.log("No such document!");
                 setError(true)
@@ -191,7 +189,8 @@ function CNC() {
              type: "CNCing",
              accepted: false,
              uid: currentUser?.uid,
-             printer: printer
+             printer: printer,
+             name: currentUser?.displayName
         })
         await updateDoc(ref, {
             userRequest: {
@@ -213,7 +212,8 @@ function CNC() {
                 },
                 type: "CNCing",
                 accepted: false,
-                uid: currentUser.uid
+                uid: currentUser.uid,
+                name: currentUser?.displayName
             }
        })
     }

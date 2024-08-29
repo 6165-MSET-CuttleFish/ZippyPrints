@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 function NewRequests() {
-    const [active, setActive] = useState("");
+    const [active, setActive] = useState("3D Printing");
     const [printer, setPrinter] = useState('#717B8C');
     const [laserCutter, setLaserCutter] = useState('#717B8C');
     const [cnc, setCNC] = useState('#717B8C');

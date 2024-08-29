@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin-top: 5vw;
+    margin-top: 3rem;
 }
 
 .columnContainer {
@@ -16,22 +16,29 @@
     flex-direction: row;
     justify-content: center;
 }
-.verificationTitle {
-    color: #F0F5FF;
-    font-family: "Lexend SemiBold";
-    font-size: 28pt;
-    font-weight: 100;
-    line-height: 20px;
+.titleContainer {
+    margin-bottom: 2rem;
     text-align: center;
-    width: 45vw;
+}
+
+.verificationTitle {
+    color: #015F8F;
+    font-family: "Lexend SemiBold";
+    font-size: clamp(18px, 3rem, 1000px);
+    font-weight: 600;
+    line-height: clamp(20px, 3.5rem, 200px);
+    transition: 500ms;
+    opacity: 1;
+    margin-bottom: 1.25rem;
+    text-align: center;
 }
 .verificationSubtitle {
-    color: #F0F5FF;
+    color: black;
     font-family: "Lexend Light";
     text-align: center;
     font-size: 12pt;
-    width: 45vw;
-    margin-bottom: 10vw;
+    margin-right: 2rem;
+    margin-left: 2rem;
 }
 
 .paperContainer {
@@ -49,14 +56,31 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     margin: 1vw;
     gap: 2vw;
 }
 .textbox {
     width: 20vw;
 }
+
+.button {
+    width: 25vw;
+    height: 5vh;
+    background-color: #015F8F;
+}
+
 .textContainer{
     display: flex;
     flex-direction: row;
     justify-content: center;
+}
+
+@media screen and (max-width: 1050px) {
+    .button {
+        width: clamp(15rem, 25vw, 100rem);
+        height: 2.75rem;
+        background-color: #015F8F;
+        margin-top: 1rem;
+    }
 }

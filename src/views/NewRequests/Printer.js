@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
-import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint } from 'firebase/firestore/lite';
-import { Box, Select, MenuItem, Button, Snackbar, Alert } from '@mui/material'
+import { getFirestore, setDoc, updateDoc, doc, getDoc } from 'firebase/firestore/lite';
+import { Select, MenuItem, Button, Snackbar, Alert } from '@mui/material'
 import { AuthContext } from "../Auth/Auth";
 import styles from './printer.module.css'
 import {useNavigate} from "react-router-dom"
@@ -80,7 +80,6 @@ function Printer() {
     const [ref, setRef] = useState();
     const [printer, setPrinter] = useState()
 
-    const [ geocode, setGeocode ] = useState()
     
     useEffect(() => {
         const getRef = async () => {
@@ -117,11 +116,8 @@ function Printer() {
               const docSnap = await getDoc(ref);
               if (docSnap.exists()) {
                 const data = docSnap.data();
-                setTeam((data.teamnumber == "" || data.teamnumber == undefined)? "MISSING!" : data.teamnumber)
-                let state = data.formattedAddress?.split((","))[2].split(" ")[1];
-                let formatted = (await docSnap).data().formattedAddress?.split((","))[1] + ", " + state + "," + (await docSnap).data().formattedAddress.split((","))[3];
-                setGeocode(data.geoPoint)
-                setLocation(formatted)
+                setTeam((data.teamnumber == "" || data.teamnumber == undefined)? "" : data.teamnumber)
+                setLocation(data.formattedAddress)
               } else {
                 console.log("No such document!");
                 setErrorMessage("Error: having trouble fetching user information, please try again later")
@@ -203,7 +199,7 @@ function Printer() {
                 accepted: false,
                 uid: currentUser?.uid,
                 printer: printer,
-                geoPoint: geocode
+                name: currentUser?.displayName
            })
    
         await updateDoc(ref, {
@@ -227,7 +223,7 @@ function Printer() {
                 type: "3D Printing",
                 accepted: false,
                 uid: currentUser?.uid,
-                geoPoint: geocode
+                name: currentUser?.displayName
             }
         })
         } catch (error) {

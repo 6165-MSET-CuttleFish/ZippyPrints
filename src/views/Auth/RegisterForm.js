@@ -69,6 +69,7 @@ const initalFValues = {
 export default function RegisterForm() {
   const { currentUser } = useContext(AuthContext)
   const [ open, setOpen ] = useState(false);
+  const [ terms, setTerms ] = useState(false);
   module.export = {open:open}
   const navigate = useNavigate();
 
@@ -134,7 +135,7 @@ export default function RegisterForm() {
         const userEmail = values.email
         const userPassword = values.password
         const userName = values.userName;
-        const printer = values.printer;
+        const terms = values.terms;
         const auth = getAuth();
         await createUserWithEmailAndPassword(auth, userEmail, userPassword)
         .then(async () => {
@@ -158,6 +159,7 @@ export default function RegisterForm() {
 
             await setDoc(sharedRef, {
               uid: auth.currentUser.uid,
+              email: auth.currentUser.email
             })
           })
           .catch((error) => {
@@ -259,7 +261,7 @@ export default function RegisterForm() {
                           </Link>
                       </div>
                     }
-                    values={values.printer}
+                    values={values.terms}
                     onChange={handleInputChange}
                   />
                 </div>

@@ -217,7 +217,8 @@ export default function Setup() {
                     <div className={styles.subtitle}>
                         <span style={{ fontSize: '0.875rem', color: '#001b2e' }}>
                             Create a username for your account and set a general location
-                            to help others locate you easier! <br />
+                            to help others locate you easier! Printers will be displayed on 
+                            our map, but you can hide yourself at anytime!<br />
                             <br />  
                             Ran into a problem? Don't hesistate to {" "}
                         </span>

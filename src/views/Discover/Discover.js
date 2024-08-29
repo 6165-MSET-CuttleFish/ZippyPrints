@@ -82,17 +82,12 @@ function Discover() {
         try {
             const querySnapshot = await getDocs(q);
             querySnapshot.forEach((doc) => {
-                setMarkers((current) => [...current,
-                  {
-                    lat: doc.data()?.lat,
-                    lng: doc.data()?.lng,
-                    team: doc.data()?.teamnumber,
-                    location: doc.data()?.formattedAddress,
-                    email:doc.data()?.email,
-                    uid: doc.data()?.uid,
-                    username: doc.data()?.displayName
+              if (doc.data()?.visibility) {
+                setMarkers((current) => [...current, {
+                  ...doc.data(),
                   },
                 ]);
+              }
         });
 
 
@@ -127,7 +122,7 @@ const onSelect = (marker) => {
           to: [selected.email, currentUser.email],
           message:{subject: 'New ZippyPrints Request #' + uuidv4().split("-")[1],
           text:
-            'Hello ' + currentUser.displayName + ', we have a new request from Team '+ values.teamnumber+ '\n\n'+
+            'Hello ' + selected.username + ', we have a new request from User '+ currentUser.displayName + "of Team " + values.teamnumber + '\n\n'+
             'Requester\'s email: ' + values.requester_email+ '\n'+
             'Filament Info: '+values.filament +'\n'+
             'Supports Info: ' + values.supports +'\n'+
@@ -214,18 +209,20 @@ const onMapLoad = (map) => {
 
     //TODO: replace with actual logo
   <div>
-      <Popup
-        title = "Request"
-        
+      <Popup className={styles.popup}
+        title = {`Request to ${selected?.teamnumber?`Team ${selected?.teamnumber}`:`Printer ${selected?.username}`}`}
         children =  {<Form onSubmit={handleSubmit}>
+          <div className={styles.textboxContainer}>
           <Controls.Input
             label = "Team Number"
             name="teamnumber"
             value={values.teamnumber}
+            size = 'small'
+            InputProps={{
+              className: styles.textbox
+            }}
             onChange = {handleInputChange}
             error={errors.teamnumber}
-            className={classes.textbox}
-            style = {{width: '350px'}}
             required
           />
           <Controls.Input
@@ -234,8 +231,10 @@ const onMapLoad = (map) => {
             value={values.requester_email}
             onChange = {handleInputChange}
             error={errors.requester_email}
-            className={classes.textbox}
-            style = {{width: '350px'}}
+            size = 'small'
+            InputProps={{
+              className: styles.textbox
+            }}
             required
           />
           <Controls.Input
@@ -244,8 +243,10 @@ const onMapLoad = (map) => {
             value={values.cad_link}
             onChange = {handleInputChange}
             error={errors.cad_link}
-            className={classes.textbox}
-            style = {{width: '350px'}}
+            size = 'small'
+            InputProps={{
+              className: styles.textbox
+            }}
             required
           />
           <Controls.Input
@@ -254,8 +255,10 @@ const onMapLoad = (map) => {
             value={values.filament}
             onChange = {handleInputChange}
             error={errors.filament}
-            className={classes.textbox}
-            style = {{width: '350px'}}
+            size = 'small'
+            InputProps={{
+              className: styles.textbox
+            }}
             required
           />
           <Controls.Input
@@ -264,8 +267,10 @@ const onMapLoad = (map) => {
             value={values.infill}
             onChange = {handleInputChange}
             error={errors.infill}
-            className={classes.textbox}
-            style = {{width: '350px'}}
+            size = 'small'
+            InputProps={{
+              className: styles.textbox
+            }}
             required
           />
           <Controls.Input
@@ -274,8 +279,10 @@ const onMapLoad = (map) => {
             value={values.supports}
             onChange = {handleInputChange}
             error={errors.supports}
-            className={classes.textbox}
-            style = {{width: '350px'}}
+            size = 'small'
+            InputProps={{
+              className: styles.textbox
+            }}
             required
           />
           <Controls.Input
@@ -285,7 +292,10 @@ const onMapLoad = (map) => {
             onChange = {handleInputChange}
             error={errors.time_frame}
             className={classes.textbox}
-            style = {{width: '350px'}}
+            size = 'small'
+            InputProps={{
+              className: styles.textbox
+            }}
             required
           />
           <Controls.Input
@@ -294,8 +304,10 @@ const onMapLoad = (map) => {
             value={values.addt_info}
             onChange = {handleInputChange}
             error={errors.addt_info}
-            className={classes.textbox}
-            style = {{width: '350px'}}
+            size = 'small'
+            InputProps={{
+              className: styles.textbox
+            }}
           />
           <Controls.Button
             className = {classes.submitButton}
@@ -303,10 +315,13 @@ const onMapLoad = (map) => {
             size = "large"
             style={{
               backgroundColor: "#001b2e",
+              textTransform: "none",
+              fontWeight: "600",
             }}
             text = "Submit"
             onClick = {handleSubmit}
           />
+          </div>
         </Form>}
         openPopup={openRegisterPopup}
         setOpenPopup={setOpenRegisterPopup}>
@@ -350,12 +365,12 @@ const onMapLoad = (map) => {
                 setSelected(null)
               }}
             >
-              <Box className={styles.markerBox}>
+              <div className={styles.markerBox}>
 
-                <p className={styles.teamText}>Team {selected.team}</p>
+                <p className={styles.teamText}>{selected?.teamnumber?`Team ${selected?.teamnumber}`:`Printer ${selected?.username}`}</p>
 
               <p className={styles.locationText}> 
-                  {selected.location ? `${selected.location.split(",")[1]}, ${selected.location.split(",")[2]}` : `${selected.formattedAddress.split(",")[1]}, ${selected.formattedAddress.split(",")[2]}`}
+                  {selected.location ? `${selected.location.split(",")[1]}, ${selected.location.split(",")[2]}` : `${selected.formattedAddress}`}
               </p>
               <Controls.Button 
                     className = {classes.requestButton}
@@ -363,11 +378,13 @@ const onMapLoad = (map) => {
                         size = "large"
                         style={{
                             backgroundColor: "#001b2e",
+                            textTransform: "none",
+                            fontWeight: "600"
                         }}
                         text = "Submit Request"
                     onClick = {handleClick}
                     />  
-              </Box>
+              </div>
             </InfoWindow>) : null}
         </GoogleMap>
       </div>

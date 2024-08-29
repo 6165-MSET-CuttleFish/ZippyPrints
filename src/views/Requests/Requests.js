@@ -113,7 +113,7 @@ const RequestList = ({request}) => {
             <div className={styles.contentContainer}>
                 <div className={styles.topContainer}>
                     <div className={styles.titleContainer}>
-                        <div className={styles.printerTitle}>Team {request?.teamnumber} - {request?.type} </div>
+                        <div className={styles.printerTitle}>{request?.teamnumber==""?`User ${request?.name}`:`Team ${request?.teamnumber}`} - {request?.type} </div>
                         {(distance || request.distance) &&
                         <div className={styles.printerTitle}>Distance: {request.accepted ? distance : request.distance}</div>
                         }

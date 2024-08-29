@@ -49,13 +49,9 @@ export default function ResetEmail() {
     }
     const {
         values,
-        setValues,
         errors,
         setErrors,
         handleInputChange,
-        resetForm,
-        loadingStatus,
-        setLoading
     } = useForm(initalFValues, true, validate);
 
     const handleEmail = () => {
@@ -108,96 +104,50 @@ export default function ResetEmail() {
             <Box component="form" noValidate >    
             <Form onSubmit={handleEmail} className={styles.textboxContainer}>
             <div className = {styles.columnContainer}>
-            <div className = {styles.verificationTitle}>Hello {currentUser.displayName}!</div>
-            <div className = {styles.verificationSubtitle}>Enter your desired email address and enter your password to confirm</div>
-            <div className={styles.paperContainer}>
-            <Paper 
-                sx={{
-                    backgroundColor: "#F0F5FF",
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    border: '1px solid',
-                    borderColor: 'rgba(230, 232, 236, 0.502)',
-                    borderRadius: '5px',
-                    gap: '32px',
-                    width: '35vw',
-                    height: 'clamp:(700px, 65vh, 2000px)',
-                    marginRight: '2.25vw',
-                }}            
-            >
-            <div className={styles.entireContainer}>
-            <div className={styles.singleContainer}>
-            <div className={styles.label}>Enter new email address</div>
-                <Controls.Input 
-                    placeholder={currentUser.email}
-                    name="email"
-                    variant="outlined"
-                    value={values.email}
-                    onChange = {handleInputChange}
-                    error={errors.email}
-                    InputProps={{
-                        className: styles.textbox,
-                    }}                        
-                />
+                <div className={styles.titleContainer}>
+                    <div className = {styles.verificationTitle}>Hello {currentUser.displayName}!</div>
+                    <div className = {styles.verificationSubtitle}>Enter your desired email address and enter your password to confirm</div>
                 </div>
-            <div className={styles.singleContainer}>
-            <div className={styles.label}>Enter password</div>
-                <Controls.Input 
-                    placeholder="Password"
-                    name="password"
-                    variant="outlined"
-                    type="password"
-                    value={values.password}
-                    onChange = {handleInputChange}
-                    error={errors.password}
-                    InputProps={{
-                        className: styles.textbox,
-                    }}                        
-                />
-            </div>
-             <div className = {styles.buttonContainer}>
-             
-            <Button 
-                variant = "contained"
-                size = "large"
-                onClick = {handleEmail}
-                sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    gap: '12px',
-                    backgroundColor: '#F0F5FF',
-                    borderRadius: '7px',
-                    padding: '0px 32px',
-                    width: '20vw',
-                    bottom: '5px',
-                    transitionDuration: '500ms',
-                    "&.MuiButton-contained": {
-                      color: '#0B63E5',
-                      fontFamily: "Lexend Regular",
-                      fontSize: 'clamp(10px, 0.9vw, 18px)',
-                      fontWeight: '500',
-                      letterSpacing: '0',
-                      lineHeight: '56px',
-                      marginTop: '-2px',
-                      whiteSpace: 'nowrap',
-                      width: '20vw',
-                    },
-                    "&:hover": {
-                      background: "#d9e6ff",
-                      boxShadow: '5px 5px 5px #02142e8e',
-                      transitionDuration: '500ms'
-                    },
-                }}
-                >
-                    Submit
-            </Button>
-            </div>
-            </div>
-            </Paper>
-            </div>
-            </div>
+                <div className={styles.entireContainer}>
+                    <div className={styles.singleContainer}>
+                        <div className={styles.label}>Enter new email address</div>
+                            <Controls.Input 
+                                placeholder={currentUser.email}
+                                name="email"
+                                variant="outlined"
+                                value={values.email}
+                                onChange = {handleInputChange}
+                                error={errors.email}                 
+                            />
+                            </div>
+                        <div className={styles.singleContainer}>
+                        <div className={styles.label}>Enter password</div>
+                            <Controls.Input 
+                                placeholder="Password"
+                                name="password"
+                                variant="outlined"
+                                type="password"
+                                value={values.password}
+                                onChange = {handleInputChange}
+                                error={errors.password}                    
+                            />
+                        </div>
+                        <div className = {styles.buttonContainer}>
+                        
+                        <Button 
+                            variant = "contained"
+                            size = "large"
+                            onClick = {handleEmail}
+                            className={styles.button}
+                            sx={{
+                                backgroundColor: "#015F8F",
+                                textTransform: "none",
+                                fontWeight: "600", }}>
+                                Save and continue
+                        </Button>
+                    </div>`
+                </div>
+                </div>
             <Snackbar open={openSuccess} autoCloseDuration={5000} onClose={() => setOpenSuccess(false)}>
                 <Alert severity="success" sx={{ width: '100%' }} onClose={() => setOpenSuccess(false)}>
                     Email Reset!
