@@ -25,7 +25,7 @@
     display: flex;
     justify-content: flex-start;
     align-content: flex-start;
-    height: 87.5vh;
+    height: 100%;
 }
 
 .mobile {

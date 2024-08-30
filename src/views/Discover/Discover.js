@@ -105,7 +105,7 @@ function Discover() {
   let libRef = React.useRef(libraries)
   const mapContainerStyle = {
     width: '100vw',
-    height: '87.5vh',
+    height: '100%',
     visibility: 'visible'
   }
 
