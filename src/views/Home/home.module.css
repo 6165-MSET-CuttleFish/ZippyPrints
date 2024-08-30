@@ -19,11 +19,9 @@ body {
     flex-direction: column;
     align-items: flex-start;
     width: auto;
-    height: 100vh;
-    margin: auto;
+    height: 100%;
+    width: 100%;
     position: absolute;
-    margin-top: 12.5vh;
-    top: 0px; bottom: 0px; right: 0px; left: 0px;
     background-color:#00344E;
 }
 
@@ -64,7 +62,7 @@ body {
 }
 
 .line{
-  background-color: #F0F5FF;
+  background-color: #FFC926;
   height: 60px;
   width: 3px;
 }

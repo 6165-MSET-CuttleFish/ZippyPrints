@@ -1,0 +1,24 @@
+.linksContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 2rem;
+    background-color: #F2F2F2;
+}
+
+.text {
+    color: #015F8F;
+    font-family: "Lexend SemiBold";
+    font-size: clamp(18px, 3rem, 1000px);
+    font-weight: 600;
+    line-height: clamp(20px, 3.5rem, 200px);
+    transition: 500ms;
+    opacity: 1;
+    margin-bottom: 3rem;
+}
+
+.text:hover {
+    transform: translateY(-2px);
+    color: #FFC926;
+  }

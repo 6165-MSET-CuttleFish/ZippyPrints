@@ -1,21 +1,102 @@
+
+.nav {
+  overflow: hidden;
+  top: 0;
+  width: 100%;
+}
+
+.elements {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-left: 2vw;
+  gap: 2rem;
+}
+
+.elements a {
+  text-transform: none;
+  letter-spacing: 1px;
+  font-weight: 600;
+  transition-duration: 400ms;
+  cursor: pointer;
+  color: #F0F5FF;
+}
+
+.elements a:hover {
+  transform: translateY(-2px);
+  color: #FFC926;
+}
+
+.elements_mobile {
+  
+}
+
+.elements_mobile a {
+  
+}
+
+.title {
+  font-size: 18pt;
+  color: #F0F5FF;
+}
+
+.title_mobile {
+  font-size: 0pt;
+  color: #F0F5FF;
+  visibility: hidden;
+}
+
+.App {
+  background-color: #00344E;
+  display: flex;
+  flex-direction: row;
+  padding-left: 2rem;
+  padding-right: 2rem;
+  height: 10vh;
+  align-items: center;
+  position: sticky;
+}
+
+
+.Auth {
+  height: 100px;
+  justify-self: flex-end;
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  text-align: right;
+  justify-content: flex-end;
+  margin-right: 30px;
+}
+
+.Auth a {
+  text-transform: none;
+  font-weight: 600;
+  transition-duration: 400ms;
+  cursor: pointer;
+  align-self: center;
+  margin-left: clamp(20px, 2vw, 50px);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 .loginButton {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: clamp(6px, 2vw, 12px);
-  background-color: #F0F5FF;
-  border-radius: 5px;
   padding: 0px 32px;
   width: clamp(20px, 3vw, 500px);
+  height: 3rem;
 } 
 
-
-
 .loginText{
-  color: #0B63E5;
-  font-family: "Lexend Regular";
-  font-size: clamp(10pt, 0.9vw, 18pt);
-  font-weight: 500;
+  color: #F0F5FF;
+  font-size: 12pt;
+  font-weight: 700;
   letter-spacing: 0;
   line-height: 56px;
   margin-top: -2px;
@@ -26,7 +107,8 @@
 
 .loginButton:hover {
   transition-duration: 500ms;
-  background-color: #ffffff;
+  background-color: #ffffff17;
+  border-radius: 3px;
 }
 
 
@@ -35,25 +117,151 @@
   align-items: center;
   justify-content: center;
   gap: clamp(6px, 2vw, 12px);
-  background-color: #094FB7;
-  border-radius: 5px;
+  background-color: #ffc926f1;
   padding: 0px 32px;
   width: clamp(15px, 3vw, 300px);
+  border-radius: 3px;
   transition-duration: 500ms;
+  height: 3rem;
 } 
 .registerButton:hover {
   transition-duration: 500ms;
-  background-color: #0967f5;
+  background-color: #ffc926bd;
 }
 
 .registerText{
-  color: #F0F5FF;
-  font-family: "Lexend Regular";
-  font-size: clamp(10pt, 0.9vw, 18pt);
-  font-weight: 500;
+  color: #FFFFFF;
+  font-size: 12pt;
+  font-weight: 700;
   letter-spacing: 0;
   line-height: 56px;
   margin-top: -2px;
   white-space: nowrap;
   width: fit-content;
+}
+
+.menuContainer {
+  display: none
+}
+
+@media (max-width: 800px) {
+  .elements_mobile {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-left: 1rem;
+    gap: 0rem;
+  }
+  
+  .elements_mobile a {
+    text-transform: none;
+    letter-spacing: 1px;
+    font-weight: 600;
+    transition-duration: 400ms;
+    cursor: pointer;
+    color: #F0F5FF;
+  }
+  
+  .title_mobile {
+    font-size: 14pt;
+    color: #F0F5FF;
+    visibility: visible;
+  }
+
+  .elements {
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-left: 0vw;
+    gap: 0rem;
+  }
+
+  .Auth {
+    width: 100%;
+    margin-right: 0rem;
+  }
+
+  .App {
+    background-color: #00344E;
+    display: flex;
+    flex-direction: row;
+    padding-left: clamp(0rem, 1vw, 5rem);
+    padding-right: 0.5rem;
+    height: 10vh;
+    align-items: center;
+    position: sticky;
+  }
+
+
+.loginButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 2vw, 12px);
+  padding: 0px 32px;
+  width: clamp(0.5rem, 1.5vw, 500px);
+  height: 3rem;
+} 
+
+.loginText{
+  color: #F0F5FF;
+  font-size: 12pt;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 56px;
+  margin-top: -2px;
+  white-space: nowrap;
+  width: fit-content;
+  transition-duration: 500ms;
+}
+
+.loginButton:hover {
+  transition-duration: 500ms;
+  background-color: #ffffff17;
+  border-radius: 3px;
+}
+
+
+.registerButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(6px, 2vw, 12px);
+  background-color: #ffc926f1;
+  padding: 0px 32px;
+  width: clamp(0.5rem, 1.5vw, 500px);
+  border-radius: 3px;
+  transition-duration: 500ms;
+  height: 2.5rem;
+} 
+.registerButton:hover {
+  transition-duration: 500ms;
+  background-color: #ffc926bd;
+}
+
+.registerText{
+  color: #FFFFFF;
+  font-size: 12pt;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 56px;
+  margin-top: -2px;
+  white-space: nowrap;
+  width: fit-content;
+}
+
+  .menuContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 1rem;
+    color: #F2F2F2
+  }
+
+  .menuIcon {
+    color: #F2F2F2;
+  }
+  
 }

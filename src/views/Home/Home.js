@@ -1,19 +1,20 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
 import { useRef } from 'react';
 import styles from '../Home/home.module.css'
-import ZippyPrints from './images/ZippyPrints.png'
 import Button from '../../components/actions/Button';
 import {useNavigate} from "react-router-dom"
 import { Paper } from '@mui/material';
-import waves from './images/wave-5.png'
 import cuttlelogo from './images/cuttlelogo.PNG'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
+import { MenuContext } from '../../components/NavBar/MenuProvider';
+import Menu from '../../components/NavBar/Menu';
 
 export default function Home(){
   const navigate = useNavigate();
   const ref = useRef(null);
+  const { menu } = useContext(MenuContext)
   const handleScrollDown = () => {
     ref.current?.scrollIntoView({behavior: 'smooth'});
   }
@@ -26,6 +27,11 @@ export default function Home(){
   }
 
   return(
+    <div>
+      { menu && 
+        <Menu />
+      }
+      { !menu &&
           <div className={styles.StartScreen}>
             <div className={styles.intro}>
               <h1 className={styles.title}>ZippyPrints</h1>
@@ -230,8 +236,8 @@ export default function Home(){
               </div>
              
           </div>
-
+          }
+        </div>
       );
-
 }
 

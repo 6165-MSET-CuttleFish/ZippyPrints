@@ -9,7 +9,7 @@
 
 .titleContainer {
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
     margin-left: 12vw;
     margin-bottom: 2.5rem;
     text-align: left;
