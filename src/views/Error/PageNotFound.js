@@ -1,12 +1,15 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import {useNavigate} from "react-router-dom"
 import styles from '../Error/error.module.css'
 import Button from '../../components/actions/Button';
 import errorcuttle from './errorcuttle.png'
+import { MenuContext } from '../../components/NavBar/MenuProvider';
+import Menu from '../../components/NavBar/Menu';
 
 
 export default function PageNotFound(){
     const navigate = useNavigate();
+    const {menu} = useContext(MenuContext)
     const goBack = () => {
         navigate(-1);
       }
@@ -14,6 +17,9 @@ export default function PageNotFound(){
         navigate("/home");
       }
     return(
+    <>
+        {menu? 
+            <Menu /> :
         <div className={styles.background}>
             <div className={styles.rowContainer}>
                 <div className={styles.columnContainer}>
@@ -96,6 +102,8 @@ export default function PageNotFound(){
                 </div>
             </div>
         </div>
+        }
+    </>
     );
 }
 

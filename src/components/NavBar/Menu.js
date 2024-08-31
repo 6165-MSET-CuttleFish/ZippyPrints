@@ -10,7 +10,7 @@ export default function Menu() {
             <div className={styles.linksContainer}>
                 <a className={styles.text} onClick={() => setMenu(false)} href="discover" >Maps</a>
                 <a className={styles.text} href="requests" onClick={() => setMenu(false)}>Requests</a>
-                <a className={styles.text} href="new_request" onClick={() => setMenu(false)}>New Request</a>
+                <a className={styles.text} href="new_requests" onClick={() => setMenu(false)}>New Request</a>
             </div>
         </div>
     )

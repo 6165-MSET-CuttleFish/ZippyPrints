@@ -7,7 +7,8 @@ import { getAuth, sendPasswordResetEmail } from "firebase/auth";
 import styles from '../Auth/reset.module.css'
 import { Alert, Snackbar } from '@mui/material'
 import { Button } from '@mui/material';
-
+import { MenuContext } from '../../components/NavBar/MenuProvider';
+import Menu from '../../components/NavBar/Menu';
 
 
 let open = false;
@@ -56,7 +57,7 @@ export default function ResetPassword()
     const [openSuccess, setOpenSuccess] = useState(false);
     const [openError, setOpenError] = useState(false);
     const [errorMessage, setErrorMessage] = useState();
-
+    const {menu} = useContext(MenuContext)
 
         useEffect(() => {
           const checkViewable = () => {
@@ -134,6 +135,10 @@ export default function ResetPassword()
     
     
     return(
+    <>
+      {menu?
+        <Menu />
+        :
         <div className = {styles.container}>
             <div className = {styles.columnContainer}>
             <div className={styles.titleContainer}>
@@ -180,7 +185,9 @@ export default function ResetPassword()
                     {errorMessage}
                 </Alert>
             </Snackbar>
-        </div>     
-        );
+        </div>
+        }
+    </>   
+  );
     
 }

@@ -5,6 +5,8 @@
     align-items: flex-start;
     margin: 2rem;
     background-color: #F2F2F2;
+    transition: 500ms;
+
 }
 
 .text {

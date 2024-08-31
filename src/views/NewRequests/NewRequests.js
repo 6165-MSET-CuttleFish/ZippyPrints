@@ -6,8 +6,8 @@ import CNC from './CNC'
 import Printer from './Printer'
 import LaserCutter from './LaserCutter'
 import { useNavigate } from 'react-router-dom';
-
-
+import { MenuContext } from '../../components/NavBar/MenuProvider';
+import Menu from '../../components/NavBar/Menu';
 
 
 function NewRequests() {
@@ -16,6 +16,7 @@ function NewRequests() {
     const [laserCutter, setLaserCutter] = useState('#717B8C');
     const [cnc, setCNC] = useState('#717B8C');
     const {currentUser} = useContext(AuthContext);
+    const {menu} = useContext(MenuContext)
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -56,6 +57,10 @@ function NewRequests() {
     }, [active])
     
     return (
+    <>
+        {menu?
+            <Menu />
+        :
         <div className={styles.columnContainer}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>Request a Part</div>
@@ -104,6 +109,8 @@ function NewRequests() {
                 {active === "CNC" && <CNC/>}
             </div>
         </div>
+    }
+    </>
     );
 } 
 export default NewRequests

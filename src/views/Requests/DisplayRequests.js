@@ -16,6 +16,8 @@ import {Button} from '@mui/material';
 import "./Display.css"
 import { API_KEY } from '../../api/firebaseConfig';
 import NoRequests from './NoRequests';
+import { MenuContext } from '../../components/NavBar/MenuProvider';
+import Menu from '../../components/NavBar/Menu';
 
 function DisplayRequests() {
     const [type, setType] = useState("3D Printing");
@@ -44,10 +46,6 @@ function DisplayRequests() {
     const [ userReqInfo, setUserReqInfo ] = useState();
     const navigate = useNavigate();
 
-    const [printReq, setPrintReq] = useState([])
-    const [laserReq, setLaserReq] = useState([])
-    const [CNCReq, setCNCReq] = useState([])
-
     //setting variant of different buttons
     const { allSelect } = useContext(FetchContext)
     const { printSelect } = useContext(FetchContext)
@@ -62,7 +60,7 @@ function DisplayRequests() {
 
     //distance sorting algorithm
     const [ userLocation, setUserLocation ] = useState();
-    const [ distance, setDistance ] = useState("WRONG")
+    const { menu } = useContext(MenuContext);
 
 
     
@@ -134,17 +132,6 @@ function DisplayRequests() {
         getRef();
       }
     }, []);
-
-
-    // const calculateDistance = (destination, callback) => {
-    //   const service = new window.google.maps.DistanceMatrixService();
-    //   service.getDistanceMatrix({
-    //       origins: [userLocation],
-    //       destinations: [destination],
-    //       unitSystem: window.google.maps.UnitSystem.IMPERIAL,
-    //       travelMode: 'DRIVING',
-    //   }, callback);
-    // };
     
     useEffect(() => {
       const getAcceptedDocs = async () => {
@@ -207,6 +194,10 @@ function DisplayRequests() {
 
     return (
       <LoadScriptNext googleMapsApiKey={API_KEY}>
+      {menu?
+          <Menu />
+        :
+        
       <div className={styles.entireContainer}>
       {/* Request List Page */}
         <div> 
@@ -363,6 +354,7 @@ function DisplayRequests() {
           { details && <Details/> }
       </div>
     </div>
+    }
     </LoadScriptNext>
     )
 }

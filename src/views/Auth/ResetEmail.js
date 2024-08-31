@@ -5,9 +5,11 @@ import {AuthContext} from "../../views/Auth/Auth"
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import styles from '../Auth/reset.module.css'
-import { Button, Paper } from '@mui/material';
+import { Button } from '@mui/material';
 import { Alert, Snackbar, Box } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
+import { MenuContext } from '../../components/NavBar/MenuProvider';
+import Menu from '../../components/NavBar/Menu';
 
 const initalFValues = {
     email: '',
@@ -21,6 +23,7 @@ export default function ResetEmail() {
     const [errorMessage, setErrorMessage] = useState();
     const navigate = useNavigate();
     const {setTimeActive} = useContext(AuthContext)
+    const {menu} = useContext(MenuContext)
     
     useEffect(() => {
         const checkViewable = () => {
@@ -100,6 +103,10 @@ export default function ResetEmail() {
         });            
     }
     return(
+    <>
+        {menu?
+            <Menu />
+        :
         <div className = {styles.container}>
             <Box component="form" noValidate >    
             <Form onSubmit={handleEmail} className={styles.textboxContainer}>
@@ -129,7 +136,7 @@ export default function ResetEmail() {
                                 type="password"
                                 value={values.password}
                                 onChange = {handleInputChange}
-                                error={errors.password}                    
+                                error={errors.password}          
                             />
                         </div>
                         <div className = {styles.buttonContainer}>
@@ -160,8 +167,10 @@ export default function ResetEmail() {
             </Snackbar>
             </Form>
             </Box>
-        </div>     
-        );
+        </div>  
+        } 
+    </>  
+    );
 
 }
 

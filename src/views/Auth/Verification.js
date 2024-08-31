@@ -9,6 +9,8 @@ import styles from '../Auth/verification.module.css'
 import { Button } from '@mui/material';
 import Progress2 from '../../res/progress2.svg'
 import Progress2Mobile from '../../res/progress2_mobile.svg'
+import { MenuContext } from '../../components/NavBar/MenuProvider';
+import Menu from '../../components/NavBar/Menu';
 
 let open = false;
 module.export = {open:open}
@@ -27,6 +29,7 @@ export default function Verification() {
     const [buttonDisabled, setButtonDisabled] = useState(false)
     const [time, setTime]= useState(30)
     const {timeActive, setTimeActive} = useContext(AuthContext)
+    const {menu} = useContext(MenuContext)
 
     const validate=(fieldValues = values)=>{}
     const {
@@ -129,6 +132,12 @@ export default function Verification() {
       }, [timeActive]);
 
     return(
+      <>
+        {menu?
+          <Menu />
+          :
+      
+      
         <div className = {styles.container}>
           <div className = {styles.columnContainer}>
             <div className = {styles.verificationTitle}>Welcome to ZippyPrints! {currentUser?.displayName}</div>
@@ -186,6 +195,8 @@ export default function Verification() {
                 </Alert>
             </Snackbar>
         </div>
+        }
+      </>
     );
 
 }

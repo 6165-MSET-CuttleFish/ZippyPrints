@@ -1,7 +1,7 @@
 
 .nav {
   overflow: hidden;
-  top: 0;
+  top: 100;
   width: 100%;
 }
 
@@ -152,6 +152,7 @@
     width: 100%;
     margin-left: 1rem;
     gap: 0rem;
+    overflow: hidden;
   }
   
   .elements_mobile a {
@@ -180,8 +181,10 @@
 
   .Auth {
     width: 100%;
-    margin-right: 0rem;
+    margin-right: 1rem;
+
   }
+
 
   .App {
     background-color: #00344E;
@@ -199,7 +202,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(6px, 2vw, 12px);
+  gap: clamp(6px, 1.5vw, 12px);
   padding: 0px 32px;
   width: clamp(0.5rem, 1.5vw, 500px);
   height: 3rem;
@@ -228,7 +231,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(6px, 2vw, 12px);
+  gap: clamp(6px, 1.5vw, 12px);
   background-color: #ffc926f1;
   padding: 0px 32px;
   width: clamp(0.5rem, 1.5vw, 500px);

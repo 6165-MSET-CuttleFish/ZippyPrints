@@ -2,10 +2,12 @@ import React, { useState, useEffect, useContext } from 'react';
 import Location from './Location'
 import Account from './Account'
 import Printer from './Printer'
-import { Paper, Button } from '@mui/material'
+import { Button } from '@mui/material'
 import styles from './dashboard.module.css'
 import { AuthContext } from "../Auth/Auth";
 import { useNavigate } from 'react-router-dom';
+import { MenuContext } from '../../components/NavBar/MenuProvider';
+import Menu from '../../components/NavBar/Menu';
 
 function Dashboard() {
     const [active, setActive] = useState("Account Details");
@@ -13,6 +15,7 @@ function Dashboard() {
     const [accountColor, setAccountColor] = useState('#FFC107');
     const [printerColor, setPrinterColor] = useState('#FFC107');
     const {currentUser} = useContext(AuthContext);
+    const {menu} = useContext(MenuContext)
     const navigate = useNavigate();
     
     useEffect(() => {
@@ -52,6 +55,13 @@ function Dashboard() {
        handleColor();
     }, [active])
     return (
+    <div>
+        {menu?
+            <>
+                <Menu/>
+            </>
+        :
+        <>
         <div className={styles.columnContainer}>
             <div className={styles.titleContainer}>
                 <div className={styles.title}>Account Settings</div>
@@ -99,6 +109,9 @@ function Dashboard() {
                 {active === "Your Printer" && <Printer/>}
             </div>
         </div>
+        </>
+        }
+    </div>
     );
 }
 export default Dashboard

@@ -16,10 +16,13 @@ import {useForm, Form} from '../../components/useForm'
 import { v4 as uuidv4 } from 'uuid';
 import styles from './map.module.css'
 import {useNavigate} from "react-router-dom"
-import { Menu } from '../../components/Menu/Menu'
+import { Menu as SideBar} from '../../components/Menu/Menu'
 import { CurrentCenterContext } from './CenterProvider.js'
 import { CurrentSelectedContext } from './SelectedProvider';
 import Mobile from './Mobile';
+import { MenuContext } from '../../components/NavBar/MenuProvider';
+import Menu from '../../components/NavBar/Menu';
+
 
 const initalFValues = {
     id: 0,
@@ -50,6 +53,7 @@ function Discover() {
   const classes = useStyles();
   const [openRegisterPopup, setOpenRegisterPopup] = useState(false)
   const navigate = useNavigate();
+  const {menu} = useContext(MenuContext)
   
   //const auth = getAuth();
   //const user = auth.currentUser;
@@ -326,9 +330,12 @@ const onMapLoad = (map) => {
         openPopup={openRegisterPopup}
         setOpenPopup={setOpenRegisterPopup}>
       </Popup>
-    
+    {menu? 
+      <Menu/>
+      :
+  
     <div className={styles.wrapper}>
-      <div className={styles.menu}> <Menu className={styles.menu}/> </div>
+      <div className={styles.menu}> <SideBar className={styles.menu}/> </div>
       <div className={styles.mobile}> <Mobile /> </div>
       <div className={styles.maps}>
         <GoogleMap 
@@ -389,6 +396,7 @@ const onMapLoad = (map) => {
         </GoogleMap>
       </div>
     </div>  
+    }
   </div>
   );
   
