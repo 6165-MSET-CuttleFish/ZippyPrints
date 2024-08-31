@@ -10,6 +10,10 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import { MenuContext } from '../../components/NavBar/MenuProvider';
 import Menu from '../../components/NavBar/Menu';
+import PrinterSearch from './images/PrinterSearch.svg'
+import UploadRequest from './images/UploadRequest.png'
+import RequestAccept from './images/RequestAccept.png'
+import './Home.css'
 
 export default function Home(){
   const navigate = useNavigate();
@@ -114,14 +118,71 @@ export default function Home(){
                   </Button>   
                 </div>   
               </div>
+            
+              <div className={styles.tutorialContainer} ref={ref}>
+                <div className={styles.tutorialHeadingContainer}> 
+                  <h1 className={styles.tutorialTitle}>Services</h1>
+                </div>
+                <div className={styles.servicesContainer}>
+                    <div className={styles.serviceBox}> 
+                        <div className={styles.textContainer}> 
+                          <div className={styles.serviceTitle}>Discover</div>
+                          <div className={styles.serviceSubtitle}>Want something printed? Hop over to our Discover page to directly contact printers.</div>
+                          <div className={styles.serviceButton}> 
+                            <Button
+                              variant = "contained"
+                              text="Details"
+                              style={{
+                                backgroundColor: "#015F8F",
+                                textTransform: "none",
+                                fontWeight: "400",
+                              }}
+                              onClick = {() => navigate("/discover")}
+                            />
+                          </div>
+                        </div>
+                        <img src={PrinterSearch} className={styles.serviceImage} alt="Search for printers" />
+                    </div>
+                    <div className={styles.serviceBox}> 
+                      <div className={styles.textContainer}> 
+                          <div className={styles.serviceTitle}>New Request</div>
+                          <div className={styles.serviceSubtitle}>Not sure which printer to pick? Submit a request and a printer will accept your request!</div>
+                          <div className={styles.serviceButton}> 
+                            <Button
+                              variant = "contained"
+                              text="Details"
+                              style={{
+                                backgroundColor: "#015F8F",
+                                textTransform: "none",
+                                fontWeight: "400",
+                              }}
+                              onClick = {() => navigate("/new_requests")}
+                            />
+                          </div>
+                        </div>
+                        <img src={UploadRequest} className={styles.serviceImage} alt="Search for printers" />
+                    </div>
+                    <div className={styles.serviceBox}> 
+                    <div className={styles.textContainer}> 
+                          <div className={styles.serviceTitle}>Accept Requests</div>
+                          <div className={styles.serviceSubtitle}>Printers: head over to our Request List to start accepting awaiting requests!</div>
+                          <div className={styles.serviceButton}> 
+                            <Button
+                              variant = "contained"
+                              text="Details"
+                              style={{
+                                backgroundColor: "#015F8F",
+                                textTransform: "none",
+                                fontWeight: "400",
+                              }}
+                              onClick = {() => navigate("/requests")}
+                            />
+                          </div>
+                        </div>
+                        <img src={RequestAccept} className={styles.serviceImage} alt="Search for printers" />
+                    </div>
+                </div>
 
-              <div className={styles.dividerContainer}>
-                
-
-              </div>
-              {/* <img src={cuttlelogo} alt="ZippyPrints divider" className={styles.cuttlelogo}></img> */}
-              
-              <div className={styles.tutorialBackground} ref={ref}>
                 <div className={styles.tutorialHeadingContainer}>
                   <h1 className={styles.tutorialTitle}>Learn how to utilize ZippyPrints</h1>
                 </div>

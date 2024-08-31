@@ -1,0 +1,24 @@
+.css-sghohy-MuiButtonBase-root-MuiButton-root {
+    width: 8rem;
+    height: 2rem;
+    padding-left: 10rem;
+}
+/* 
+sx={{
+    backgroundColor: "#015F8F",
+    textTransform: "none",
+    fontWeight: "400",
+    width: '8rem',
+    height: '2rem',
+    marginLeft: '2rem',
+    "&.MuiButton-contained": {
+      color: '#FFFFFF',
+      fontFamily: "Lexend Regular",
+      fontSize: 'clamp(10px, 0.9vw, 18px)',
+      width: 'fit-content'
+    },
+    "&:hover": {
+      backgroundColor: "#004d74",
+      transitionDuration: '500ms'
+    },
+  } */

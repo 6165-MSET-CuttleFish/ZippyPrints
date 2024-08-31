@@ -12,7 +12,7 @@ body {
     flex-direction: column;
     align-items: flex-start;
     width: auto;
-    height: 100vh;
+    height: 100%;
     width: 100%;
     position: absolute;
     background-color:#00344E;
@@ -98,26 +98,26 @@ body {
   justify-items: left;
 }
 
-#divider1 {
+.divider1 {
   width: 120.99vw;
   margin-top: 8vw;
   height: 200vw;
   margin-left: -22vw;
 }
-.tutorialBackground {
-  display: block;
-  height: 1600px;
-  margin-top: clamp(725px, 50%, 1000px);
-  position: absolute;
-  top: 0px; bottom: 0px; right: 0px; left: 0px;
-  background-color: #F0F5FF;  
+
+.tutorialContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30rem;
+  margin-left: 10rem;
+  margin-right: 10rem;
+  height: fit-content
 }
 
 .tutorialHeadingContainer {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  margin-left: clamp(0px, 10vw, 1000px);
 }
 
 .tutorialTitle {
@@ -141,6 +141,69 @@ body {
   text-align: center;
   width: 648px;
 }
+
+.servicesContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.serviceBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start ;
+  background-color: #E0E4EC;
+  height: 11rem;
+  width: 32%;
+  margin-top: 2rem;
+  border-radius: 0.25rem;
+}
+
+.serviceTextContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.serviceTitle {
+  color: rgba(6, 28, 61, 1);
+  font-family: "Lexend Regular";
+  font-weight: 600;
+  width: fit-content;
+  font-size: 16pt;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-top: 1rem;
+}
+
+.serviceSubtitle {
+  color: rgba(6, 28, 61, 1);
+  font-family: "Lexend Light";
+  width: fit-content;
+  font-size: 10pt;
+  margin-left: 1rem;
+  margin-top: 1rem;
+  margin-right: 1rem;
+}
+
+.serviceImage {
+  height: 8rem;
+  width: auto;
+  align-self: center;
+  margin-right: 1rem;
+}
+
+.serviceButton {
+  margin-top: 2rem;
+  margin-left: 2rem;
+}
+
+.serviceButton {
+  align-self: flex-end;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+
 
 .cardsContainer {
   display: flex;
@@ -229,7 +292,6 @@ body {
   flex-direction: column;
   gap: 48px;
   width: fit-content;
-  margin-left: 10vw;
   margin-top: 3vw;
 }
 
@@ -237,7 +299,6 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  margin-left: clamp(0px, 10vw, 1000px);
   margin-top: 5vw;
 }
 .missionTitle {
@@ -290,10 +351,9 @@ body {
 .footerScreen {
   display: block;
   height: clamp(300px, 20vw, 500px);
-  margin-top: clamp(2100px, 145%, 2500px);
-  position: absolute;
-  top: 0px; bottom: 0px; right: 0px; left: 0px;
+  width: 100%;
   background-color: #02142E;  
+  margin-top: 5rem; 
 }
 
 .footerContainer {
@@ -302,6 +362,7 @@ body {
   justify-content: flex-start;
   column-gap: 20vw;
   margin-top: 4vw;
+  margin-bottom: 3rem;
 }
 
 .footerColumn1 {
@@ -338,6 +399,7 @@ body {
   line-height: 20px;
   width: fit-content;
 }
+
 .rowTitle {
   color: #F0F5FF;
   font-family: "Lexend Regular";
@@ -423,7 +485,6 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    margin-left: 0vw;
   }
   
   .tutorialTitle {

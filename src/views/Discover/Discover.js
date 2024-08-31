@@ -380,7 +380,6 @@ const onMapLoad = (map) => {
                   {selected.location ? `${selected.location.split(",")[1]}, ${selected.location.split(",")[2]}` : `${selected.formattedAddress}`}
               </p>
               <Controls.Button 
-                    className = {classes.requestButton}
                     variant = "contained"
                         size = "large"
                         style={{
