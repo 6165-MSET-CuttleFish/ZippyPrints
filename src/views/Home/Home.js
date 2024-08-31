@@ -49,14 +49,14 @@ export default function Home(){
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    gap: '12px',
-                    backgroundColor: '#F0F5FF',
-                    borderRadius: '7px',
+                    backgroundColor: '#ffc926f1',
+                    borderRadius: '2px',
+                    height: '2.75rem',
                     padding: '0px 32px',
                     width: 'fit-content',
                     transitionDuration: '500ms',
                     "&.MuiButton-contained": {
-                      color: '#0B63E5',
+                      color: '#FFFFFF',
                       fontFamily: "Lexend Regular",
                       fontSize: 'clamp(10px, 0.9vw, 18px)',
                       fontWeight: '500',
@@ -67,8 +67,8 @@ export default function Home(){
                       width: 'fit-content'
                     },
                     "&:hover": {
-                      background: "#d9e6ff",
-                      boxShadow: '5px 5px 5px #02142e8e',
+                      background: "#ffc926bd",
+                      boxShadow: '5px 5px 5px #02142eb7',
                       transitionDuration: '500ms',                  
                     },
                   }}
@@ -79,18 +79,19 @@ export default function Home(){
 
                   <Button
                   className={styles.userButton}
-                  variant = "contained"
+                  variant = "outlined"
                   sx={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: '12px',
-                    backgroundColor: '#0B63E5',
-                    borderRadius: '7px',
+                    borderRadius: '2px',
+                    borderColor: '#FFFFFF',
+                    height: '2.75rem',
                     padding: '0px 32px',
                     width: 'fit-content',
                     transitionDuration: '500ms',
-                    "&.MuiButton-contained": {
+                    "&.MuiButton-outlined": {
                       color: '#F0F5FF',
                       fontFamily: "Lexend Regular",
                       fontSize: 'clamp(10px, 0.9vw, 18px)',
@@ -102,13 +103,13 @@ export default function Home(){
                       width: 'fit-content'
                     },
                     "&:hover": {
-                      background: "#035ee6",
-                      boxShadow: '5px 5px 5px #02142e8e',
+                      borderColor: '#FFFFFF',
+                      boxShadow: '5px 5px 5px #02142eb7',
                       transitionDuration: '500ms'
                     },
                   }}
-                    text = "Become a Vendor"
-                    onClick = {handlePrinterSubmit}
+                    text = "Learn More"
+                    onClick = {() => {ref.current?.scrollIntoView({behavior: 'smooth'});}}
                   >
                   </Button>   
                 </div>   
@@ -120,7 +121,7 @@ export default function Home(){
               </div>
               {/* <img src={cuttlelogo} alt="ZippyPrints divider" className={styles.cuttlelogo}></img> */}
               
-              <div className={styles.tutorialBackground}>
+              <div className={styles.tutorialBackground} ref={ref}>
                 <div className={styles.tutorialHeadingContainer}>
                   <h1 className={styles.tutorialTitle}>Learn how to utilize ZippyPrints</h1>
                 </div>
