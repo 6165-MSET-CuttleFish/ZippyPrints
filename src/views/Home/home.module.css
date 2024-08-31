@@ -12,27 +12,27 @@ body {
     flex-direction: column;
     align-items: flex-start;
     width: auto;
-    height: 100%;
+    height: 100vh;
     width: 100%;
-    position: absolute;
     background-color:#00344E;
+
 }
 
 .intro {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  padding-left: 15%;
-  padding-top: 10%;
+  padding-left: 15rem;
+  padding-top: 10rem;
 }
 
 .title {
   color: #F0F5FF;
   font-family: "Lexend Regular";
-  font-size: clamp(50px, 6vw, 100px);
+  font-size: 6rem;
   font-weight: 600;
   letter-spacing: -1.3px;
-  line-height: clamp(50px, 8vh, 200px);
+  line-height: 6rem;
   transition: 500ms;
   opacity: 1;
  }
@@ -41,17 +41,17 @@ body {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  margin-top: 3vw;
-  gap: 1vw;
+  margin-top: 3rem;
+  gap: 1rem;
 }
 
 .subtitle { 
   color: #F0F5FF;
   font-family: "Lexend Regular";
-  font-size: clamp(10px, 0.9vw, 20px);
+  font-size: 1rem;
   font-weight: 100;
   line-height: 20px;
-  width: clamp(275px, 32vw, 475px);
+  width: 32rem;
 }
 
 .line{
@@ -64,8 +64,8 @@ body {
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  margin-top: 3vw;
-  gap: 1vw;
+  margin-top: 3rem;
+  gap: 1rem;
 }
 
 /* .userButton {
@@ -93,25 +93,15 @@ body {
 
 /*FROM NOW ON: TUTORIAL*/
 
-.dividerContainer {
-  display: flex;
-  justify-items: left;
-}
-
-.divider1 {
-  width: 120.99vw;
-  margin-top: 8vw;
-  height: 200vw;
-  margin-left: -22vw;
-}
-
 .tutorialContainer {
   display: flex;
   flex-direction: column;
-  margin-top: 30rem;
-  margin-left: 10rem;
-  margin-right: 10rem;
-  height: fit-content
+  justify-content: space-evenly;
+  align-items: flex-start; /* Center items horizontally */
+  margin: 30rem auto 0 auto; /* Adjusted top margin */
+  width: 100%; /* Adjust to full width for responsiveness */
+  max-width: 1200px;
+  padding: 0 5%; /* Responsive padding */
 }
 
 .tutorialHeadingContainer {
@@ -145,8 +135,10 @@ body {
 .servicesContainer {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: center;
   align-items: flex-start;
+  flex-shrink: 1;
+  gap: 1rem;
 }
 
 .serviceBox {
@@ -155,14 +147,12 @@ body {
   justify-content: flex-start ;
   background-color: #E0E4EC;
   height: 11rem;
-  width: 32%;
   margin-top: 2rem;
   border-radius: 0.25rem;
 }
 
 .serviceTextContainer {
-  display: flex;
-  flex-direction: row;
+  width: 15rem;
 }
 
 .serviceTitle {
@@ -205,86 +195,70 @@ body {
 }
 
 
-.cardsContainer {
+
+.ImageTextContainer {
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  gap: 3vw;
-  margin-top: 3vw;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 10rem;
 }
 
-.printerFeatureCard {
-  display: flex;
-  align-items: flex-start;
-  border: 1px solid;
-  border-color: rgba(230, 232, 236, 0.502);
-  border-radius: 20px;
-  gap: 32px;
-  padding: 40px;
-  width: clamp(75px, 2vw, 200px);
+.imageContainer {
+  height: 30rem;
+  width: auto;
+  align-self: center;
 }
 
-.cardsTextContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 0.6vw;
+.imageContainer_large {
+  height: 25rem;
+  width: auto;
+  align-self: center;
 }
 
-.cardTitle {
-  letter-spacing: 0;
-  line-height: 32px;
-  font-size: 1.5vw;
-  font-weight: 200;
-  white-space: nowrap;
-  width: 460px;
-  font-family: 'Lexend Regular';
+.image {
+  height: 20rem;
+  width: auto;
+  align-self: center;
 }
 
-.cardText {
-  letter-spacing: 0;
-  line-height: 24px;
-  width: 460px;
-  font-size: clamp(14px, 1.5vw, 16px);
-  font-family: 'Lexend Light';
+.textContainer {
+  text-align: left;
+  width: 35%;
 }
 
-.tutorialButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: white;
-  padding: 6px 0px;
-  box-shadow: inset 0px -1.5px 0px #094FB7;
+.imageTitle {
+  color: rgba(6, 28, 61, 1);
+  font-family: "Lexend Regular";
+  font-weight: 600;
+  letter-spacing: -0.84px;
+  line-height: 60px;
   width: fit-content;
-  transition-duration: 500ms;
+  font-size: 36pt;
 }
-
-.tutorialButtonText {
-  color: #094FB7;
+.imageSubtitle {
+  color: rgba(6, 28, 61, 1);
   font-family: "Lexend Light";
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 20px;
-  margin-top: -1px;
-  text-align: center;
-  white-space: nowrap;
+  margin-top: 4vw;
   width: fit-content;
+  font-size: 12pt;
 }
 
-.arrowRight {
-  color: #094FB7;
-  height: 5vw;
-  min-width: 20px;
+.imageButtonContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 2rem;
+  margin-top: 4rem;
+}
+.imageReverse {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 4rem;
 }
 
-.tutorialButton:hover {
-  border: 1px hidden #094FB7;
-  border-radius: 2px;
-  transition-duration: 500ms;
-  background: #094fb723;
-}
 
 .missionContainer {
   display: flex;
@@ -292,14 +266,15 @@ body {
   flex-direction: column;
   gap: 48px;
   width: fit-content;
-  margin-top: 3vw;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
 }
 
 .missionHeadingContainer {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
-  margin-top: 5vw;
+  margin-top: 10rem;
 }
 .missionTitle {
   color: rgba(6, 28, 61, 1);
@@ -328,7 +303,7 @@ body {
   gap: 16px;
   padding: 0px 0px 0px 24px;
   width: fit-content;
-  box-shadow: inset 3px 0px 0px #094FB7;
+  box-shadow: inset 3px 0px 0px #FFC926;
 }
 
 .missionDescription {
@@ -455,48 +430,165 @@ body {
   background-color: #f0f5ff63;
 }
 
-
-@media screen and (max-width: 1150px) {
-  .cardText {
-    letter-spacing: 0;
-    line-height: 24px;
-    width: 390px;
-    font-size: 16px;
-    font-family: 'Lexend Light';
-    }
-  .cardTitle {
-    letter-spacing: 0;
-    line-height: 32px;
-    font-size: 1.5vw;
-    font-weight: 200;
-    white-space: nowrap;
-    width: 390px;
-    font-family: 'Lexend Regular';
-  }
-  .tutorialBackground {
-    display: block;
-    height: 1500px;
-    margin-top: clamp(725px, 50%, 1000px);
-    position: absolute;
-    top: 0px; bottom: 0px; right: 0px; left: 0px;
-    background-color: #F0F5FF;  
-  }
-  .tutorialHeadingContainer {
+@media screen and (max-width: 1250px) {
+  
+  .tutorialContainer {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-start; /* Center items horizontally */
+    margin: 30rem auto 0 auto; /* Adjusted top margin */
+    width: 100%; /* Adjust to full width for responsiveness */
+
+    padding: 0 5%; /* Responsive padding */
   }
   
-  .tutorialTitle {
-    color: rgba(6, 28, 61, 1);
-    font-family: "Lexend Regular";
-    font-weight: 600;
-    letter-spacing: -0.84px;
-    line-height: 60px;
-    margin-top: 5vw;
-    width: fit-content;
-    font-size: 22pt;
-  }
+.tutorialHeadingContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.tutorialTitle {
+  color: rgba(6, 28, 61, 1);
+  font-family: "Lexend Regular";
+  font-weight: 600;
+  letter-spacing: -0.84px;
+  line-height: 60px;
+  margin-top: 7vw;
+  width: fit-content;
+  font-size: 26pt;
+}
+
+.tutorialSubtitle {
+  color: #094FB7;
+  font-family:'Lexend Regular'; 
+  font-size: 12pt;
+  font-weight: 300;
+  letter-spacing: 0;
+  line-height: 60px;
+  text-align: center;
+  width: 648px;
+}
+
+.servicesContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  flex-shrink: 0;
+  gap: 2vw;
+}
+
+.serviceBox {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start ;
+  background-color: #E0E4EC;
+  height: 15rem;
+  margin-top: 2rem;
+  border-radius: 0.25rem;
+}
+
+.serviceTextContainer {
+  width: 12rem;
+}
+
+.serviceTitle {
+  color: rgba(6, 28, 61, 1);
+  font-family: "Lexend Regular";
+  font-weight: 600;
+  width: fit-content;
+  font-size: 16pt;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  margin-top: 1rem;
+}
+
+.serviceSubtitle {
+  color: rgba(6, 28, 61, 1);
+  font-family: "Lexend Light";
+  width: fit-content;
+  font-size: 10pt;
+  margin-left: 1rem;
+  margin-top: 1rem;
+  margin-right: 1rem;
+}
+
+.serviceImage {
+  height: 8rem;
+  width: auto;
+  align-self: center;
+  margin-right: 1rem;
+}
+
+.serviceButton {
+  margin-top: 2rem;
+  margin-left: 2rem;
+}
+
+.serviceButton {
+  align-self: flex-end;
+  margin-top: 1rem;
+  margin-left: 1rem;
+}
+
+.ImageTextContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: flex-start;
+  margin-top: 10rem;
+  gap: 15vw;
+}
+
+.imageContainer {
+  height: 20rem;
+  width: auto;
+  align-self: center;
+}
+
+.imageContainer_large {
+  height: 18rem;
+  width: auto;
+  align-self: center;
+}
+
+.image {
+  height: 20rem;
+  width: auto;
+  align-self: center;
+}
+
+.textContainer {
+  text-align: left;
+  width: 35%;
+}
+
+.imageTitle {
+  color: rgba(6, 28, 61, 1);
+  font-family: "Lexend Regular";
+  font-weight: 600;
+  letter-spacing: -0.84px;
+  line-height: 60px;
+  width: fit-content;
+  font-size: 36pt;
+}
+.imageSubtitle {
+  color: rgba(6, 28, 61, 1);
+  font-family: "Lexend Light";
+  margin-top: 4vw;
+  width: fit-content;
+  font-size: 12pt;
+}
+
+.imageButtonContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 2rem;
+  margin-top: 4rem;
+}
 
   .missionHeadingContainer {
     display: flex;
@@ -536,8 +628,6 @@ body {
   .footerScreen {
     display: block;
     height: 300px;
-    margin-top: clamp(2000px, 145%, 2200px);
-    position: absolute;
     top: 0px; bottom: 0px; right: 0px; left: 0px;
     background-color: #02142E;  
   }
@@ -640,229 +730,223 @@ body {
   }
 
 }
+@media screen and (max-width: 1150px) {
+  .servicesContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin-right: 5rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 2vw;
+  }
 
-@media screen and (max-width: 1000px) {
+  .serviceBox {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start ;
+    background-color: #E0E4EC;
+    height: 11rem;
+    margin-top: 2rem;
+    border-radius: 0.25rem;
+  }
+
+  .serviceTextContainer {
+    width: 15rem;
+  }
+
+  .serviceTitle {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend Regular";
+    font-weight: 600;
+    width: fit-content;
+    font-size: 16pt;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-top: 1rem;
+  }
+
+  .serviceSubtitle {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend Light";
+    width: fit-content;
+    font-size: 10pt;
+    margin-left: 1rem;
+    margin-top: 1rem;
+    margin-right: 1rem;
+  }
+
+  .serviceImage {
+    height: 8rem;
+    width: auto;
+    align-self: center;
+    margin-right: 1rem;
+  }
+
+  .serviceButton {
+    margin-top: 2rem;
+    margin-left: 2rem;
+  }
+
+  .serviceButton {
+    align-self: flex-end;
+    margin-top: 1rem;
+    margin-left: 1rem;
+  }
+}
+
+
+@media screen and (max-width: 1050px) {
+    
   .StartScreen {  
     display: flex;
     flex-direction: column;
     align-items: center;
     width: auto;
-    height: 80vh;
-    margin: auto;
-    position: absolute;
-    top: 0px; bottom: 0px; right: 0px; left: 0px;
+    height: 100vh;
+    width: 100%;
+    background-color:#00344E;
+
   }
 
   .intro {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-right: 15vw;
-      margin-top: clamp(100px, 5vw, 500px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-left: 0rem;
+    padding-top: 10rem;
+    text-align: center;
   }
+
   .title {
     color: #F0F5FF;
     font-family: "Lexend Regular";
-    font-size: clamp(50px, 6vw, 100px);
+    font-size: clamp(18pt, 15vw, 48pt);
     font-weight: 600;
     letter-spacing: 0px;
-    line-height: clamp(50px, 8vh, 200px);
+    line-height: 6rem;
+    transition: 500ms;
+    opacity: 1;
   }
-  
+
   .subtitleContainer {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
-    margin-top: 3vw;
-    gap: 1vw;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3rem;
+    gap: 1rem;
+    width: 80vw;
   }
+
   .subtitle { 
     color: #F0F5FF;
     font-family: "Lexend Regular";
-    font-size: clamp(10px, 0.9vw, 20px);
+    font-size: 1rem;
     font-weight: 100;
     line-height: 20px;
-    width: clamp(275px, 32vw, 475px);
-    text-align: center;
-
+    width: 32rem;
   }
-  
+
   .line{
-    background-color: #094FB7;
+    background-color: #FFC926;
     height: 60px;
     width: 3px;
+    visibility: hidden
   }
-  
+
   .buttonContainer {
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
-    margin-top: 3vw;
-    gap: 1vw;
-  }
-  
-  .userButton {
-    display: flex;
-    align-items: center;
     justify-content: center;
-    gap: 12px;
-    background-color: #F0F5FF;
-    border-radius: 7px;
-    padding: 0px 32px;
-    width: fit-content;
-  } 
-  
-  .userText{
-    color: #7a7f86;
-    font-family: "Lexend Regular";
-    font-size: 0.9vw;
-    font-weight: 500;
-    letter-spacing: 0;
-    line-height: 56px;
-    margin-top: -2px;
-    white-space: nowrap;
-    width: fit-content;
-  }
-  .divider1 {
-    width: 0px;
-    height: 0px;
+    align-self: center;
+    margin-top: 3rem;
+    gap: 1rem;
+    width: 80vw;
   }
 
-  .tutorialSubtitle {
-    color: #094FB7;
-    font-family:'Lexend Regular'; 
-    font-size: 12pt;
-    font-weight: 300;
-    letter-spacing: 0;
-    line-height: 60px;
-    text-align: center;
-    width: 648px;
-  }
-  
-  .cardsContainer {
+
+  .ImageTextContainer {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    gap: 3vw;
-    margin-top: 3vw;
-  }
-  
-  .printerFeatureCard {
-    display: flex;
-    align-items: flex-start;
-    border: 1px solid;
-    border-color: rgba(230, 232, 236, 0.502);
-    border-radius: 20px;
-    gap: 32px;
-    padding: 40px;
-    width: clamp(100px, 3vw, 500px);
-  }
-  
-  .cardsTextContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.6vw;
-  }
-  
-  .cardTitle {
-    letter-spacing: 0;
-    line-height: 32px;
-    font-size: clamp(24px, 0.5vw, 60px);
-    font-weight: 200;
-    white-space: nowrap;
-    width: 460px;
-    font-family: 'Lexend Regular';
-  }
-  
-  .cardText {
-    letter-spacing: 0;
-    line-height: 24px;
-    max-width: clamp(px, 100vw, 460px);
-    font-size: 16px;
-    font-family: 'Lexend Light';
-  }
-  
-  .tutorialBackground {
-    display: block;
-    height: 2000px;
-    margin-top: clamp(725px, 50%, 1000px);
-    position: absolute;
-    top: 0px; bottom: 0px; right: 0px; left: 0px;
-    background-color: #F0F5FF;  
-  }
-
-  .missionScreen {
-    display: block;
-    height: 700px;
-    margin-top: clamp(1150px, 50%, 1300px);
-    position: absolute;
-    top: 0px; bottom: 0px; right: 0px; left: 0px;
-    background-color: #F0F5FF;
-  } 
-
-  .tutorialHeadingContainer {
-    display: flex;
-    flex-direction: row;
     justify-content: center;
-    margin-left: 0vw;
+    margin-top: 8rem;
   }
-  
-  .tutorialTitle {
+
+  .imageContainer {
+    height: clamp(15rem, 50vw, 30rem);
+    width: auto;
+    align-self: center;
+  }
+
+  .imageContainer_large {
+    height: clamp(12.5rem, 50vw, 25rem);
+    width: auto;
+    align-self: center;
+  }
+
+  .image {
+    height: 20rem;
+    width: auto;
+    align-self: center;
+  }
+
+  .imageReverse {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 3rem;
+  }
+
+  .textContainer {
+    text-align: left;
+    width: 80vw;
+  }
+
+  .imageTitle {
     color: rgba(6, 28, 61, 1);
     font-family: "Lexend Regular";
     font-weight: 600;
     letter-spacing: -0.84px;
     line-height: 60px;
-    margin-top: 5vw;
     width: fit-content;
-    font-size: 18pt;
+    font-size: 36pt;
+  }
+  .imageSubtitle {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend Light";
+    margin-top: 4vw;
+    width: fit-content;
+    font-size: 12pt;
   }
 
-  .missionContainer {
+  .imageButtonContainer {
     display: flex;
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 48px;
-    margin-left: 0vw;
-    margin-top: 7vw;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 2rem;
+    margin-top: 2rem;
   }
   
   .missionHeadingContainer {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    margin-left: 0vw;
+    justify-content: flex-start;
+    margin-top: 10rem;
+    width: 90%;
   }
   
-  .missionTitle {
-    color: rgba(6, 28, 61, 1);
-    font-family: "Lexend Regular";
-    font-weight: 600;
-    letter-spacing: -0.84px;
-    line-height: 60px;
-    margin-top: 5vw;
-    text-align: center;
-    font-size: 18pt;
-  }
-
-  .missionDescription {
-    color: rgba(6, 28, 61, 1);
-    font-family: "Lexend Light";
-    font-size: 16px;
-    font-weight: 300;
-    letter-spacing: 0px;
-    line-height: 32px;
-    margin-top: -1px;
-    width: clamp(180px, 55vw, 1200px);
+  
+  
+  .cuttlelogo {
+    margin-top: -3vw;
+    height: clamp(200px, 18vw, 300px);
+    width: clamp(200px, 18vw, 300px);
   }
 
   .footerScreen {
     display: block;
     height: 300px;
-    margin-top: clamp(2450px, 145%, 2600px);
-    position: absolute;
     top: 0px; bottom: 0px; right: 0px; left: 0px;
     background-color: #02142E;  
   }
@@ -963,4 +1047,57 @@ body {
     transition: 250ms;
     background-color: #f0f5ff63;
   }
+}
+
+@media (max-width: 750px) {
+  .missionContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+  }
+  .missionTitle {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend Regular";
+    font-weight: 600;
+    letter-spacing: -0.84px;
+    line-height: 60px;
+    margin-top: 5vw;
+    font-size: 26pt;
+  }
+  
+  .missionDescriptionContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    width: 100%;
+  }
+  
+  .missionDescriptionContainer2 {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: row;
+    gap: 16px;
+    padding: 0px 0px 0px 36px;
+    width: fit-content;
+    box-shadow: inset 3px 0px 0px #FFC926;
+    text-align: flex-start;
+  }
+  
+  .missionDescription {
+    color: rgba(6, 28, 61, 1);
+    font-family: "Lexend Light";
+    font-size: 16px;
+    font-weight: 300;
+    letter-spacing: 0px;
+    line-height: 32px;
+    margin-top: -1px;
+    width: 60vw;
+  }
+
 }

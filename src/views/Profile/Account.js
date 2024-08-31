@@ -1,25 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { Grid, IconButton, InputAdornment} from '@mui/material'
+import { IconButton, InputAdornment} from '@mui/material'
 import {useForm, Form} from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
-import {makeStyles} from '@mui/styles'
-import { getAuth, updateProfile, onAuthStateChanged, currentUser, deleteUser, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
-import {Paper} from '@mui/material'
+import { updateProfile, deleteUser, EmailAuthProvider, reauthenticateWithCredential } from "firebase/auth";
 import { getFirestore, setDoc, updateDoc, doc, getDoc, deleteDoc } from 'firebase/firestore/lite';
-import axios from 'axios'
-import { useHistory } from 'react-router-dom'
-import { Avatar, ThemeProvider, createTheme, Box, Button, Snackbar, Alert } from '@mui/material'
-import { query, collection, getDocs, where } from "firebase/firestore";
-import { API_KEY } from '../../api/firebaseConfig'
+import { Button, Snackbar, Alert } from '@mui/material'
 import { AuthContext } from "../Auth/Auth";
 import styles from '../Profile/account.module.css'
 import {useNavigate} from "react-router-dom"
 import Popup from "../../components/Popup";
 import EditIcon from '@mui/icons-material/Edit';
 import UserPrinterSwitch from './UserPrinterSwitch'; // adjust the path according to your directory structure
-
-const apiKey = API_KEY
-const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
 
 const initalFValues = {
     teamnumber: '',
@@ -111,7 +102,7 @@ function Account() {
                 setName(data.username || "Update your username");
                 setTeamnumber(data.teamnumber || "Please enter your team number");
                 setUserInfo(data);
-                if (printer && data.request != undefined) {
+                if (printer && data.request !== undefined) {
                     setActiveReq(true)
                 }
               } else {
@@ -139,7 +130,7 @@ function Account() {
         })
         await updateDoc(markerRef, {
             username: values?.name,
-            teamnumber: values?.teamnumber
+            teamnumber: values?.teamnumber 
         })
     }
 
@@ -170,7 +161,6 @@ function Account() {
 
     const {
         values,
-        setValues,
         errors,
         setErrors,
         handleInputChange,
@@ -289,7 +279,7 @@ function Account() {
                 setSuccess(true)
                 setSuccessMessage("You are now a printer!")
                 setPrinter(true)
-            } else if (printer == isPrinter) {
+            } else if (printer === isPrinter) {
                 setSuccess(true)
                 setSuccessMessage("Form submitted, you are a printer is a " + isPrinter + " statement")
             }
