@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom"
 import { v4 } from 'uuid';
 import { getStorage, ref as storageRef, uploadBytes } from 'firebase/storage'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import {FetchContext} from '../Requests/FetchContext'
 
 
 const materials = [
@@ -52,7 +53,6 @@ const materials = [
 }
 function Printer() {
     const {currentUser} = useContext(AuthContext);
-    const navigate = useNavigate();
     const [material, setMaterial] = useState();
     const [color, setColor] = useState();
     const [unit, setUnit] = useState();
@@ -79,6 +79,8 @@ function Printer() {
     const sharedRef = doc(db, 'shared', `${currentUser?.uid}`)
     const [ref, setRef] = useState();
     const [printer, setPrinter] = useState()
+
+    const {refreshRequests} = useContext(FetchContext)
 
     
     useEffect(() => {
@@ -238,6 +240,7 @@ function Printer() {
                 uploadData(); 
                 handleFile();
                 resetForm();
+                refreshRequests();
                 setSuccess(true);
             } else {
                 if (!validateFile())

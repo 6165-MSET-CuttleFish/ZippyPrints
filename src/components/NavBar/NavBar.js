@@ -10,7 +10,6 @@ import { MenuContext } from './MenuProvider'
 export default function NavBar() {
   const { currentUser } = useContext(AuthContext);
   const { menu, setMenu } = useContext(MenuContext)
-  console.log(menu)
 
     
     return (

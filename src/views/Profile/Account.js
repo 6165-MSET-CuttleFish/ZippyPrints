@@ -106,7 +106,7 @@ function Account() {
                     setActiveReq(true)
                 }
               } else {
-                console.log("No such document!!!!");
+                console.log("No such document");
                 // setError(true)
               }
             }
@@ -155,7 +155,6 @@ function Account() {
             uploadData(); 
             handlePrinter();
             resetForm();
-
         }  
     }
 
@@ -241,6 +240,7 @@ function Account() {
                     setSuccess(true)
                     setSuccessMessage("You are now a user!")
                     setPrinter(false)
+                    navigate(0)
                 }
 
             }  //changing account type from user to printer
@@ -279,6 +279,7 @@ function Account() {
                 setSuccess(true)
                 setSuccessMessage("You are now a printer!")
                 setPrinter(true)
+                navigate(0)
             } else if (printer === isPrinter) {
                 setSuccess(true)
                 setSuccessMessage("Form submitted, you are a printer is a " + isPrinter + " statement")

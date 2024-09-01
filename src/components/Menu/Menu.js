@@ -1,12 +1,8 @@
 import React, { useState, useEffect, createRef, useContext } from 'react';
-import { CircularProgress, Grid, Typography, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
+import { InputLabel, MenuItem, Select } from '@mui/material';
 import Details from '../Details/Details';
-import { Autocomplete } from '@react-google-maps/api';
-import { AppBar, Toolbar, Box, InputBase, Paper } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import CssStyles from '../Menu/menu.module.css'
-import { getFirestore, collection, getDocs, addDoc, updateDoc, doc, getDoc, GeoPoint, query, setDoc } from 'firebase/firestore/lite';
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getFirestore, collection, getDocs, doc, getDoc, query } from 'firebase/firestore/lite';
+import { getStorage } from "firebase/storage";
 import styles from './menu.module.css'
 import { AuthContext } from "../../views/Auth/Auth";
 import Button from '../actions/Button';
@@ -22,7 +18,6 @@ export const Menu = () => {
     const sharedRef = doc(db, 'shared', `${currentUser?.uid}`)
     const userRef = doc(db, 'users', `${currentUser?.uid}`)
     const printerRef = doc(db, "printers", `${currentUser?.uid}`) 
-    const storage = getStorage();
 
     const [placeholder, setPlaceholder] = useState([])
     const [places, setPlaces] = useState([]);
@@ -34,7 +29,6 @@ export const Menu = () => {
 
     //distance api
     const [ userLocation, setUserLocation ] = useState()
-    const [ distance, setDistance ] = useState()
 
     
     // Function to determine account type of user
@@ -103,9 +97,7 @@ export const Menu = () => {
           );
 
           } catch (error){
-            // window.alert(error) //We want to use a snackbar instead of a popup so this is commmented out
             console.log(error)
-            // console.log(redirect)
 
           }
       }
@@ -130,21 +122,14 @@ export const Menu = () => {
     };
 
     const getMarkers = async () => {
-      console.log("getMarkers")
       try {
         const storedRequests = localStorage.getItem('markers');
         const lastUpdated = localStorage.getItem('lastUpdated');
         const now = new Date();
-        console.log(lastUpdated)
         if (storedRequests && lastUpdated && (now - new Date(lastUpdated)) < 0.5 * 60 * 60 * 1000) {
-          console.log("Fetching req from local storage")
-          console.log(localStorage)
-          console.log(localStorage.getItem('markers'))
           const parsedRequests = JSON.parse(storedRequests);
-          console.log(parsedRequests)
           setPlaceholder(parsedRequests);
         } else {
-          console.log("Fetching markers from API")
           const querySnapshot = await getDocs(q);
           setPlaceholder([])
           const promises = querySnapshot.docs.map(async (doc) => {
@@ -153,7 +138,6 @@ export const Menu = () => {
               return new Promise((resolve => {
                 calculateDistance(destination, (response, status) => {
                   if (status === 'OK') {
-                    console.log("status OK")
                     const distance = response.rows[0].elements[0].distance.text; // Distance in miles
                     const distanceValue = response.rows[0].elements[0].distance.value
 
@@ -185,9 +169,6 @@ export const Menu = () => {
       }
     }
 
-    console.log(places)
-
-
     const updateStorage = () => {
       const now = new Date()
       localStorage.setItem('markers', JSON.stringify(placeholder))
@@ -198,14 +179,11 @@ export const Menu = () => {
     const refreshPrinters = () => {
       localStorage.removeItem('markers')
       localStorage.removeItem('lastUpdated')
-      console.log("storage deleted")
       getMarkers();
     }
 
     useEffect(() => {
-      console.log(placeholder)
       if (placeholder.length > 0) {
-          console.log("updateStorage")
           updateStorage();
       }
     }, [placeholder])
@@ -220,9 +198,7 @@ export const Menu = () => {
     }
 
     const handleFilter = (newFilter) => {
-      console.log("handleFilter: " + newFilter)
         setFilter(newFilter)
-        console.log(placeholder)
         setPlaces([])
         switch(newFilter) {
           case 'All':
@@ -242,9 +218,8 @@ export const Menu = () => {
 
     return(
         <div >
-          <Button onClick = {() => {refreshPrinters()}}>Refresh</Button>
           {/* header */}
-              <div clasName={styles.titleContainer}>
+              <div className={styles.titleContainer}>
                 <div className={styles.title}>Options Around You</div>
               </div>
               <div className={styles.filterContainer}>
@@ -260,8 +235,8 @@ export const Menu = () => {
             {/* list of printers */}
             <div className = {styles.printerContainer}> 
               <div className = {styles.printerList}>
-                  {places?.map((place) =>(
-                      <Details place = {place}/>
+                  {places?.map((place, i) =>(
+                      <Details place = {place} key={i}/>
                   ))}
               </div>
             </div>

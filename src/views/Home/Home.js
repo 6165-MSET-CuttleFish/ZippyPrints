@@ -27,6 +27,7 @@ export default function Home(){
   const handleUserSubmit = () => {
     navigate("/Register");
   }
+
   return(
     <div>
       { menu && 
@@ -34,6 +35,7 @@ export default function Home(){
       }
       { !menu &&
           <div className={styles.StartScreen}>
+            <div className={styles.landingScreen}> 
             <div className={styles.intro}>
               <h1 className={styles.title}>ZippyPrints</h1>
                 <div className={styles.subtitleContainer}>
@@ -114,6 +116,7 @@ export default function Home(){
                   >
                   </Button>   
                 </div>   
+              </div>
               </div>
             
               <div className={styles.tutorialContainer} ref={ref}>

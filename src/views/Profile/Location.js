@@ -14,6 +14,7 @@ import { API_KEY } from '../../api/firebaseConfig'
 import { AuthContext } from "../Auth/Auth";
 import styles from '../Profile/location.module.css'
 import {useNavigate} from "react-router-dom"
+import {FetchContext} from '../Requests/FetchContext'
 
 
 const apiKey = API_KEY
@@ -45,6 +46,7 @@ function Location() {
     const markerRef = (doc(db, 'markers', `${currentUser?.uid}`))
     const sharedRef = doc(db, 'shared', `${currentUser?.uid}`)
     const [ ref, setRef ] = useState(null);
+    const {refreshRequests} = useContext(FetchContext)
     
     const checkViewable= ()=> {
         if(!currentUser) {
@@ -56,7 +58,6 @@ function Location() {
         setOpen(true);
         }
     }
-    const [geoLocationData, setGeoLocationData] = useState(null);
     const [street1, setStreet1] = useState("Enter your address (optional)");
     const [street2, setStreet2] = useState("Enter your address (optional)");
     const [zipcode, setZipcode] = useState("Enter your zip code");
@@ -205,6 +206,7 @@ function Location() {
         if(validate()) {
             uploadData();  
             resetForm();
+            refreshRequests();
         }  
     }
 

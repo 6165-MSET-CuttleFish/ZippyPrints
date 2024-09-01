@@ -20,7 +20,6 @@ export const FetchProvider = ({ children }) => {
     const userRef = doc(db, 'users', `${currentUser?.uid}`)
     const printerRef = doc(db, "printers", `${currentUser?.uid}`)   
     const [ error, setError ] = useState(false)
-    const [ errorMessage, setErrorMessage ] = useState("")
 
     // Filter variables
     const [ allSelect, setAllSelect] = useState(true)
@@ -88,7 +87,6 @@ export const FetchProvider = ({ children }) => {
       }
     }, [ref])
 
-    console.log(localStorage)
     // Function to fetch and set requests
     const getRequests = async () => {
       try {
@@ -96,17 +94,12 @@ export const FetchProvider = ({ children }) => {
         const lastUpdated = localStorage.getItem('lastUpdated');
         const now = new Date();
         if (storedRequests && lastUpdated && (now - new Date(lastUpdated)) < 0.5 * 60 * 60 * 1000) {
-            console.log("Fetching req from local storage")
-            console.log(localStorage)
-            console.log(localStorage.getItem('sortedRequests'))
           const parsedRequests = JSON.parse(storedRequests);
-          console.log(parsedRequests)
           setPlaceholder(parsedRequests);
           setPrintReq(JSON.parse(localStorage.getItem('printReq')))
           setLaserReq(JSON.parse(localStorage.getItem('laserReq')))
           setCNCReq(JSON.parse(localStorage.getItem('CNCReq')))
         } else {
-            console.log("Fetching req from API")
           const querySnapshot = await getDocs(q);
             setPlaceholder([]);
             setPrintReq([]);
@@ -117,7 +110,7 @@ export const FetchProvider = ({ children }) => {
               if (userLocation && doc.data()?.location) {
                 return new Promise((resolve) => {
                   calculateDistance(doc.data()?.location, (response, status) => {
-                    // console.log("fetch api")
+
                     if (status === 'OK') {
                       const distance = response.rows[0].elements[0].distance.text; // Distance in miles
                       const distanceValue = response.rows[0].elements[0].distance.value
@@ -132,15 +125,12 @@ export const FetchProvider = ({ children }) => {
                       setPlaceholder((current) => [...current, requestData]);
                     
                       if (doc.data()?.type === "3D Printing") {
-                        console.log("3dprinting")
                         setPrintReq((current) => [...current, requestData]);
                       } else if (doc.data()?.type === "Laser Cutting") {
-                        console.log("lasercutting")
                         setLaserReq((current) => [...current, requestData]);
                       } else if (doc.data()?.type === "CNCing") {
                         setCNCReq((current) => [...current, requestData]);
                       }
-                      console.log(placeholder)
       
                       resolve(); // Resolve the promise once the state has been updated
                     } else {
@@ -149,7 +139,6 @@ export const FetchProvider = ({ children }) => {
                   });
                 });
               }
-              console.log(placeholder)
             });
 
             await Promise.all(promises).then(() => {
@@ -176,9 +165,6 @@ export const FetchProvider = ({ children }) => {
         console.log(error);
       }
     };
-    console.log(placeholder)
-    console.log(printReq)
-    console.log(req)
     
     // Refresh function
     const refreshRequests = () => {
@@ -188,7 +174,6 @@ export const FetchProvider = ({ children }) => {
         localStorage.removeItem('CNCReq');
         localStorage.removeItem('lastUpdated');
         getRequests();
-
     };
 
     //Update local storage whenever req changes
@@ -211,7 +196,6 @@ export const FetchProvider = ({ children }) => {
     
     useEffect(() => {
         if (placeholder != "") {
-            console.log("updateStorage")
             updateStorage();
         }
     }, [placeholder, req])
@@ -222,14 +206,12 @@ export const FetchProvider = ({ children }) => {
     const handleFilter = (filterType) => {
         setFilter(filterType)
         if (filterType == "All") {
-            console.log("filter changed to all")
             setReq(placeholder)
             setPrintSelect(false)
             setAllSelect(true)
             setLaserSelect(false)
             setCNCSelect(false)
         } else if (filterType == "3D Prints") {
-            console.log("filter changed to 3!d11prints")
             setReq(printReq)
             setPrintSelect(true)
             setAllSelect(false)

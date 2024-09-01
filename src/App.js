@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import  { Home }  from './views/Home';
 import { Route, Routes, BrowserRouter,   } from 'react-router-dom';
 import './App.css';
@@ -29,7 +29,7 @@ import { FetchProvider } from './views/Requests/FetchContext';
 import { MenuProvider } from './components/NavBar/MenuProvider';
 function App()  {
 
-
+    console.warn = () => {};
     return (
       <body>
       <AuthProvider>
@@ -39,8 +39,9 @@ function App()  {
       <RequestProvider>
       <FetchProvider>
       <MenuProvider>
-      <Helmet>
+      
         <title>ZippyPrints</title>
+      <Helmet>
         <meta name="description" content="A fast, easy to use, and reliable way for printing custom designs through printers near you!!" />
       </Helmet>
         <NavBar />

@@ -93,7 +93,7 @@ const Details = ({place}) => {
           }
         });
           } catch(error) {
-              console.log(error.message);
+              console.log(error);
           }
     }
 
@@ -113,7 +113,6 @@ const Details = ({place}) => {
           lng: place.lng
       })
     }
-    // console.log(place?.service)
 
     return(
         <div className={styles.entireContainer}>

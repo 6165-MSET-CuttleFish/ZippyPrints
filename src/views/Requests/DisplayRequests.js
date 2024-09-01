@@ -1,10 +1,6 @@
 import React, { useState, useEffect, createRef, useContext } from 'react';
-import { CircularProgress, Grid, Typography, InputLabel, MenuItem, FormControl, Select } from '@mui/material';
-import { Autocomplete, LoadScriptNext } from '@react-google-maps/api';
-import { AppBar, Toolbar, Box, InputBase, Paper } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import { getFirestore, collection, getDocs, addDoc, updateDoc, doc, getDoc, GeoPoint, query, setDoc } from 'firebase/firestore/lite';
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { LoadScriptNext } from '@react-google-maps/api';
+import { getFirestore, doc, getDoc } from 'firebase/firestore/lite';
 import { AuthContext } from "../../views/Auth/Auth";
 import styles from './display.module.css'
 import RequestList from './Requests';
@@ -20,15 +16,10 @@ import { MenuContext } from '../../components/NavBar/MenuProvider';
 import Menu from '../../components/NavBar/Menu';
 
 function DisplayRequests() {
-    const [type, setType] = useState("3D Printing");
     const [elRefs, setElRefs] = useState([]);
     const {currentUser} = useContext(AuthContext);
-    const storage = getStorage();
-    const {req, setReq} = useContext(FetchContext);
-    const {filter} = useContext(FetchContext);
+    const {req} = useContext(FetchContext);
     const {handleFilter} = useContext(FetchContext)
-    const {refreshRequests} = useContext(FetchContext);
-    const {key} = useContext(FetchContext);
 
 
     const { details, setDetails } = useContext(CurrentDetailsContext);
@@ -36,7 +27,6 @@ function DisplayRequests() {
     const printerRef = doc(db, "printers", `${currentUser?.uid}`)
     const [ acceptedReq, setAcceptedReq ] = useState();
     const [ activeReq, setActiveReq ] = useState();
-    const q = query(collection(db, "requests"));
     const [ ref, setRef ] = useState();
     const sharedRef = doc(db, 'shared', `${currentUser?.uid}`)
     const userRef = doc(db, 'users', `${currentUser?.uid}`)
@@ -138,7 +128,7 @@ function DisplayRequests() {
         try {
             const docSnap = await getDoc(printerRef);
             setAcceptedReq((await docSnap).data()?.request)
-            if (acceptedReq != undefined) {
+            if (acceptedReq !== undefined) {
               setActiveReq(true);
             } else {
               setActiveReq(false)
@@ -154,9 +144,7 @@ function DisplayRequests() {
           console.log(error)
         }
       }, [req, details])
-      // console.log(req )
 
-      // console.log(req[0])
       useEffect(() => {
         const getRequestedDocs = async () => {
           try {
@@ -179,7 +167,7 @@ function DisplayRequests() {
           try {
             getRequestedDocs();
           } catch (error) {
-            console.log('getRequestedDocs: ' + error)
+            console.log(error)
           }
         }
       }, [req, userReq])
@@ -265,7 +253,7 @@ function DisplayRequests() {
                         onClick={() => setActive("Awaiting Requests")}>
                         <div 
                           className={styles.requestButtonText} 
-                          style={{ textDecoration: active == "Awaiting Requests" ? 'underline' : 'none' }}>
+                          style={{ textDecoration: active === "Awaiting Requests" ? 'underline' : 'none' }}>
                             Awaiting Requests({req.length})
                         </div>
                     </Button>
@@ -279,7 +267,7 @@ function DisplayRequests() {
                         onClick={() => setActive("Your Requests")}>
                         <div 
                         className={styles.requestButtonText} 
-                        style={{ textDecoration: active == "Your Requests" ? 'underline' : 'none' }}>
+                        style={{ textDecoration: active === "Your Requests" ? 'underline' : 'none' }}>
                           Your Requests {userReq ? "(1)" : "(0)"}
                         </div>
                     </Button>
@@ -294,14 +282,14 @@ function DisplayRequests() {
                         onClick={() => setActive("Accepted Requests")}>
                         <div 
                           className={styles.requestButtonText}
-                          style={{ textDecoration: active == "Accepted Requests" ? 'underline' : 'none' }}>
+                          style={{ textDecoration: active === "Accepted Requests" ? 'underline' : 'none' }}>
                             Accepted Requests {acceptedReq ? "(1)" : "(0)"}
                           </div>
                     </Button>
               </div>
 
           <div className = {styles.bodyContainer}> 
-          { userReq && active == "Your Requests" && 
+          { userReq && active === "Your Requests" && 
             <div> 
               <div className={styles.paper}>
                   {<RequestList request = {userReqInfo}/>}
@@ -309,11 +297,11 @@ function DisplayRequests() {
             </div>
           }
 
-          { !userReq && active == "Your Requests" &&
+          { !userReq && active === "Your Requests" &&
             <NoRequests />
           }
 
-          { acceptedReq != null && active == "Accepted Requests" && 
+          { acceptedReq != null && active === "Accepted Requests" && 
             <div> 
               <div className={styles.paper}>
                   {<RequestList request = {acceptedReq}/>}
@@ -321,11 +309,11 @@ function DisplayRequests() {
             </div>
           }
 
-          { acceptedReq == null && active == "Accepted Requests" &&
+          { acceptedReq === null && active === "Accepted Requests" &&
             <NoRequests />
           }
 
-          { active == "Awaiting Requests" &&
+          { active === "Awaiting Requests" &&
             <div>
                 {req?.map((request, i) =>(
                   <div 
@@ -340,7 +328,7 @@ function DisplayRequests() {
             </div>
           }
           
-          { active == "Awaiting Requests" && req.length == 0 &&
+          { active === "Awaiting Requests" && req.length == 0 &&
             
             <NoRequests />
           }

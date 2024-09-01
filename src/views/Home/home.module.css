@@ -12,10 +12,14 @@ body {
     flex-direction: column;
     align-items: flex-start;
     width: auto;
-    height: 100vh;
+    height: 100%;
     width: 100%;
-    background-color:#00344E;
+}
 
+.landingScreen {
+  width: 100%;
+  height: 90vh;
+  background-color:#00344E;
 }
 
 .intro {
@@ -25,6 +29,7 @@ body {
   padding-left: 15rem;
   padding-top: 10rem;
 }
+
 
 .title {
   color: #F0F5FF;
@@ -68,37 +73,12 @@ body {
   gap: 1rem;
 }
 
-/* .userButton {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  background-color: #F0F5FF;
-  border-radius: 7px;
-  padding: 0px 32px;
-  width: fit-content;
-} 
-
-.userText{
-  color: #094FB7;
-  font-family: "Lexend Regular";
-  font-size: 0.9vw;
-  font-weight: 500;
-  letter-spacing: 0;
-  line-height: 56px;
-  margin-top: -2px;
-  white-space: nowrap;
-  width: fit-content;
-} */
-
-/*FROM NOW ON: TUTORIAL*/
-
 .tutorialContainer {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
   align-items: flex-start; /* Center items horizontally */
-  margin: 30rem auto 0 auto; /* Adjusted top margin */
+  margin: 10rem auto 0 auto; /* Adjusted top margin */
   width: 100%; /* Adjust to full width for responsiveness */
   max-width: 1200px;
   padding: 0 5%; /* Responsive padding */
@@ -264,7 +244,6 @@ body {
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  gap: 48px;
   width: fit-content;
   margin-top: 5rem;
   margin-bottom: 5rem;
@@ -324,7 +303,7 @@ body {
 }
 
 .footerScreen {
-  display: block;
+  display: flex;
   height: clamp(300px, 20vw, 500px);
   width: 100%;
   background-color: #02142E;  
@@ -337,7 +316,6 @@ body {
   justify-content: flex-start;
   column-gap: 20vw;
   margin-top: 4vw;
-  margin-bottom: 3rem;
 }
 
 .footerColumn1 {
@@ -626,7 +604,7 @@ body {
   }
   
   .footerScreen {
-    display: block;
+    display: flex;
     height: 300px;
     top: 0px; bottom: 0px; right: 0px; left: 0px;
     background-color: #02142E;  
@@ -905,7 +883,7 @@ body {
 
   .imageTitle {
     color: rgba(6, 28, 61, 1);
-    font-family: "Lexend Regular";
+    font-family: "Lexend SemiBold";
     font-weight: 600;
     letter-spacing: -0.84px;
     line-height: 60px;
@@ -945,7 +923,7 @@ body {
   }
 
   .footerScreen {
-    display: block;
+    display: flex;
     height: 300px;
     top: 0px; bottom: 0px; right: 0px; left: 0px;
     background-color: #02142E;  

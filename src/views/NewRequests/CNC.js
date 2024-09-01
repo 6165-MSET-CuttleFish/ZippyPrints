@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom"
 import { v4 } from 'uuid';
 import { getStorage, ref as storageRef, uploadBytes } from 'firebase/storage'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import {FetchContext} from '../Requests/FetchContext'
 
 const materials = [
     'Aluminum',
@@ -77,6 +78,8 @@ function CNC() {
     const [ error, setError ] = useState();
     const [ files, setFiles ] = useState([])
     const [ exts, setExts ] = useState([])
+
+    const {refreshRequests} = useContext(FetchContext)
 
     useEffect(() => {
         const getRef = async () => {
@@ -190,7 +193,7 @@ function CNC() {
              accepted: false,
              uid: currentUser?.uid,
              printer: printer,
-             name: currentUser?.displayName
+             name: currentUser?.displayName,
         })
         await updateDoc(ref, {
             userRequest: {
@@ -223,6 +226,7 @@ function CNC() {
             uploadData(); 
             handleFile();
             resetForm();
+            refreshRequests();
             setSuccess(true);
         } else {
             if (!validateFile())

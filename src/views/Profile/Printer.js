@@ -5,20 +5,16 @@ import Controls from '../../components/actions/Controls'
 import {makeStyles} from '@mui/styles'
 import { getAuth, updateProfile, onAuthStateChanged, currentUser } from "firebase/auth";
 import {Paper} from '@mui/material'
-import { getFirestore, setDoc, updateDoc, doc, getDoc, GeoPoint } from 'firebase/firestore/lite';
+import { getFirestore, updateDoc, doc, getDoc } from 'firebase/firestore/lite';
 import axios from 'axios'
 import { useHistory } from 'react-router-dom'
-import { Snackbar, Alert, Box, Select, MenuItem } from '@mui/material'
-import { query, collection, getDocs, where } from "firebase/firestore";
-import { API_KEY } from '../../api/firebaseConfig'
+import { Snackbar, Alert, Select, MenuItem } from '@mui/material'
 import { AuthContext } from "../Auth/Auth";
 import styles from '../Profile/printer.module.css'
 import {useNavigate} from "react-router-dom"
 import '../Profile/Dashboard.css'
 import UserPrinterSwitch from './UserPrinterSwitch'
 
-const apiKey = API_KEY
-const baseUrl = "https://maps.googleapis.com/maps/api/geocode/json?address="
 
 const initalFValues = {
     filament: '',
@@ -78,7 +74,7 @@ function Printer() {
               if (data?.printer) {
                 return
               } else {
-                navigate("/Dashboard")
+                navigate(0)
                 alert("You cannot access this page because you are not a registered printer")
               }
             } else {
@@ -107,7 +103,6 @@ function Printer() {
                 if (docSnap.data().visibility) {
                     setVisible(true)
                     setVisibleChecked(true)
-                    console.log("visibility  " + visible)
                 } else {
                     setVisible(false)
                     setVisibleChecked(false)
@@ -119,7 +114,6 @@ function Printer() {
         }
       }, [currentUser])
   
-      console.log(service)
       const handleSwitchChange = (event) => {
         setVisibleChecked(event.target.checked);
     };

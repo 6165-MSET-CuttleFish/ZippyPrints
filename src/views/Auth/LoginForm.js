@@ -1,17 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useForm, Form } from '../../components/useForm'
 import Controls from '../../components/actions/Controls'
 import { makeStyles } from '@mui/styles'
-import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import GoogleIcon from '@mui/icons-material/Google';
 import { firebaseConfig } from '../../api/firebaseConfig'
 import * as firebase from 'firebase/app';
-import { Typography, Snackbar, SnackbarContent, Link, Paper, Container, CssBaseline,
-         Progress, Alert, Item, Avatar, ThemeProvider, createTheme, Box, TextField, } from '@mui/material'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import { Link } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
 import styles from '../Auth/login.module.css'
-import { RedirectCheck, RedirectCheckProvider } from './RedirectCheck';
+import { RedirectCheck } from './RedirectCheck';
 import {AuthContext} from "../../views/Auth/Auth"
 import LoginTestimony from "../../res/Login_testimony.svg"
 import '../Auth/AuthForm.css'

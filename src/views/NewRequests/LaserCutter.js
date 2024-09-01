@@ -9,6 +9,7 @@ import {useNavigate} from "react-router-dom"
 import { v4 } from 'uuid';
 import { getStorage, ref as storageRef, uploadBytes } from 'firebase/storage'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import {FetchContext} from '../Requests/FetchContext'
 
 const materials = [
     'Acrylic',
@@ -74,6 +75,8 @@ function LaserCutter() {
     const [ref, setRef] = useState()
     const [printer, setPrinter] = useState();
 
+    const {refreshRequests} = useContext(FetchContext)
+
     useEffect(() => {
         const getRef = async () => {
           try {
@@ -88,7 +91,7 @@ function LaserCutter() {
                 setRef(userRef);
               }
             } else {
-              console.log("No such document!!!");
+              console.log("No such document!");
             }
           } catch (error) {
             setErrorMessage(error)
@@ -224,6 +227,7 @@ function LaserCutter() {
             uploadData(); 
             handleFile();
             resetForm();
+            refreshRequests();
             setSuccess(true);
         } else {
             if (!validateFile())
