@@ -131,7 +131,7 @@ const Details = ({place}) => {
                     ))}
                     </div>
                     <div className={styles.printerHeading}>General Location:</div>
-                    {place.formattedAddress.split(",")[1]}, {(place.formattedAddress.split(",")[2]).split(" ")[1]}
+                    {place.formattedAddress}
             </div>
 
             <div className={styles.buttonContainer}>

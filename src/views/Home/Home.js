@@ -230,7 +230,7 @@ export default function Home(){
                                 fontSize: '0.95rem',
                                 fontWeight: 'normal'
                             }}>
-                            Already have an account? Sign in
+                            Already a user? Sign in
                           </Link>
                     </div>
                   </div>

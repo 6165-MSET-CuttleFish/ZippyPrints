@@ -95,11 +95,8 @@ function Discover() {
         });
 
 
-        } catch (error){
-          // window.alert(error) //We want to use a snackbar instead of a popup so this is commmented out
+        } catch (error) {
           console.log(error)
-          // console.log(redirect)
-
         }
     }
       getMarkerData()
@@ -108,8 +105,8 @@ function Discover() {
   const libraries = ['places'];
   let libRef = React.useRef(libraries)
   const mapContainerStyle = {
-    width: '100vw',
-    height: '100%',
+    width: '74vw',
+    height: '90vh',
     visibility: 'visible'
   }
 
@@ -385,7 +382,8 @@ const onMapLoad = (map) => {
                         style={{
                             backgroundColor: "#001b2e",
                             textTransform: "none",
-                            fontWeight: "600"
+                            fontWeight: "600",
+                            width: "fit-content"
                         }}
                         text = "Submit Request"
                     onClick = {handleClick}

@@ -6,6 +6,10 @@
     align-items: center;
   }
   
+  .css-1jaw3da {
+    margin-left: -5rem;
+  }
+
   .custom-switch .MuiSwitch-switchBase {
     transform: translateX(0px); /* Start position for the thumb */
   }

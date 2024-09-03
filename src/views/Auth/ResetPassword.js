@@ -59,18 +59,7 @@ export default function ResetPassword()
     const [errorMessage, setErrorMessage] = useState();
     const {menu} = useContext(MenuContext)
 
-        useEffect(() => {
-          const checkViewable = () => {
-              if (currentUser?.displayName == null) {
-                  navigate("/setup");
-                  setOpen(true);
-              } else if (!currentUser) {
-                  navigate("/login");
-                  setOpen(true);
-              }
-          };
-          checkViewable();
-      }, [currentUser, navigate]);
+
 
     
         useEffect(() => {

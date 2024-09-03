@@ -19,7 +19,7 @@ export default function UserPrinterSwitch({ checked, onChange, leftText, rightTe
           </Typography>
         }
         labelPlacement="end" /* Position label to the right of the switch */
-        style={{ display: 'flex', alignItems: 'center', gap: '10px' }} /* Align text and switch side by side */
+        style={{ display: 'flex', alignItems: 'center', gap: '10px', marginLeft: '-5rem' }} /* Align text and switch side by side */
       />
     );
   }
